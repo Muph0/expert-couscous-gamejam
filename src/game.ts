@@ -1,13 +1,11 @@
 import { MainScene } from './scenes/main-scene';
 import {Engine, Loader, DisplayMode, Keys, Scene, CollisionType, Color, Actor} from 'excalibur';
-import { Player } from './actors/player';
 import { Resources } from './resources';
 
 /**
  * Managed game class
  */
 export class Game extends Engine {
-    private player: Player;
     private mainScene: MainScene;
 
     constructor() {
@@ -35,8 +33,6 @@ export class Game extends Engine {
     onStart(): void {
         // Create new scene with a player
         this.mainScene = new MainScene();
-        this.player = new Player();
-        this.mainScene.add(this.player);
         this.addScene('idle', new Scene());
         this.addScene('main', this.mainScene);
         this.goToScene('main');

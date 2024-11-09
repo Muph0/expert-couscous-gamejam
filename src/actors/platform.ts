@@ -7,7 +7,7 @@ export class Platform extends ex.Actor {
             width: width,
             height: height,
             color: ex.Color.DarkGray,
-            collisionType: ex.CollisionType.Fixed,
+            collisionType: ex.CollisionType.Passive,
         });
     }
 }
