@@ -14,6 +14,7 @@ import {
 import {Item} from "@/actors/items/item";
 import * as ex from "excalibur";
 import {Resources} from "@/resources";
+import {Platform, WheelPlatform} from "@/actors/platform";
 
 
 export class Player extends Actor {
@@ -27,6 +28,9 @@ export class Player extends Actor {
     AIR_MOVEMENT_PENALITY = 0.75;
 
     JUMP_FORCE = 400
+
+    isOnWheel = false;
+    public wheelRunningDirection = 0;
 
     isOnGround = false;
     isPressingDown = false;
@@ -63,7 +67,7 @@ export class Player extends Actor {
             height: 25,
             color: new Color(255, 255, 255),
             collisionType: CollisionType.Active,
-            collider: Shape.Box(20, 20),
+            collider: Shape.Box(32, 32),
         });
     }
 
@@ -99,9 +103,13 @@ export class Player extends Actor {
             if (!this.isOnGround) accel *= this.AIR_MOVEMENT_PENALITY;
 
             this.acc.x = accel;
+
+            this.wheelRunningDirection = direction;
         } else {
             this.acc.x = 0;
             this.vel.x *= 0.75;
+
+            this.wheelRunningDirection = 0;
         }
 
         this.vel.x = clamp(this.vel.x, -this.MAX_VELOCITY, this.MAX_VELOCITY)
@@ -110,11 +118,14 @@ export class Player extends Actor {
         if (jumpPressed && this.isOnGround) {
             this.vel.y = -this.JUMP_FORCE;
             this.isOnGround = false;
+            this.isOnWheel = false;
         }
 
         // fall through the platform
-        if (this.isPressingDown)
+        if (this.isPressingDown) {
             this.isOnGround = false;
+            this.isOnWheel = false;
+        }
 
         // if space is held and we're going up, apply jump gravity
         if (jumpHeld && Math.sign(this.vel.y) < 0) {
@@ -123,7 +134,7 @@ export class Player extends Actor {
             this.acc.y = this.GRAVITY
         }
 
-        if (this.vel.x > 0) {
+        if (this.acc.x > 0) {
             this.graphics.flipHorizontal = false;
         } else {
             this.graphics.flipHorizontal = true;
@@ -139,6 +150,11 @@ export class Player extends Actor {
             this.acc.y = 0;
             this.vel.y = 0;
         }
+
+        if (this.isOnWheel) {
+            this.acc.x = 0;
+            this.vel.x = 0;
+        }
     }
 
     onCollisionStart(
@@ -151,8 +167,13 @@ export class Player extends Actor {
 
         if (otherBody?.collisionType === CollisionType.Fixed || otherBody?.collisionType === CollisionType.Passive) {
             // player landed on the ground
-            if (side === Side.Bottom && !this.isPressingDown) {
+            if (side === Side.Bottom && !this.isPressingDown && otherBody.owner instanceof Platform) {
                 this.isOnGround = true;
+
+                if (otherBody.owner instanceof WheelPlatform) {
+                    this.isOnWheel = true;
+                    this.pos.x = other.center.x;
+                }
 
                 // push out of the platform
                 // minuses because y axis is negative upwards
@@ -170,7 +191,11 @@ export class Player extends Actor {
     onCollisionEnd(self: Collider, other: Collider, side: Side, lastContact: CollisionContact) {
         super.onCollisionEnd(self, other, side, lastContact);
 
-        this.isOnGround = false;
+        const otherBody = other.owner.get(BodyComponent)
+
+        if (otherBody?.owner instanceof Platform) {
+            this.isOnGround = false;
+        }
     }
 
     onKeyHold(evt: ex.Input.KeyEvent) {
