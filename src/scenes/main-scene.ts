@@ -1,19 +1,19 @@
 import * as ex from 'excalibur';
-import {Player} from "@/actors/player";
-import {AutomaticSquirrel} from '@/actors/automatic-squirrel';
-import {Platform} from '@/actors/platform';
-import {Grinder} from '@/actors/machines/grinder';
-import {Brewer} from '@/actors/machines/brewer';
-import {Customer} from '@/actors/customer';
-import {ExcaliburGraphicsContext, Label, vec} from "excalibur";
-import {HamsterWheel} from "@/actors/contols/hamster-wheel";
-import {Lever} from "@/actors/contols/lever";
-import {Level, LEVELS} from "@/levels/level"
-import ResourceStation from "@/actors/stations/resource-station";
-import {Acorn} from "@/actors/items/items";
+import { Player } from "@/actors/player";
+import { AutomaticSquirrel } from '@/actors/automatic-squirrel';
+import { Platform } from '@/actors/platform';
+import { ExcaliburGraphicsContext, Label, vec } from "excalibur";
+import { HamsterWheel } from "@/actors/contols/hamster-wheel";
+import { Lever } from "@/actors/contols/lever";
+import { Level, LEVELS } from "@/levels/level"
+import { Grinder } from '@/actors/machines/grinder';
+import { Brewer } from '@/actors/machines/brewer';
+import { ItemActor } from '@/actors/items/itemActor';
+import { Acorn } from '@/actors/items/items';
+import ResourceStation from '@/actors/stations/resource-station';
 
 export class MainScene extends ex.Scene {
-    entityCounter = new Label({text: ''});
+    entityCounter = new Label({ text: '' });
     level: Level = LEVELS[0];
 
     onInitialize(engine: ex.Engine) {
@@ -44,11 +44,11 @@ export class MainScene extends ex.Scene {
         this.add(aiSquirrel);
 
         // // Create machines
-        // const grinder = new Grinder(300, 400);
-        // this.add(grinder);
+        const grinder = new Grinder(300, 400);
+        this.add(grinder);
 
-        // const brewer = new Brewer(500, 450);
-        // this.add(brewer);
+        const brewer = new Brewer(500, 450);
+        this.add(brewer);
 
         // TODO: Position the machines properly
 
@@ -100,6 +100,14 @@ export class MainScene extends ex.Scene {
         this.add(topWall);
         this.add(bottomWall);
 
+
+        let mouse = engine.input.pointers.primary;
+        mouse.on('down', e => {
+            console.log('spawn');
+            let acorn = new ItemActor(new Acorn());
+            acorn.pos = mouse.lastWorldPos.clone();
+            this.add(acorn);
+        });
         this.physics.config.gravity = vec(0,500);
     }
 

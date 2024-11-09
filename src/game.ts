@@ -36,7 +36,6 @@ export class Game extends Engine {
         this.mainScene = new MainScene();
         this.addScene('idle', new Scene());
         this.addScene('main', this.mainScene);
-        this.addScene('machine-test', new MachineTestScene());
         this.goToScene('main');
 
         let paddle = new Actor({

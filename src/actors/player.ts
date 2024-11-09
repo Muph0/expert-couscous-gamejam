@@ -215,6 +215,7 @@ export class Player extends Actor {
 
     pickUpItem(item: ItemActor) {
         this.carryingItem = item;
+        item.body.collisionType = ex.CollisionType.Passive;
         this.addChild(this.carryingItem);
     }
 
