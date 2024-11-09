@@ -5,7 +5,6 @@ import {Platform, SolidPlatform} from '@/actors/platform';
 import {Engine, ExcaliburGraphicsContext, Label, vec} from "excalibur";
 import { HamsterWheel } from "@/actors/contols/hamster-wheel";
 import { Lever } from "@/actors/contols/lever";
-import { Level, LEVELS } from "@/levels/level"
 import { Grinder } from '@/actors/machines/grinder';
 import { Brewer } from '@/actors/machines/brewer';
 import { ItemActor } from '@/actors/items/itemActor';
@@ -13,13 +12,28 @@ import {Acorn, Coffee} from '@/actors/items/items';
 import ResourceStation from '@/actors/stations/resource-station';
 import {CustomerControl} from "@/actors/customers-control";
 import {SceneScaler} from "@/scenes/scene-scaler";
+import { Level } from './level-intro';
+import { Game } from '@/game';
+
+const LEVEL_TIME: number = 0.5 * 60 * 1000;
 
 export class MainScene extends ex.Scene {
     entityCounter = new Label({ text: '' });
-    level: Level = LEVELS[0];
+    timeLabel = new Label({text: '', pos: vec(10, 10)})
+    timePlayed: number
+
+    constructor(
+        private game: Game,
+        private level: Level,
+    ) {
+        super();
+        this.timePlayed = 0;
+    }
+
 
     onInitialize(engine: ex.Engine) {
         this.add(this.entityCounter);
+        this.add(this.timeLabel);
 
         const lever = new Lever(100, 200 - 10);
         this.add(lever)
@@ -122,5 +136,13 @@ export class MainScene extends ex.Scene {
 
     onPreDraw(ctx: ExcaliburGraphicsContext, delta: number): void {
         this.entityCounter.text = `Entities: ${this.entities.length}`;
+        this.timeLabel.text = `${Math.floor((LEVEL_TIME - this.timePlayed) / 1000)} s`
+    }
+
+    onPreUpdate(engine: ex.Engine, delta: number): void {
+        this.timePlayed += delta;
+        if (this.timePlayed >= LEVEL_TIME) {
+            this.game.endLevel(0, 0);
+        }
     }
 }

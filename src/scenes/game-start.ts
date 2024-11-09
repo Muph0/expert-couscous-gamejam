@@ -12,20 +12,20 @@ export class GameStart extends Scene {
         private game: Game,
     ) {
         super();
-        this.height = 250;
-        this.width = 250;
+        this.height = 180;
+        this.width = 180;
         this.scaler = new SceneScaler(vec(this.width, this.height), this);
     }
 
     onInitialize(engine: ex.Engine): void {
         this.backgroundColor = new Color(216, 185, 157);
         const logo = new Actor({
-            x: this.width / 2, y: this.height / 3,
+            x: this.width / 2, y: this.height / 4,
         })
         logo.graphics.add(Resources.Load.Logo.toSprite());
         this.add(logo);
-        this.add(new TextLabel(this.width / 2, this.height / 2 + 10, 56, "Your forest cafe awaits...\n Brew, Bake, Delight!").actor);
-        this.add(new TextLabel(this.width / 2, this.height / 2 + 50, 40, "Press [SPACE] to play").actor);
+        this.add(new TextLabel(this.width / 2, this.height / 2 + 20, 56, "Your forest cafe awaits...\n Brew, Bake, Delight!").actor);
+        this.add(new TextLabel(this.width / 2, this.height / 2 + 60, 40, "Press [SPACE] to play").actor);
     }
 
     onPreUpdate(engine: Engine, delta: number): void {

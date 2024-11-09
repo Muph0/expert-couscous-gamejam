@@ -3,6 +3,7 @@ import {Engine, Loader, DisplayMode, Keys, Scene, CollisionType, Color, Actor} f
 import { Resources } from './resources';
 import { Level, LevelIntro } from './scenes/level-intro';
 import { GameStart } from './scenes/game-start';
+import { LevelOutro } from './scenes/level-outro';
 
 /**
  * Managed game class
@@ -47,8 +48,10 @@ export class Game extends Engine {
         this.goToScene('intro');
     }
 
-    public newLevel(): void {
-        this.curLevelId++;
+    public newLevel(next: boolean): void {
+        if (next) {
+            this.curLevelId++;
+        }
         if (this.curLevelId >= this.levels.length) {
             // TODO: add and screen or restart
             this.restart()
@@ -59,13 +62,20 @@ export class Game extends Engine {
 
     }
 
+    public endLevel(points: number, maxPoints: number) {
+        this.addScene('outro', new LevelOutro(this, this.curLevelId, points, maxPoints));
+        this.goToScene('outro');
+    }
+
     public play(): void {
         // Create new scene with a player
-        this.mainScene = new MainScene();
+        this.mainScene = new MainScene(this, {maxPoints: 100});
         this.addScene('idle', new Scene());
         this.addScene('main', this.mainScene);
         this.goToScene('main');
     }
+
+
 
     onPreUpdate(engine: Engine, delta: number): void {
         if (engine.input.keyboard.wasPressed(Keys.R)) {
