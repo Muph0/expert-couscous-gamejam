@@ -17,7 +17,6 @@ export enum MachineType {
 
 export enum ProductType {
     COFFEE,
-    ICE_CREAM
 }
 
 export const LEVELS: Level[] = [

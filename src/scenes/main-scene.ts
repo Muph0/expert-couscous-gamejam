@@ -9,8 +9,9 @@ import { Level, LEVELS } from "@/levels/level"
 import { Grinder } from '@/actors/machines/grinder';
 import { Brewer } from '@/actors/machines/brewer';
 import { ItemActor } from '@/actors/items/itemActor';
-import { Acorn } from '@/actors/items/items';
+import {Acorn, Coffee} from '@/actors/items/items';
 import ResourceStation from '@/actors/stations/resource-station';
+import {CustomerControl} from "@/actors/customers-control";
 
 export class MainScene extends ex.Scene {
     entityCounter = new Label({ text: '' });
@@ -52,7 +53,8 @@ export class MainScene extends ex.Scene {
 
         // TODO: Position the machines properly
 
-        // TODO: Add more customers and implement customer spawning logic
+        const customerControl = new CustomerControl();
+        this.add(customerControl);
 
         // Add walls beyond the screen to prevent actors from moving outside
         const screenWidth = engine.drawWidth;
@@ -104,7 +106,7 @@ export class MainScene extends ex.Scene {
         let mouse = engine.input.pointers.primary;
         mouse.on('down', e => {
             console.log('spawn');
-            let acorn = new ItemActor(new Acorn());
+            let acorn = new ItemActor(new Coffee());
             acorn.pos = mouse.lastWorldPos.clone();
             this.add(acorn);
         });

@@ -1,5 +1,6 @@
-import { Resources } from "@/resources";
-import { ImageSource, Sprite } from "excalibur";
+import {Resources} from "@/resources";
+import {Sprite} from "excalibur";
+import {ProductType} from "@/levels/level";
 
 export interface Item {
     grind?(): Item;
@@ -7,10 +8,12 @@ export interface Item {
     roast?(): Item;
 
     getSprite(): Sprite;
+    getProductType?(): ProductType;
 }
 
-export class Acorn implements Item {
+export class Acorn<T> implements Item {
     getSprite(): Sprite { return Resources.Items.getSprite(0, 0); }
+
     grind(): Item {
         return new GroundAcorn();
     }
@@ -31,6 +34,9 @@ export class GroundAcorn implements Item {
 
 export class Coffee implements Item {
     getSprite(): Sprite { return Resources.Items.getSprite(2, 0); }
+    getProductType(): ProductType {
+        return ProductType.COFFEE;
+    }
 }
 
 export class RoastedAcorn implements Item {

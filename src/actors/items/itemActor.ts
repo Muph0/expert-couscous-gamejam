@@ -3,6 +3,7 @@ import { Resources } from '@/resources';
 import {Actor, CollisionType, Color, Engine, Vector} from 'excalibur';
 
 export class ItemActor extends Actor {
+    public allocatedToCustomer: boolean = false;
 
     constructor(readonly item: Item, spawnPos?: Vector) {
         super({

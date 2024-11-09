@@ -1,5 +1,6 @@
 import * as ex from 'excalibur';
 import { ItemActor } from './items/itemActor';
+import {Resources} from "@/resources";
 
 export class AutomaticSquirrel extends ex.Actor {
     private carryingItem: ItemActor | null = null;

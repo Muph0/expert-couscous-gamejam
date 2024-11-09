@@ -32,7 +32,7 @@ export class Game extends Engine {
     restart(): void {
         this.goToScene('idle').then(() => {
             this.removeScene(this.mainScene);
-            this.onStart();
+            this.play();
         });
     }
 
