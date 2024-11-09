@@ -20,6 +20,6 @@ export class SceneScaler {
 
     private onScenePreDraw(e: PreDrawEvent): void {
         this.scene.camera.pos = this.sizeInPixels.scale(1 / 2);
-        this.scene.camera.zoom = e.ctx.height / this.sizeInPixels.y;
+        this.scene.camera.zoom = Math.min(e.ctx.height, e.ctx.width) / this.sizeInPixels.y;
     }
 }

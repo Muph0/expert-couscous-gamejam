@@ -12,6 +12,8 @@ import platformWheel from './images/platform-wheel.png';
 import wheel from './images/wheel.png';
 import items from './images/items.png';
 import machines from './images/machines.png';
+import levelTable from './images/level_table.png';
+
 
 /**
  * Default global resource dictionary. This gets loaded immediately
@@ -32,7 +34,8 @@ const Resources = new class Resources {
         Wheel: new ImageSource(wheel),
         Button: new ImageSource(button),
         Machines: new ImageSource(machines),
-    };
+        LevelTable: new ImageSource(levelTable),
+    }
 
     readonly Items = lazy(() =>
         SpriteSheet.fromImageSource({
