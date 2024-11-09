@@ -20,7 +20,7 @@ export class Game extends Engine {
     public start() {
         // Automatically load all default resources
         this.debug.collider.showBounds = true;
-        const loader = new Loader(Object.values(Resources));
+        const loader = new Loader(Object.values(Resources.Load));
         return super.start(loader);
     }
 

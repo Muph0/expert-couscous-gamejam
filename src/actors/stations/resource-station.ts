@@ -97,7 +97,7 @@ class ResourceStation extends Actor {
         const otherBody = other.owner.get(BodyComponent)
 
         if (otherBody.owner instanceof Player) {
-            this.playerReference = null;
+            this.playerReference = undefined;
             this.tooltip.actions.scaleTo(vec(0, 0), vec(10, 20));
         }
     }

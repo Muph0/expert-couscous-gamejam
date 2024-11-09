@@ -50,7 +50,7 @@ export class Player extends Actor {
             }), [0, 1, 2, 3, 4, 5, 6], 100),
         flying: ex.Animation.fromSpriteSheet(
             ex.SpriteSheet.fromImageSource({
-                image: Resources.VeverkaRun,
+                image: Resources.Load.VeverkaRun,
                 grid: {
                     columns: 1,
                     rows: 7,

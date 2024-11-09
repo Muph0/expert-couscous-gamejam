@@ -10,6 +10,7 @@ import {HamsterWheel} from "@/actors/contols/hamster-wheel";
 import {Lever} from "@/actors/contols/lever";
 import {Level, LEVELS} from "@/levels/level"
 import ResourceStation from "@/actors/stations/resource-station";
+import {Acorn} from "@/actors/items/items";
 
 export class MainScene extends ex.Scene {
     entityCounter = new Label({text: ''});
@@ -31,7 +32,7 @@ export class MainScene extends ex.Scene {
         const lever = new Lever(100, 180);
         this.add(lever)
 
-        const resourceStation = new ResourceStation(50, 180, 30);
+        const resourceStation = new ResourceStation(50, 180, 30, new Acorn());
         this.add(resourceStation)
 
         // Create player-controlled squirrel
