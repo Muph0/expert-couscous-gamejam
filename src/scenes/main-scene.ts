@@ -6,6 +6,8 @@ import {Grinder} from '@/actors/machines/grinder';
 import {Brewer} from '@/actors/machines/brewer';
 import {Customer} from '@/actors/customer';
 import {ExcaliburGraphicsContext, Label} from "excalibur";
+import {HamsterWheel} from "@/actors/contols/hamster-wheel";
+import {Lever} from "@/actors/contols/lever";
 
 export class MainScene extends ex.Scene {
     entityCounter = new Label({text: ''});
@@ -19,6 +21,12 @@ export class MainScene extends ex.Scene {
             // TODO: Add more platforms as needed
         ];
         platforms.forEach(platform => this.add(platform));
+
+        const wheel = new HamsterWheel(200, 200);
+        this.add(wheel)
+
+        const lever = new Lever(100, 180);
+        this.add(lever)
 
         // Create player-controlled squirrel
         const player = new Player();
