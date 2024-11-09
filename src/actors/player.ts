@@ -13,6 +13,17 @@ import {
 } from 'excalibur';
 import {Item} from "@/actors/items/item";
 import * as ex from "excalibur";
+import {Resources} from "@/resources";
+
+const spritesheet = ex.SpriteSheet.fromImageSource({
+    image: Resources.VeverkaRun,
+    grid: {
+        columns: 1,
+        rows: 7,
+        spriteWidth: 128,
+        spriteHeight: 25,
+    },
+})
 
 export class Player extends Actor {
     GRAVITY = 1000;
@@ -31,6 +42,11 @@ export class Player extends Actor {
 
     private carryingItem: Item | null = null;
 
+    animations = {
+        run: ex.Animation.fromSpriteSheet(spritesheet, [0, 1, 2, 3, 4, 5, 6], 100),
+
+    }
+
     public constructor() {
         super({
             pos: vec(150, 150),
@@ -45,7 +61,8 @@ export class Player extends Actor {
     onInitialize(engine: ex.Engine) {
         // let sprite = Resources.Sword.toSprite();
         // sprite.scale = vec(10, 10);
-        // this.graphics.use(sprite);
+
+        this.graphics.use(this.animations.run);
 
         engine.input.keyboard.on('hold', this.onKeyHold.bind(this));
         engine.input.keyboard.on('release', this.onKeyRelease.bind(this));
@@ -95,6 +112,12 @@ export class Player extends Actor {
             this.acc.y = this.JUMP_GRAVITY
         } else {
             this.acc.y = this.GRAVITY
+        }
+
+        if (this.vel.x > 0) {
+            this.graphics.flipHorizontal = false;
+        } else {
+            this.graphics.flipHorizontal = true;
         }
 
         // ground cancels all Y movement
