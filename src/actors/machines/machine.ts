@@ -20,22 +20,23 @@ export abstract class Machine extends Actor {
             pos: intakeStart.add(intakeEnd).scale(1 / 2),
             width: intakeEnd.x - intakeStart.x,
             height: intakeEnd.y - intakeStart.y,
+            collisionType: CollisionType.Fixed,
+        });
+
+        this.intakeActor.on('collisionstart', evt => {
+            if (this.isOn && evt.other instanceof ItemActor) {
+                const item = evt.other as ItemActor;
+                const newItem = this.processItem(item.item);
+                if (newItem) {
+                    let newActor = new ItemActor(newItem, this.getOutlet());
+                    this.scene?.add(newActor);
+                    item.kill();
+                }
+            }
         });
     }
 
     protected abstract getIntake(): [Vector, Vector];
     protected abstract getOutlet(): Vector;
     protected abstract processItem(item: Item): Item | null;
-
-    onPreCollision(evt: PreCollisionEvent) {
-        if (this.isOn && evt.other instanceof ItemActor) {
-            const item = evt.other as ItemActor;
-            const newItem = this.processItem(item.item);
-            if (newItem) {
-                let newActor = new ItemActor(newItem, this.getOutlet());
-                this.scene?.add(newActor);
-                item.kill();
-            }
-        }
-    }
 }

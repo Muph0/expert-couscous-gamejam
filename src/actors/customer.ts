@@ -20,7 +20,7 @@ export class Customer extends ex.Actor {
     }
 
     receiveItem(item: ItemActor): boolean {
-        if (item.item === this.desiredItemType) {
+        if (item.item as any === this.desiredItemType) {
             this.kill(); // Customer leaves after receiving item
             // TODO: Trigger any success feedback
             return true;
