@@ -21,7 +21,7 @@ export class WheelPlatform extends Platform {
     playerReference: Player;
 
     onPostUpdate(engine: Engine, delta: number): void {
-        if (this.playerReference) {
+        if (this.playerReference && this.playerReference.isOnGround) {
             this.direction = this.playerReference.wheelRunningDirection;
 
             console.log(this.direction)
