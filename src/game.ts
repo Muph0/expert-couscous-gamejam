@@ -20,7 +20,7 @@ export class Game extends Engine {
     public start() {
         // Automatically load all default resources
         this.debug.collider.showBounds = true;
-        const loader = new Loader(Object.values(Resources));
+        const loader = new Loader(Object.values(Resources.Load));
         return super.start(loader);
     }
 
@@ -37,7 +37,7 @@ export class Game extends Engine {
         this.addScene('idle', new Scene());
         this.addScene('main', this.mainScene);
         this.addScene('machine-test', new MachineTestScene());
-        this.goToScene('main');
+        this.goToScene('machine-test');
 
         let paddle = new Actor({
             x: 150,

@@ -1,18 +1,16 @@
 import { ItemActor } from '../items/itemActor';
 import { Item } from '@/actors/items/items';
-import { Actor, CollisionType, Color, PreCollisionEvent, Rectangle, vec, Vector } from 'excalibur';
+import { Actor, ActorArgs, CollisionType, Color, PreCollisionEvent, Rectangle, vec, Vector } from 'excalibur';
 
 export abstract class Machine extends Actor {
     public isOn: boolean = true;
     intakeActor: Actor;
 
-    constructor(x: number, y: number) {
+    constructor(config?: ActorArgs) {
         super({
-            pos: vec(x, y),
-            width: 64,
-            height: 32,
             color: Color.Gray,
             collisionType: CollisionType.Passive,
+            ...config,
         });
 
         let [intakeStart, intakeEnd] = this.getIntake();
@@ -21,14 +19,17 @@ export abstract class Machine extends Actor {
             width: intakeEnd.x - intakeStart.x,
             height: intakeEnd.y - intakeStart.y,
             collisionType: CollisionType.Fixed,
+            color: Color.Green,
         });
+        this.addChild(this.intakeActor);
 
         this.intakeActor.on('collisionstart', evt => {
             if (this.isOn && evt.other instanceof ItemActor) {
                 const item = evt.other as ItemActor;
                 const newItem = this.processItem(item.item);
                 if (newItem) {
-                    let newActor = new ItemActor(newItem, this.getOutlet());
+                    let newActor = new ItemActor(newItem);
+                    newActor.pos = this.getOutlet().add(this.pos);
                     this.scene?.add(newActor);
                     item.kill();
                 }
@@ -36,7 +37,12 @@ export abstract class Machine extends Actor {
         });
     }
 
+    /** Position of intage [start, end] in relative coordinates */
     protected abstract getIntake(): [Vector, Vector];
+
+
+    /** Position of the outlet */
     protected abstract getOutlet(): Vector;
+
     protected abstract processItem(item: Item): Item | null;
 }

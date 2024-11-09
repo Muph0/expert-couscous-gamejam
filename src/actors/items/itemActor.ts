@@ -1,12 +1,11 @@
 import { Item } from '@/actors/items/items';
-import { Resources } from '@/resources';
 import { Actor, CollisionType, Color, Vector } from 'excalibur';
 
 export class ItemActor extends Actor {
 
     constructor(readonly item: Item, spawnPos?: Vector) {
         super({
-            radius: 10,
+            radius: 6,
             collisionType: CollisionType.Active,
         });
         if (spawnPos) {
