@@ -11,7 +11,6 @@ export class MachineTestScene extends Scene {
 
         this.add(new Grinder(100,100))
 
-
         mouse.on('down', e => {
             console.log('spawn');
             let acorn = new ItemActor(new Acorn());
