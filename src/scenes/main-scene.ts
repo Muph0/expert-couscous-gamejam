@@ -38,5 +38,51 @@ export class MainScene extends ex.Scene {
         this.add(customer);
 
         // TODO: Add more customers and implement customer spawning logic
+
+        // Add walls beyond the screen to prevent actors from moving outside
+        const screenWidth = engine.drawWidth;
+        const screenHeight = engine.drawHeight;
+
+        // Left wall
+        const leftWall = new ex.Actor({
+            pos: ex.vec(-10, screenHeight / 2),
+            width: 20,
+            height: screenHeight,
+            collisionType: ex.CollisionType.Fixed,
+            color: ex.Color.Transparent,
+        });
+
+        // Right wall
+        const rightWall = new ex.Actor({
+            pos: ex.vec(screenWidth + 10, screenHeight / 2),
+            width: 20,
+            height: screenHeight,
+            collisionType: ex.CollisionType.Fixed,
+            color: ex.Color.Transparent,
+        });
+
+        // Top wall
+        const topWall = new ex.Actor({
+            pos: ex.vec(screenWidth / 2, -10),
+            width: screenWidth,
+            height: 20,
+            collisionType: ex.CollisionType.Fixed,
+            color: ex.Color.Transparent,
+        });
+
+        // Bottom wall
+        const bottomWall = new ex.Actor({
+            pos: ex.vec(screenWidth / 2, screenHeight + 10),
+            width: screenWidth,
+            height: 20,
+            collisionType: ex.CollisionType.Fixed,
+            color: ex.Color.Transparent,
+        });
+
+        // Add walls to the scene
+        this.add(leftWall);
+        this.add(rightWall);
+        this.add(topWall);
+        this.add(bottomWall);
     }
 }
