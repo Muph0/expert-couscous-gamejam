@@ -18,12 +18,13 @@ export abstract class Machine extends ex.Actor {
 
     onPreCollision(evt: ex.PreCollisionEvent) {
         if (this.isOn && evt.other instanceof Item) {
-            const newItem = this.processItem(evt.other);
+            const item = evt.other as Item;
+            const newItem = this.processItem(item);
             if (newItem) {
-                newItem.pos = this.pos.clone();
+                newItem.pos = item.pos.clone();
                 this.scene.add(newItem);
+                item.kill();
             }
-            evt.other.kill();
         }
     }
 }
