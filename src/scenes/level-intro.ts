@@ -1,7 +1,8 @@
-import { Item } from '@/actors/items/item';
-import { Scene } from 'excalibur';
+import { Item } from '@/actors/items/items';
+import { Engine, Scene } from 'excalibur';
 import { MainScene } from './main-scene';
 import { Button } from '@/ui/button';
+import { Game } from '@/game';
 
 export class Level {
     constructor() {}
@@ -18,7 +19,7 @@ export class Recipe {
 export class LevelIntro extends Scene {
     
     constructor(
-        private recipes: Recipe[],
+        private game: Game,
         private level: Level
     ) {
         super();
@@ -26,10 +27,10 @@ export class LevelIntro extends Scene {
     }
 
     onInitialize(engine: ex.Engine): void {
-        this.add(new Button(this.onButtonPress))
+        this.add(new Button(50, 50, this.onButtonPress))
     }
 
     onButtonPress() {
-        this.engine.goToScene(new MainScene())
+        this.game.play()
     }
 }

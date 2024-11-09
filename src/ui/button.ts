@@ -4,11 +4,13 @@ import { Resources } from '@/resources'
 export class Button extends ex.ScreenElement {
     
   constructor(
+    private x: number,
+    private y: number,
     private callback: () => void,
   ) {
     super({
-      x: 50,
-      y: 50,
+      x,
+      y,
     })
   }
 

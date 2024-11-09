@@ -4,6 +4,7 @@ import magor from './images/magor.png';
 import button from './images/button.png';
 import veverkaRun from './images/veverka-run.png';
 import veverkaIdle from './images/veverka-idle.png';
+import logo from './images/acorn_logo.png';
 
 /**
  * Default global resource dictionary. This gets loaded immediately
@@ -15,6 +16,7 @@ const Resources = {
     Button: new ImageSource(button),
     VeverkaRun: new ImageSource(veverkaRun),
     VeverkaIdle: new ImageSource(veverkaIdle),
+    Logo: new ImageSource(logo),
 }
 
 export { Resources }
