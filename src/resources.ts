@@ -6,7 +6,8 @@ import veverkaRun from './images/veverka-run.png';
 import veverkaIdle from './images/veverka-idle.png';
 import logo from './images/acorn_logo.png';
 import items from './images/items.png';
-import { Button } from './ui/button';
+import levelTable from './images/level_table.png';
+
 
 /**
  * Default global resource dictionary. This gets loaded immediately
@@ -20,7 +21,7 @@ const Resources = {
         VeverkaIdle: new ImageSource(veverkaIdle),
         ItemsImg: new ImageSource(items),
         Logo: new ImageSource(logo),
-        Button: new ImageSource(button),
+        LevelTable: new ImageSource(levelTable),
     },
 
     get Items(): SpriteSheet {

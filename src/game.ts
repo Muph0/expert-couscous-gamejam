@@ -43,7 +43,7 @@ export class Game extends Engine {
 
     public firstLevel(): void {
         this.curLevelId = 0;
-        this.addScene('intro', new LevelIntro(this, this.levels[this.curLevelId]));
+        this.addScene('intro', new LevelIntro(this, this.levels[this.curLevelId], this.curLevelId));
         this.goToScene('intro');
     }
 
@@ -54,7 +54,7 @@ export class Game extends Engine {
             this.restart()
         }
         this.removeScene('intro');
-        this.addScene('intro', new LevelIntro(this, this.levels[this.curLevelId]));
+        this.addScene('intro', new LevelIntro(this, this.levels[this.curLevelId], this.curLevelId));
         this.goToScene('intro');
 
     }
