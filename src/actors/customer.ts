@@ -43,6 +43,7 @@ export class Customer extends ex.Actor {
     };
     public readonly desiredProductType: ProductType;
     public satisfied: boolean = false;
+    private assignedItem: ItemActor | null = null;
     private runningDirection: number | null = null;
     private runningTarget: number | null = null;
 
@@ -69,6 +70,7 @@ export class Customer extends ex.Actor {
                 this.satisfied = true;
                 this.runningTarget = null;
                 this.runningDirection = 1;
+                this.assignedItem?.kill();
             }
         }
         if (this.satisfied && this.pos.x > engine.drawWidth + this.width) {
@@ -94,6 +96,11 @@ export class Customer extends ex.Actor {
     goFetchItem(item: ItemActor) {
         console.log("Fetching item");
         this.runningTarget = item.pos.x;
+        this.assignedItem = item;
         item.allocatedToCustomer = true;
+    }
+
+    productAssigned(): boolean {
+        return this.assignedItem != null;
     }
 }

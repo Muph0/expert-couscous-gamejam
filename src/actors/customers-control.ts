@@ -5,10 +5,12 @@ import {ProductType} from "@/levels/level";
 
 export class CustomerControl extends Actor {
     private static readonly HEIGHT = 100;
-    private static readonly MAX_TIMEOUT = 1000;
+    private static readonly MAX_TIMEOUT = 3000;
     private static readonly MAX_CUSTOMERS = 3;
+    private static readonly ITEM_TIMEOUT = 5000;
 
     private customers: Customer[] = [];
+    private pendingProducts: ItemActor[] = [];
 
     constructor() {
         super({
@@ -43,6 +45,10 @@ export class CustomerControl extends Actor {
                 console.log("Adding customer.")
                 this.customers.push(customer);
                 scene.add(customer);
+
+                if (this.pendingProducts.length > 0) {
+                    customer.goFetchItem(this.pendingProducts.pop()!);
+                }
             }
 
             this.scheduleCustomer(engine);
@@ -50,18 +56,27 @@ export class CustomerControl extends Actor {
     }
 
     onCollisionStart(self: Collider, other: Collider, side: Side, contact: CollisionContact) {
-        if (!(other.owner instanceof ItemActor))
+        const item = other.owner;
+        if (!(item instanceof ItemActor))
             return;
-        if (other.owner.allocatedToCustomer)
+        if (item.allocatedToCustomer)
             return;
-        if (!other.owner.item.getProductType)
+        if (!item.item.getProductType)
             return;
-        const productType = other.owner.item.getProductType();
+        const productType = item.item.getProductType();
         const customer = this.customers.find(c =>
-            !c.satisfied && c.desiredProductType == productType
+            !c.satisfied && !c.productAssigned() && c.desiredProductType == productType
         );
-        if (!customer)
-            return;
-        customer.goFetchItem(other.owner);
+        if (customer) {
+            customer.goFetchItem(item);
+        } else {
+            this.pendingProducts.push(item);
+            setTimeout(() => {
+                if (this.pendingProducts.includes(item) && !item.allocatedToCustomer) {
+                    item.kill();
+                    this.pendingProducts = this.pendingProducts.filter(p => p != item);
+                }
+            }, CustomerControl.ITEM_TIMEOUT);
+        }
     }
 }
