@@ -22,8 +22,8 @@ export class SceneScaler {
         this.scene.camera.pos = this.sizeInPixels.scale(1 / 2);
 
         const zoom = Math.min(
-            e.ctx.width / this.sizeInPixels.x,
-            e.ctx.height / this.sizeInPixels.y);
+            window.innerWidth / this.sizeInPixels.x,
+            window.innerHeight / this.sizeInPixels.y);
 
         this.scene.camera.zoom = zoom;
 
