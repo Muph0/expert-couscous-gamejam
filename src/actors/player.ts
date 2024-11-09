@@ -86,15 +86,15 @@ export class Player extends Actor {
     }
 
     onPostUpdate(engine: Engine, delta: number): void {
-        const jumpPressed = engine.input.keyboard.wasPressed(Keys.W)
-        const jumpHeld = engine.input.keyboard.isHeld(Keys.W)
+        const jumpPressed = engine.input.keyboard.wasPressed(Keys.W) || engine.input.keyboard.isHeld(Keys.Up)
+        const jumpHeld = engine.input.keyboard.isHeld(Keys.W) || engine.input.keyboard.isHeld(Keys.Up)
 
-        const heldLeft = engine.input.keyboard.isHeld(Keys.A)
-        const heldRight = engine.input.keyboard.isHeld(Keys.D)
+        const heldLeft = engine.input.keyboard.isHeld(Keys.A) || engine.input.keyboard.isHeld(Keys.Left)
+        const heldRight = engine.input.keyboard.isHeld(Keys.D) || engine.input.keyboard.isHeld(Keys.Right)
 
         let movementDirection = Math.sign(this.vel.x);
 
-        this.isPressingDown = engine.input.keyboard.isHeld(Keys.S);
+        this.isPressingDown = engine.input.keyboard.isHeld(Keys.S) || engine.input.keyboard.isHeld(Keys.Down);
 
         // move left or right
         if (heldLeft || heldRight) {
@@ -148,12 +148,24 @@ export class Player extends Actor {
             this.acc.y = this.GRAVITY
         }
 
+        // not on the ground always means flying
         if (!this.isOnGround) {
             this.graphics.use(this.animations.flying);
-        } else if (this.isOnGround && Math.abs(this.vel.x) < 50)
-            this.graphics.use(this.animations.idle);
-        else
-            this.graphics.use(this.animations.run);
+        } else {
+            // when on the ground, we are either running on the wheel
+            if (this.isOnWheel) {
+                if (this.runningDirection == 0)
+                    this.graphics.use(this.animations.idle);
+                else
+                    this.graphics.use(this.animations.run);
+            }
+
+            // else we're idling
+            else if (Math.abs(this.vel.x) < 50)
+                this.graphics.use(this.animations.idle);
+            else
+                this.graphics.use(this.animations.run);
+        }
 
         // ground cancels all Y movement
         if (this.isOnGround) {
@@ -215,6 +227,7 @@ export class Player extends Actor {
 
     pickUpItem(item: ItemActor) {
         this.carryingItem = item;
+        item.body.collisionType = ex.CollisionType.Passive;
         this.addChild(this.carryingItem);
     }
 
