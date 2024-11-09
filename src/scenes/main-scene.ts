@@ -8,9 +8,11 @@ import {Customer} from '@/actors/customer';
 import {ExcaliburGraphicsContext, Label} from "excalibur";
 import {HamsterWheel} from "@/actors/contols/hamster-wheel";
 import {Lever} from "@/actors/contols/lever";
+import {Level, LEVELS} from "@/levels/level"
 
 export class MainScene extends ex.Scene {
     entityCounter = new Label({text: ''});
+    level: Level = LEVELS[0];
 
     onInitialize(engine: ex.Engine) {
         this.add(this.entityCounter);
@@ -44,10 +46,6 @@ export class MainScene extends ex.Scene {
         // this.add(brewer);
 
         // TODO: Position the machines properly
-
-        // Create customers
-        const customer = new Customer('Coffee');
-        this.add(customer);
 
         // TODO: Add more customers and implement customer spawning logic
 
