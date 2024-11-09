@@ -27,7 +27,7 @@ export class HamsterWheel extends ex.Actor {
         this.wheel.graphics.use(Resources.Load.Wheel.toSprite())
 
         const platformWidth = 25;
-        const platformHeight = 5;
+        const platformHeight = 10;
 
         // Add platform component on top of the wheel
         this.platform = new WheelPlatform(0, radius + platformHeight / 2, platformWidth, platformHeight);
