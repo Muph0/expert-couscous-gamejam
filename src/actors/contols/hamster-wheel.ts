@@ -1,18 +1,18 @@
 import * as ex from 'excalibur';
+import { Engine } from 'excalibur';
 import { Machine } from '../machines/machine';
-import {Platform, WheelPlatform} from "@/actors/platform";
-import {BodyComponent, Collider, CollisionContact, CollisionType, Engine, Side, vec} from "excalibur";
+import { WheelPlatform } from "@/actors/platform";
 
 export class HamsterWheel extends ex.Actor {
     public linkedMachine: Machine | undefined;
 
     public wheel: ex.Actor;
-    public platform : WheelPlatform;
+    public platform: WheelPlatform;
 
     playerOnWheel = false;
 
     constructor(x: number, y: number, linkedMachine?: Machine) {
-        super({pos: ex.vec(x, y)});
+        super({ pos: ex.vec(x, y) });
 
         this.linkedMachine = linkedMachine;
 
