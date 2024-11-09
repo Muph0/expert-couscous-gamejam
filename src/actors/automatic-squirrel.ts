@@ -1,8 +1,8 @@
 import * as ex from 'excalibur';
-import { Item } from './items/item';
+import { ItemActor } from './items/itemActor';
 
 export class AutomaticSquirrel extends ex.Actor {
-    private carryingItem: Item | null = null;
+    private carryingItem: ItemActor | null = null;
 
     constructor() {
         super({

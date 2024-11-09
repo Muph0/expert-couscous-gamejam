@@ -1,3 +1,6 @@
-import {Game} from "@/game";
+import {Game} from "./game";
 
-new Game();
+const game = new Game();
+game.start().then(() => {
+  game.onStart();
+});

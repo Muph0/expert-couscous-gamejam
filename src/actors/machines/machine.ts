@@ -1,29 +1,41 @@
-import * as ex from 'excalibur';
-import { Item } from '../items/item';
+import { ItemActor } from '../items/itemActor';
+import { Item } from '@/actors/items/items';
+import { Actor, CollisionType, Color, PreCollisionEvent, Rectangle, vec, Vector } from 'excalibur';
 
-export abstract class Machine extends ex.Actor {
+export abstract class Machine extends Actor {
     public isOn: boolean = true;
+    intakeActor: Actor;
 
     constructor(x: number, y: number) {
         super({
-            pos: ex.vec(x, y),
+            pos: vec(x, y),
             width: 64,
             height: 32,
-            color: ex.Color.Gray,
-            collisionType: ex.CollisionType.Passive,
+            color: Color.Gray,
+            collisionType: CollisionType.Passive,
+        });
+
+        let [intakeStart, intakeEnd] = this.getIntake();
+        this.intakeActor = new Actor({
+            pos: intakeStart.add(intakeEnd).scale(1 / 2),
+            width: intakeEnd.x - intakeStart.x,
+            height: intakeEnd.y - intakeStart.y,
         });
     }
 
-    abstract processItem(item: Item): Item | null;
+    protected abstract getIntake(): [Vector, Vector];
+    protected abstract getOutlet(): Vector;
+    protected abstract processItem(item: Item): Item | null;
 
-    onPreCollision(evt: ex.PreCollisionEvent) {
-        if (this.isOn && evt.other instanceof Item) {
-            const newItem = this.processItem(evt.other);
+    onPreCollision(evt: PreCollisionEvent) {
+        if (this.isOn && evt.other instanceof ItemActor) {
+            const item = evt.other as ItemActor;
+            const newItem = this.processItem(item.item);
             if (newItem) {
-                newItem.pos = this.pos.clone();
-                this.scene.add(newItem);
+                let newActor = new ItemActor(newItem, this.getOutlet());
+                this.scene?.add(newActor);
+                item.kill();
             }
-            evt.other.kill();
         }
     }
 }

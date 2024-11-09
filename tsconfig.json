@@ -3,6 +3,8 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "moduleResolution": "node",
+    "noImplicitAny": true,
+    "strict": false,
     "target": "es2018",
     "module": "es6",
     "sourceMap": true,
