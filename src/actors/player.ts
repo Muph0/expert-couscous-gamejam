@@ -30,7 +30,7 @@ export class Player extends Actor {
     JUMP_FORCE = 400
 
     isOnWheel = false;
-    public wheelRunningDirection = 0;
+    public runningDirection = 0;
 
     isOnGround = false;
     isPressingDown = false;
@@ -48,6 +48,16 @@ export class Player extends Actor {
                     spriteHeight: 25,
                 },
             }), [0, 1, 2, 3, 4, 5, 6], 100),
+        flying: ex.Animation.fromSpriteSheet(
+            ex.SpriteSheet.fromImageSource({
+                image: Resources.VeverkaRun,
+                grid: {
+                    columns: 1,
+                    rows: 7,
+                    spriteWidth: 128,
+                    spriteHeight: 25,
+                },
+            }), [2, 3], 100),
         idle: ex.Animation.fromSpriteSheet(
             ex.SpriteSheet.fromImageSource({
                 image: Resources.Load.VeverkaIdle,
@@ -66,20 +76,18 @@ export class Player extends Actor {
             width: 25,
             height: 25,
             color: new Color(255, 255, 255),
-            collisionType: CollisionType.Active,
+            collisionType: CollisionType.Passive,
             collider: Shape.Box(32, 32),
         });
     }
 
     onInitialize(engine: ex.Engine) {
-
-        engine.input.keyboard.on('hold', this.onKeyHold.bind(this));
-        engine.input.keyboard.on('release', this.onKeyRelease.bind(this));
+        engine.input.keyboard.on('press', this.onKeyPress.bind(this));
     }
 
     onPostUpdate(engine: Engine, delta: number): void {
-        const jumpPressed = engine.input.keyboard.wasPressed(Keys.Space)
-        const jumpHeld = engine.input.keyboard.isHeld(Keys.Space)
+        const jumpPressed = engine.input.keyboard.wasPressed(Keys.W)
+        const jumpHeld = engine.input.keyboard.isHeld(Keys.W)
 
         const heldLeft = engine.input.keyboard.isHeld(Keys.A)
         const heldRight = engine.input.keyboard.isHeld(Keys.D)
@@ -104,12 +112,18 @@ export class Player extends Actor {
 
             this.acc.x = accel;
 
-            this.wheelRunningDirection = direction;
+            this.runningDirection = direction;
         } else {
             this.acc.x = 0;
             this.vel.x *= 0.75;
 
-            this.wheelRunningDirection = 0;
+            this.runningDirection = 0;
+        }
+
+        if (this.runningDirection == -1) {
+            this.graphics.flipHorizontal = true;
+        } else if (this.runningDirection == 1) {
+            this.graphics.flipHorizontal = false;
         }
 
         this.vel.x = clamp(this.vel.x, -this.MAX_VELOCITY, this.MAX_VELOCITY)
@@ -134,13 +148,9 @@ export class Player extends Actor {
             this.acc.y = this.GRAVITY
         }
 
-        if (this.acc.x > 0) {
-            this.graphics.flipHorizontal = false;
-        } else {
-            this.graphics.flipHorizontal = true;
-        }
-
-        if (this.isOnGround && Math.abs(this.vel.x) < 20 && !heldLeft && !heldRight)
+        if (!this.isOnGround) {
+            this.graphics.use(this.animations.flying);
+        } else if (this.isOnGround && Math.abs(this.vel.x) < 50)
             this.graphics.use(this.animations.idle);
         else
             this.graphics.use(this.animations.run);
@@ -181,11 +191,6 @@ export class Player extends Actor {
                     - self.bounds.height / 2 + 0.1;
             }
         }
-
-        if (other instanceof ItemActor && !this.carryingItem) {
-            this.carryingItem = other as ItemActor;
-            other.kill(); // Remove item from the scene
-        }
     }
 
     onCollisionEnd(self: Collider, other: Collider, side: Side, lastContact: CollisionContact) {
@@ -198,21 +203,32 @@ export class Player extends Actor {
         }
     }
 
-    onKeyHold(evt: ex.Input.KeyEvent) {
-    }
-
-    onKeyRelease(evt: ex.Input.KeyEvent) {
+    onKeyPress(evt: ex.Input.KeyEvent) {
         if (evt.key === ex.Input.Keys.Space) {
             this.dropItem();
         }
     }
 
+    isCarryingItem() {
+        return (this.carryingItem != null);
+    }
+
+    pickUpItem(item: ItemActor) {
+        this.carryingItem = item;
+        this.addChild(this.carryingItem);
+    }
+
     dropItem() {
         if (this.carryingItem) {
-            const droppedItem = this.carryingItem;
-            droppedItem.pos = this.pos.clone();
-            droppedItem.vel = ex.vec(this.vel.x, 0);
-            this.scene?.add(droppedItem);
+            this.removeChild(this.carryingItem)
+
+            this.carryingItem.pos = this.pos.clone();
+            this.carryingItem.vel = ex.vec(this.vel.x, this.vel.y);
+
+            this.carryingItem.body.collisionType = ex.CollisionType.Active;
+
+            this.scene?.add(this.carryingItem);
+
             this.carryingItem = null;
         }
     }

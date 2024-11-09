@@ -5,7 +5,7 @@ import {Platform} from '@/actors/platform';
 import {Grinder} from '@/actors/machines/grinder';
 import {Brewer} from '@/actors/machines/brewer';
 import {Customer} from '@/actors/customer';
-import {ExcaliburGraphicsContext, Label} from "excalibur";
+import {ExcaliburGraphicsContext, Label, vec} from "excalibur";
 import {HamsterWheel} from "@/actors/contols/hamster-wheel";
 import {Lever} from "@/actors/contols/lever";
 import {Level, LEVELS} from "@/levels/level"
@@ -98,6 +98,8 @@ export class MainScene extends ex.Scene {
         this.add(rightWall);
         this.add(topWall);
         this.add(bottomWall);
+
+        this.physics.config.gravity = vec(0,500);
     }
 
     onPreDraw(ctx: ExcaliburGraphicsContext, delta: number): void {
