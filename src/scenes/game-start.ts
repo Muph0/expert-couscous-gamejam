@@ -1,27 +1,40 @@
 import { Game } from "@/game";
 import { Resources } from "@/resources";
-import { Button } from "@/ui/button";
-import { Actor, Scene } from "excalibur";
+import { Actor, Color, Engine, Keys, Scene, SceneActivationContext, vec } from "excalibur";
+import { SceneScaler } from "./scene-scaler";
+import { TextLabel } from "@/ui/text-label";
 
 export class GameStart extends Scene {
-        
+    private scaler: SceneScaler;
+    private height: number;
+    private width: number;
     constructor(
         private game: Game,
     ) {
         super();
-        this.onButtonPress = this.onButtonPress.bind(this)
+        this.height = 250;
+        this.width = 250;
+        this.scaler = new SceneScaler(vec(this.width, this.height), this);
     }
 
     onInitialize(engine: ex.Engine): void {
+        this.backgroundColor = new Color(216, 185, 157);
         const logo = new Actor({
-            x: 100, y: 100,
+            x: this.width / 2, y: this.height / 3,
         })
         logo.graphics.add(Resources.Load.Logo.toSprite());
         this.add(logo);
-        this.add(new Button(200, 200, this.onButtonPress));
+        this.add(new TextLabel(this.width / 2, this.height / 2 + 10, 56, "Your forest cafe awaits...\n Brew, Bake, Delight!").actor);
+        this.add(new TextLabel(this.width / 2, this.height / 2 + 50, 40, "Press [SPACE] to play").actor);
     }
 
-    onButtonPress() {
-        this.game.firstLevel()
+    onPreUpdate(engine: Engine, delta: number): void {
+        if (engine.input.keyboard.wasPressed(Keys.Space)) {
+            this.game.firstLevel();
+        }
+    }
+
+    onDeactivate(context: SceneActivationContext): void {
+        this.scaler.deactivate()
     }
 }
