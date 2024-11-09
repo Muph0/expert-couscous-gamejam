@@ -9,6 +9,7 @@ import {ExcaliburGraphicsContext, Label} from "excalibur";
 import {HamsterWheel} from "@/actors/contols/hamster-wheel";
 import {Lever} from "@/actors/contols/lever";
 import {Level, LEVELS} from "@/levels/level"
+import ResourceStation from "@/actors/stations/resource-station";
 
 export class MainScene extends ex.Scene {
     entityCounter = new Label({text: ''});
@@ -29,6 +30,9 @@ export class MainScene extends ex.Scene {
 
         const lever = new Lever(100, 180);
         this.add(lever)
+
+        const resourceStation = new ResourceStation(50, 180, 30);
+        this.add(resourceStation)
 
         // Create player-controlled squirrel
         const player = new Player();
