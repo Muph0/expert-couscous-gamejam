@@ -6,7 +6,7 @@ export class ItemActor extends Actor {
 
     constructor(readonly item: Item, spawnPos?: Vector) {
         super({
-            radius: 8,
+            radius: 6,
             collisionType: CollisionType.Active,
         });
         if (spawnPos) {
