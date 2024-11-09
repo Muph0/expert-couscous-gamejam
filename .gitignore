@@ -1,3 +1,6 @@
+# JetBrains
+.idea
+
 test/images/actual.png
 test/images/diff-*.png
 
