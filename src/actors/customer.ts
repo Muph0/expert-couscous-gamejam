@@ -43,6 +43,7 @@ export class Customer extends ex.Actor {
     };
     public readonly desiredProductType: ProductType;
     public satisfied: boolean = false;
+    private assignedItem: ItemActor | null = null;
     private runningDirection: number | null = null;
     private runningTarget: number | null = null;
 
@@ -66,11 +67,20 @@ export class Customer extends ex.Actor {
             this.runningDirection = Math.sign(this.runningTarget - this.pos.x);
 
             if (Math.abs(this.runningTarget - this.pos.x) < Customer.PICK_UP_THRESHOLD) {
-                this.satisfied = true;
                 this.runningTarget = null;
-                this.runningDirection = 1;
+
+                if (this.assignedItem) {
+                    this.satisfied = true;
+                    this.runningDirection = 1;
+                    this.assignedItem.kill();
+                }
+            }
+        } else {
+            if (!this.satisfied) {
+                this.runningDirection = null;
             }
         }
+
         if (this.satisfied && this.pos.x > engine.drawWidth + this.width) {
             console.log("Killing customer")
             this.kill();
@@ -94,6 +104,15 @@ export class Customer extends ex.Actor {
     goFetchItem(item: ItemActor) {
         console.log("Fetching item");
         this.runningTarget = item.pos.x;
+        this.assignedItem = item;
         item.allocatedToCustomer = true;
+    }
+
+    goTo(xPosition: number) {
+        this.runningTarget = xPosition;
+    }
+
+    productAssigned(): boolean {
+        return this.assignedItem != null;
     }
 }

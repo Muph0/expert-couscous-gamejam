@@ -14,7 +14,7 @@ import {
 import {ItemActor} from "@/actors/items/itemActor";
 import * as ex from "excalibur";
 import {Resources} from "@/resources";
-import {Platform, WheelPlatform} from "@/actors/platform";
+import {Platform, SolidPlatform, WheelPlatform} from "@/actors/platform";
 
 
 export class Player extends Actor {
@@ -34,6 +34,9 @@ export class Player extends Actor {
 
     isOnGround = false;
     isPressingDown = false;
+
+    // set by the solid platform
+    public isOnSolidPlatform = false;
 
     private carryingItem: ItemActor | null = null;
 
@@ -136,7 +139,7 @@ export class Player extends Actor {
         }
 
         // fall through the platform
-        if (this.isPressingDown) {
+        if (this.isPressingDown && !this.isOnSolidPlatform) {
             this.isOnGround = false;
             this.isOnWheel = false;
         }
@@ -211,7 +214,7 @@ export class Player extends Actor {
         const otherBody = other.owner.get(BodyComponent)
 
         // Tom is fucking going to jail
-        if (otherBody?.owner instanceof Platform && otherBody.pos.y > this.pos.y) {
+        if (otherBody?.owner instanceof Platform && otherBody.pos.y > this.pos.y && !(otherBody.owner instanceof SolidPlatform)) {
             this.isOnGround = false;
         }
     }

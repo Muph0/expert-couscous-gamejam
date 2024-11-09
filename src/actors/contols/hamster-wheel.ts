@@ -1,7 +1,8 @@
 import * as ex from 'excalibur';
-import { Engine } from 'excalibur';
+import {Engine, vec} from 'excalibur';
 import { Machine } from '../machines/machine';
 import { WheelPlatform } from "@/actors/platform";
+import {Resources} from "@/resources";
 
 export class HamsterWheel extends ex.Actor {
     public linkedMachine: Machine | undefined;
@@ -20,9 +21,12 @@ export class HamsterWheel extends ex.Actor {
         this.wheel = new ex.Actor({
             radius: radius,
             color: ex.Color.Gray,
+            scale: vec(1.1, 1.1),
         });
 
-        const platformWidth = 20;
+        this.wheel.graphics.use(Resources.Load.Wheel.toSprite())
+
+        const platformWidth = 25;
         const platformHeight = 5;
 
         // Add platform component on top of the wheel
@@ -35,7 +39,7 @@ export class HamsterWheel extends ex.Actor {
 
     onPostUpdate(engine: Engine, delta: number): void {
         if (this.platform.direction != 0) {
-            this.wheel.actions.rotateBy(this.platform.direction / 50, 100);
+            this.wheel.actions.rotateBy(this.platform.direction / 20, 100);
         }
     }
 
