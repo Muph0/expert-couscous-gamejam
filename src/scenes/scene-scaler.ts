@@ -26,5 +26,7 @@ export class SceneScaler {
             e.ctx.height / this.sizeInPixels.y);
 
         this.scene.camera.zoom = zoom;
+
+        console.log('ctx: ', e.ctx.width, e.ctx.height, 'window: ', window.innerWidth, window.innerHeight);
     }
 }
