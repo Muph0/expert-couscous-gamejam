@@ -15,7 +15,7 @@ export class Button extends ex.ScreenElement {
   }
 
   onInitialize() {
-    const button = Resources.Button.toSprite()
+    const button = Resources.Load.Button.toSprite()
     const buttonDark = button.clone()
     buttonDark.tint = new ex.Color(100, 100, 100)
     this.graphics.add('idle', button)

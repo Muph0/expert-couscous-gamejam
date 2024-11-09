@@ -16,7 +16,7 @@ export class GameStart extends Scene {
         const logo = new Actor({
             x: 100, y: 100,
         })
-        logo.graphics.add(Resources.Logo.toSprite());
+        logo.graphics.add(Resources.Load.Logo.toSprite());
         this.add(logo);
         this.add(new Button(200, 200, this.onButtonPress));
     }
