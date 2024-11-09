@@ -15,15 +15,6 @@ import {Item} from "@/actors/items/item";
 import * as ex from "excalibur";
 import {Resources} from "@/resources";
 
-const spritesheet = ex.SpriteSheet.fromImageSource({
-    image: Resources.VeverkaRun,
-    grid: {
-        columns: 1,
-        rows: 7,
-        spriteWidth: 128,
-        spriteHeight: 25,
-    },
-})
 
 export class Player extends Actor {
     GRAVITY = 1000;
@@ -43,8 +34,26 @@ export class Player extends Actor {
     private carryingItem: Item | null = null;
 
     animations = {
-        run: ex.Animation.fromSpriteSheet(spritesheet, [0, 1, 2, 3, 4, 5, 6], 100),
-
+        run: ex.Animation.fromSpriteSheet(
+            ex.SpriteSheet.fromImageSource({
+                image: Resources.VeverkaRun,
+                grid: {
+                    columns: 1,
+                    rows: 7,
+                    spriteWidth: 128,
+                    spriteHeight: 25,
+                },
+            }), [0, 1, 2, 3, 4, 5, 6], 100),
+        idle: ex.Animation.fromSpriteSheet(
+            ex.SpriteSheet.fromImageSource({
+                image: Resources.VeverkaIdle,
+                grid: {
+                    columns: 3,
+                    rows: 1,
+                    spriteWidth: 32,
+                    spriteHeight: 32,
+                },
+            }), [0, 1, 2], 200),
     }
 
     public constructor() {
@@ -59,10 +68,6 @@ export class Player extends Actor {
     }
 
     onInitialize(engine: ex.Engine) {
-        // let sprite = Resources.Sword.toSprite();
-        // sprite.scale = vec(10, 10);
-
-        this.graphics.use(this.animations.run);
 
         engine.input.keyboard.on('hold', this.onKeyHold.bind(this));
         engine.input.keyboard.on('release', this.onKeyRelease.bind(this));
@@ -107,6 +112,10 @@ export class Player extends Actor {
             this.isOnGround = false;
         }
 
+        // fall through the platform
+        if (this.isPressingDown)
+            this.isOnGround = false;
+
         // if space is held and we're going up, apply jump gravity
         if (jumpHeld && Math.sign(this.vel.y) < 0) {
             this.acc.y = this.JUMP_GRAVITY
@@ -119,6 +128,11 @@ export class Player extends Actor {
         } else {
             this.graphics.flipHorizontal = true;
         }
+
+        if (this.isOnGround && Math.abs(this.vel.x) < 20 && !heldLeft && !heldRight)
+            this.graphics.use(this.animations.idle);
+        else
+            this.graphics.use(this.animations.run);
 
         // ground cancels all Y movement
         if (this.isOnGround) {
@@ -143,7 +157,7 @@ export class Player extends Actor {
                 // push out of the platform
                 // minuses because y axis is negative upwards
                 this.pos.y = other.getFurthestPoint(vec(0, -1)).y
-                    - self.bounds.height / 2;
+                    - self.bounds.height / 2 + 0.1;
             }
         }
 
