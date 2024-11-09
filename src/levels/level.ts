@@ -1,7 +1,7 @@
 export class Level {
-    items: RawItemType[];
-    machines: MachineType[];
-    products: ProductType[];
+    items!: RawItemType[];
+    machines!: MachineType[];
+    products!: ProductType[];
 }
 
 export enum RawItemType {
