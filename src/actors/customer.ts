@@ -1,10 +1,11 @@
 import * as ex from 'excalibur';
 import { ItemActor } from './items/itemActor';
+import {ProductType} from "@/levels/level";
 
 export class Customer extends ex.Actor {
-    public desiredItemType: string;
+    public desiredProductType: ProductType;
 
-    constructor(desiredItemType: string) {
+    constructor(desiredProductType: ProductType) {
         super({
             pos: ex.vec(700, 500),
             width: 32,
@@ -12,7 +13,7 @@ export class Customer extends ex.Actor {
             color: ex.Color.Yellow,
             collisionType: ex.CollisionType.Passive,
         });
-        this.desiredItemType = desiredItemType;
+        this.desiredProductType = desiredProductType;
     }
 
     onInitialize(engine: ex.Engine) {
@@ -20,7 +21,7 @@ export class Customer extends ex.Actor {
     }
 
     receiveItem(item: ItemActor): boolean {
-        if (item.item as any === this.desiredItemType) {
+        if (item.item as any === this.desiredProductType) {
             this.kill(); // Customer leaves after receiving item
             // TODO: Trigger any success feedback
             return true;
