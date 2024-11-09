@@ -1,5 +1,6 @@
 import { Item } from '@/actors/items/items';
-import { Actor, CollisionType, Color, Vector } from 'excalibur';
+import { Resources } from '@/resources';
+import {Actor, CollisionType, Color, Engine, Vector} from 'excalibur';
 
 export class ItemActor extends Actor {
 
@@ -13,5 +14,9 @@ export class ItemActor extends Actor {
         }
 
         this.graphics.use(item.getSprite());
+    }
+
+    onPostUpdate(engine: Engine, delta: number): void {
+        this.angularVelocity = this.vel.x / 10;
     }
 }
