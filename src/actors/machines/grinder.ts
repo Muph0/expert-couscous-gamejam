@@ -32,6 +32,8 @@ export class Grinder extends Machine {
     }
 
     onPostUpdate(engine: Engine, delta: number): void {
+        super.onPostUpdate(engine, delta);
+
         if (this.isOn) {
             this.crank.rotation += 0.005 * delta;
         }
