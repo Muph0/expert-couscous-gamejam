@@ -53,7 +53,7 @@ class ResourceStation extends Actor {
                     offset: vec(0, 0),
                     color: Color.Black,
                 },
-                family: 'Arial',
+                family: 'Silkscreen',
                 size: 15,
                 unit: FontUnit.Px,
                 color: Color.White
