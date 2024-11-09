@@ -36,12 +36,12 @@ export class MainScene extends ex.Scene {
         const aiSquirrel = new AutomaticSquirrel();
         this.add(aiSquirrel);
 
-        // Create machines
-        const grinder = new Grinder(300, 400);
-        this.add(grinder);
+        // // Create machines
+        // const grinder = new Grinder(300, 400);
+        // this.add(grinder);
 
-        const brewer = new Brewer(500, 450);
-        this.add(brewer);
+        // const brewer = new Brewer(500, 450);
+        // this.add(brewer);
 
         // TODO: Position the machines properly
 
