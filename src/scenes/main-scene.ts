@@ -2,7 +2,7 @@ import * as ex from 'excalibur';
 import { Player } from "@/actors/player";
 import { AutomaticSquirrel } from '@/actors/automatic-squirrel';
 import { Platform } from '@/actors/platform';
-import { ExcaliburGraphicsContext, Label } from "excalibur";
+import { ExcaliburGraphicsContext, Label, vec } from "excalibur";
 import { HamsterWheel } from "@/actors/contols/hamster-wheel";
 import { Lever } from "@/actors/contols/lever";
 import { Level, LEVELS } from "@/levels/level"
@@ -10,6 +10,7 @@ import { Grinder } from '@/actors/machines/grinder';
 import { Brewer } from '@/actors/machines/brewer';
 import { ItemActor } from '@/actors/items/itemActor';
 import { Acorn } from '@/actors/items/items';
+import ResourceStation from '@/actors/stations/resource-station';
 
 export class MainScene extends ex.Scene {
     entityCounter = new Label({ text: '' });
@@ -30,6 +31,9 @@ export class MainScene extends ex.Scene {
 
         const lever = new Lever(100, 180);
         this.add(lever)
+
+        const resourceStation = new ResourceStation(50, 180, 30, new Acorn());
+        this.add(resourceStation)
 
         // Create player-controlled squirrel
         const player = new Player();
@@ -104,6 +108,7 @@ export class MainScene extends ex.Scene {
             acorn.pos = mouse.lastWorldPos.clone();
             this.add(acorn);
         });
+        this.physics.config.gravity = vec(0,500);
     }
 
     onPreDraw(ctx: ExcaliburGraphicsContext, delta: number): void {
