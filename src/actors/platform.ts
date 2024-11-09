@@ -33,6 +33,7 @@ export class SolidPlatform extends Platform {
 
         if (otherBody.owner instanceof Player) {
             otherBody.owner.isOnSolidPlatform = true;
+            otherBody.owner.isOnGround = true;
         }
     }
 

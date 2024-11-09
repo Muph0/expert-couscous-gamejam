@@ -201,7 +201,7 @@ export class Player extends Actor {
 
         if (otherBody?.collisionType === CollisionType.Fixed || otherBody?.collisionType === CollisionType.Passive) {
             // player landed on the ground
-            if (side === Side.Bottom && !this.isPressingDown && otherBody.owner instanceof Platform) {
+            if ((side === Side.Bottom && !this.isPressingDown && otherBody.owner instanceof Platform) || otherBody.owner instanceof SolidPlatform) {
                 this.isOnGround = true;
 
                 if (otherBody.owner instanceof WheelPlatform) {
@@ -223,7 +223,7 @@ export class Player extends Actor {
         const otherBody = other.owner.get(BodyComponent)
 
         // Tom is fucking going to jail
-        if (otherBody?.owner instanceof Platform && otherBody.pos.y > this.pos.y && !(otherBody.owner instanceof SolidPlatform)) {
+        if (otherBody?.owner instanceof Platform && otherBody.pos.y > this.pos.y) {
             this.isOnGround = false;
         }
     }
