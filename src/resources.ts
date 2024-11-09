@@ -1,6 +1,8 @@
 import { ImageSource } from 'excalibur';
 import sword from './images/sword.png';
 import magor from './images/magor.png';
+import button from './images/button.png';
+
 
 /**
  * Default global resource dictionary. This gets loaded immediately
@@ -9,6 +11,7 @@ import magor from './images/magor.png';
 const Resources = {
     Sword: new ImageSource(sword),
     Magor: new ImageSource(magor),
+    Button: new ImageSource(button),
 }
 
 export { Resources }
