@@ -154,20 +154,29 @@ export class Player extends Actor {
         // not on the ground always means flying
         if (!this.isOnGround) {
             this.graphics.use(this.animations.flying);
+            this.updateItemPosition('back');
         } else {
             // when on the ground, we are either running on the wheel
             if (this.isOnWheel) {
-                if (this.runningDirection == 0)
+                if (this.runningDirection == 0) {
                     this.graphics.use(this.animations.idle);
-                else
+                    this.updateItemPosition('hand');
+                }
+                else {
                     this.graphics.use(this.animations.run);
+                    this.updateItemPosition('back');
+                }
             }
 
             // else we're idling
-            else if (Math.abs(this.vel.x) < 50)
+            else if (Math.abs(this.vel.x) < 50) {
                 this.graphics.use(this.animations.idle);
-            else
+                this.updateItemPosition('hand');
+            }
+            else {
                 this.graphics.use(this.animations.run);
+                this.updateItemPosition('back');
+            }
         }
 
         // ground cancels all Y movement
@@ -243,10 +252,32 @@ export class Player extends Actor {
             this.carryingItem.vel = ex.vec(this.vel.x, this.vel.y / 10);
 
             this.carryingItem.body.collisionType = ex.CollisionType.Active;
+            this.carryingItem.offset = vec(0, 0);
 
             this.scene?.add(this.carryingItem);
 
             this.carryingItem = null;
+        }
+    }
+
+    private updateItemPosition(position: string) {
+        let facing = this.graphics.flipHorizontal;
+
+        let frame = (this.graphics.current as any)._currentFrame;
+        let uglyOffset  = Math.sin(frame);
+
+        let handOffset = vec(facing ? -10 : 10, 3 + uglyOffset);
+        let backOffset = vec(facing ? -20 : 20, 2 + uglyOffset);
+
+        if (this.carryingItem != undefined) {
+            this.carryingItem.graphics.flipHorizontal = facing;
+
+            if (position == 'hand') {
+                this.carryingItem.offset = handOffset;
+            }
+            else {
+                this.carryingItem.offset = backOffset;
+            }
         }
     }
 }
