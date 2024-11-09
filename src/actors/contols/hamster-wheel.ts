@@ -11,25 +11,22 @@ export class HamsterWheel extends ex.Actor {
 
     playerOnWheel = false;
 
-    constructor(x: number, y: number, linkedMachine?: Machine) {
+    constructor(x: number, y: number, radius: number, linkedMachine?: Machine) {
         super({ pos: ex.vec(x, y) });
 
         this.linkedMachine = linkedMachine;
 
-        const wheelRadius = 75;
-
         // Add wheel component
         this.wheel = new ex.Actor({
-            width: wheelRadius * 2,
-            height: wheelRadius * 2,
+            radius: radius,
             color: ex.Color.Gray,
         });
 
-        const platformWidth = 50;
-        const platformHeight = 20;
+        const platformWidth = 20;
+        const platformHeight = 5;
 
         // Add platform component on top of the wheel
-        this.platform = new WheelPlatform(0, wheelRadius + platformHeight / 2, platformWidth, platformHeight);
+        this.platform = new WheelPlatform(0, radius + platformHeight / 2, platformWidth, platformHeight);
 
         // Add components as children
         this.addChild(this.wheel);

@@ -99,8 +99,8 @@ class ResourceStation extends Actor {
                 this.actions.delay(this.COOLDOWN * 1000).callMethod(() => {
                     // hide
                     if (this.playerReference == undefined) {
-                        this.tooltip.actions.scaleTo(vec(0, 0), vec(10, 20));
-                        this.tooltip.text = `0.0s`;
+                        this.tooltip.actions.scaleTo(vec(0, 0), vec(10, 20)).callMethod(() => {this.tooltip.text = `Space`});
+                        ;
                     }
                 })
 

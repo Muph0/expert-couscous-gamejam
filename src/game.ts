@@ -15,7 +15,8 @@ export class Game extends Engine {
 
     constructor() {
         super({
-            displayMode: DisplayMode.FillScreen,
+            width: 480,
+            height: 480,
             antialiasing: false,
         });
         this.levels = []
@@ -26,6 +27,7 @@ export class Game extends Engine {
         // Automatically load all default resources
         this.debug.collider.showBounds = true;
         const loader = new Loader(Object.values(Resources.Load));
+
         return super.start(loader);
     }
 
