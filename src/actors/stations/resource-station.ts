@@ -87,7 +87,6 @@ class ResourceStation extends Actor {
                 this.tooltip.graphics.opacity = 0.5;
             }
 
-
             // Allow item pickup only if not on cooldown
             if (fPressed && !this.playerReference.isCarryingItem() && !this.isOnCooldown) {
                 this.playerReference.pickUpItem(new ItemActor(this.item));
@@ -96,6 +95,15 @@ class ResourceStation extends Actor {
                 this.isOnCooldown = true;
                 this.cooldownTimer = this.COOLDOWN;
                 this.tooltip.text = `${this.COOLDOWN.toFixed(1)}s`; // Display initial cooldown time
+
+                this.actions.delay(this.COOLDOWN * 1000).callMethod(() => {
+                    // hide
+                    if (this.playerReference == undefined) {
+                        this.tooltip.actions.scaleTo(vec(0, 0), vec(10, 20));
+                        this.tooltip.text = `0.0s`;
+                    }
+                })
+
             }
         }
     }
@@ -119,7 +127,11 @@ class ResourceStation extends Actor {
 
         if (otherBody.owner instanceof Player) {
             this.playerReference = undefined;
-            this.tooltip.actions.scaleTo(vec(0, 0), vec(10, 20));
+
+            // only hide if it's not on cooldown, otherwise we hide when it comes out of cooldown
+            if (!this.isOnCooldown) {
+                this.tooltip.actions.scaleTo(vec(0, 0), vec(10, 20));
+            }
         }
     }
 }
