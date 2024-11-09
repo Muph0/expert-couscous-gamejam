@@ -85,8 +85,7 @@ export class Player extends Actor {
         this.vel.x = clamp(this.vel.x, -this.MAX_VELOCITY, this.MAX_VELOCITY)
 
         // just jumping
-        // if (jumpPressed && this.isOnGround) {
-        if (jumpPressed) {
+        if (jumpPressed && this.isOnGround) {
             this.vel.y = -this.JUMP_FORCE;
             this.isOnGround = false;
         }
