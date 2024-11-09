@@ -9,7 +9,7 @@ export abstract class Machine extends Actor {
     constructor(config?: ActorArgs) {
         super({
             color: Color.Gray,
-            collisionType: CollisionType.Passive,
+            collisionType: CollisionType.Fixed,
             ...config,
         });
 

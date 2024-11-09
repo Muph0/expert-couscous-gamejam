@@ -19,8 +19,8 @@ export class Grinder extends Machine {
     }
     protected getIntake(): [Vector, Vector] {
         return [
-            vec(-8, -16),
-            vec(8, -10)
+            vec(-8, -18),
+            vec(8, -16)
         ];
     }
     protected getOutlet(): Vector {

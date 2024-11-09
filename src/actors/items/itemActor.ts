@@ -6,7 +6,7 @@ export class ItemActor extends Actor {
     constructor(readonly item: Item, spawnPos?: Vector) {
         super({
             radius: 8,
-            collisionType: CollisionType.Passive,
+            collisionType: CollisionType.Active,
         });
         if (spawnPos) {
             this.pos = spawnPos.clone();
