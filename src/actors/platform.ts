@@ -1,6 +1,7 @@
 import * as ex from 'excalibur';
 import {Actor, BodyComponent, Collider, CollisionContact, Color, Engine, Entity, Side} from "excalibur";
 import {Player} from "@/actors/player";
+import {Resources} from "@/resources";
 
 export class Platform extends ex.Actor {
     constructor(x: number, y: number, width: number, height: number, color: Color = Color.DarkGray) {

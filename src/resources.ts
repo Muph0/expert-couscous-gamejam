@@ -5,6 +5,11 @@ import button from './images/button.png';
 import veverkaRun from './images/veverka-run.png';
 import veverkaIdle from './images/veverka-idle.png';
 import logo from './images/acorn_logo.png';
+import lever from './images/lever.png';
+import platformSmall from './images/platform-small.png';
+import platformMedium from './images/platform-medium.png';
+import platformWheel from './images/platform-wheel.png';
+import wheel from './images/wheel.png';
 import items from './images/items.png';
 import { Button } from './ui/button';
 
@@ -20,6 +25,11 @@ const Resources = {
         VeverkaIdle: new ImageSource(veverkaIdle),
         ItemsImg: new ImageSource(items),
         Logo: new ImageSource(logo),
+        Lever: new ImageSource(lever),
+        PlatformSmall: new ImageSource(platformSmall),
+        PlatformMedium: new ImageSource(platformMedium),
+        PlatformWheel: new ImageSource(platformWheel),
+        Wheel: new ImageSource(wheel),
         Button: new ImageSource(button),
     },
 
