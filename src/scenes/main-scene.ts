@@ -111,11 +111,11 @@ export class MainScene extends ex.Scene {
         let mouse = engine.input.pointers.primary;
         mouse.on('down', e => {
             console.log('spawn');
-            let acorn = new ItemActor(new Coffee());
+            let acorn = new ItemActor(new Acorn());
             acorn.pos = mouse.lastWorldPos.clone();
             this.add(acorn);
         });
-        this.physics.config.gravity = vec(0,500);
+        this.physics.config.gravity = vec(0,250);
 
         new SceneScaler(vec(480,480), this)
     }

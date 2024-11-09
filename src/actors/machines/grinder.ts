@@ -3,6 +3,7 @@ import { ItemActor } from '../items/itemActor';
 import { Item } from '@/actors/items/items';
 import { Actor, CircleCollider, Color, CompositeCollider, EdgeCollider, Engine, vec, Vector } from 'excalibur';
 import { Resources } from '@/resources';
+import { Paddle } from '../paddle';
 
 
 export class Grinder extends Machine {
@@ -12,28 +13,27 @@ export class Grinder extends Machine {
     constructor(x: number, y: number) {
         super({
             pos: vec(x, y),
-            z: -1,
+            z: 1,
         });
 
         this.graphics.add(Resources.Machines().getSprite(0, 0));
-
-        this.collider.set(new CompositeCollider([
-            new EdgeCollider({ begin: vec(-9, -8), end: vec(-15, -32), }),
-            //new EdgeCollider({ begin: vec(-17, -32), end:  vec(9, -8),}),
-            new CircleCollider({ radius: 16, offset: vec(0, 6) })
-        ]));
+        this.collider.set(new CircleCollider({ radius: 16, offset: vec(0, 6) }));
 
         this.crank = new Actor({
-            pos: vec(0.0,5),
+            pos: vec(0.5, 5),
+            z: this.z + 1,
         });
-        const crankSprite = Resources.Machines().getSprite(1,0)
+        const crankSprite = Resources.Machines().getSprite(1, 0)
         this.crank.graphics.add(crankSprite);
         this.addChild(this.crank);
+
+        this.addChild(new Paddle(vec(-11, -18), vec(27, 2), 75));
+        this.addChild(new Paddle(vec(12, -18), vec(27, 2), -75));
     }
 
     onPostUpdate(engine: Engine, delta: number): void {
-        if (true || this.isOn) {
-            this.crank.rotation += 0.001 * delta;
+        if (this.isOn) {
+            this.crank.rotation += 0.005 * delta;
         }
     }
 
@@ -47,6 +47,6 @@ export class Grinder extends Machine {
         ];
     }
     protected getOutlet(): Vector {
-        return vec(0, 16);
+        return vec(.5, 10);
     }
 }
