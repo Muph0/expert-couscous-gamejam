@@ -3,6 +3,6 @@ import * as ex from 'excalibur';
 
 export class Acorn extends Item {
     constructor() {
-        super('Acorn', ex.Color.Brown);
+        super('Acorn', ex.Color.DarkGray);
     }
 }

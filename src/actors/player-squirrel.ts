@@ -9,7 +9,7 @@ export class PlayerSquirrel extends ex.Actor {
             pos: ex.vec(150, 150),
             width: 32,
             height: 32,
-            color: ex.Color.Brown,
+            color: ex.Color.DarkGray,
             collisionType: ex.CollisionType.Active,
         });
     }

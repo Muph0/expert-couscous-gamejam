@@ -9,7 +9,7 @@ export class HamsterWheel extends ex.Actor {
             pos: ex.vec(x, y),
             width: 32,
             height: 32,
-            color: ex.Color.Brown,
+            color: ex.Color.DarkGray,
             collisionType: ex.CollisionType.Passive,
         });
         this.linkedMachine = linkedMachine;
