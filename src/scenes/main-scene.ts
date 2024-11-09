@@ -116,6 +116,8 @@ export class MainScene extends ex.Scene {
             this.add(acorn);
         });
         this.physics.config.gravity = vec(0,500);
+
+        new SceneScaler(vec(480,480), this)
     }
 
     onPreDraw(ctx: ExcaliburGraphicsContext, delta: number): void {

@@ -1,7 +1,6 @@
 import { MainScene } from './scenes/main-scene';
 import {Engine, Loader, DisplayMode, Keys, Scene, CollisionType, Color, Actor} from 'excalibur';
 import { Resources } from './resources';
-import { MachineTestScene } from './scenes/machine-test';
 import { Level, LevelIntro } from './scenes/level-intro';
 import { GameStart } from './scenes/game-start';
 
@@ -15,8 +14,7 @@ export class Game extends Engine {
 
     constructor() {
         super({
-            width: 480,
-            height: 480,
+            displayMode: DisplayMode.FillScreen,
             antialiasing: false,
         });
         this.levels = []

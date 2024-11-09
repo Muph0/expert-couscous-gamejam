@@ -12,7 +12,7 @@ export interface Item {
 }
 
 export class Acorn<T> implements Item {
-    getSprite(): Sprite { return Resources.Items.getSprite(0, 0); }
+    getSprite(): Sprite { return Resources.Items().getSprite(0, 0); }
 
     grind(): Item {
         return new GroundAcorn();
@@ -23,7 +23,7 @@ export class Acorn<T> implements Item {
 }
 
 export class GroundAcorn implements Item {
-    getSprite(): Sprite { return Resources.Items.getSprite(1, 0); }
+    getSprite(): Sprite { return Resources.Items().getSprite(1, 0); }
     brew(): Item {
         return new Coffee();
     }
@@ -33,16 +33,16 @@ export class GroundAcorn implements Item {
 }
 
 export class Coffee implements Item {
-    getSprite(): Sprite { return Resources.Items.getSprite(2, 0); }
+    getSprite(): Sprite { return Resources.Items().getSprite(2, 0); }
     getProductType(): ProductType {
         return ProductType.COFFEE;
     }
 }
 
 export class RoastedAcorn implements Item {
-    getSprite(): Sprite { return Resources.Items.getSprite(0, 1); }
+    getSprite(): Sprite { return Resources.Items().getSprite(0, 1); }
 }
 
 export class RoastedGroundAcorn implements Item {
-    getSprite(): Sprite { return Resources.Items.getSprite(0, 2); }
+    getSprite(): Sprite { return Resources.Items().getSprite(0, 2); }
 }
