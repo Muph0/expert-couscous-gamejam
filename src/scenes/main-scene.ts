@@ -2,7 +2,7 @@ import * as ex from 'excalibur';
 import { Player } from "@/actors/player";
 import { AutomaticSquirrel } from '@/actors/automatic-squirrel';
 import { Platform } from '@/actors/platform';
-import { ExcaliburGraphicsContext, Label, vec } from "excalibur";
+import {Engine, ExcaliburGraphicsContext, Label, vec} from "excalibur";
 import { HamsterWheel } from "@/actors/contols/hamster-wheel";
 import { Lever } from "@/actors/contols/lever";
 import { Level, LEVELS } from "@/levels/level"
@@ -12,6 +12,7 @@ import { ItemActor } from '@/actors/items/itemActor';
 import {Acorn, Coffee} from '@/actors/items/items';
 import ResourceStation from '@/actors/stations/resource-station';
 import {CustomerControl} from "@/actors/customers-control";
+import {SceneScaler} from "@/scenes/scene-scaler";
 
 export class MainScene extends ex.Scene {
     entityCounter = new Label({ text: '' });
@@ -101,7 +102,6 @@ export class MainScene extends ex.Scene {
         this.add(rightWall);
         this.add(topWall);
         this.add(bottomWall);
-
 
         let mouse = engine.input.pointers.primary;
         mouse.on('down', e => {
