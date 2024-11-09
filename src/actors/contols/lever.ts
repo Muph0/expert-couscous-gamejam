@@ -1,6 +1,6 @@
 import * as ex from 'excalibur';
 import { Machine } from '../machines/machine';
-import {BodyComponent, Collider, CollisionContact, Engine, Side, vec} from "excalibur";
+import {BodyComponent, Collider, CollisionContact, Engine, Shape, Side, vec} from "excalibur";
 import {Player} from "@/actors/player";
 
 export class Lever extends ex.Actor {
@@ -16,6 +16,7 @@ export class Lever extends ex.Actor {
             offset: vec(0, -16),
             color: ex.Color.Blue,
             collisionType: ex.CollisionType.Passive,
+            collider: Shape.Circle(4)
         });
 
         if (linkedMachine) {
@@ -24,13 +25,12 @@ export class Lever extends ex.Actor {
     }
 
     onPostUpdate(engine: Engine, delta: number): void {
-
         if (this.playerReference && this.actions.getQueue().isComplete()) {
             let direction = Math.sign(this.playerReference.vel.x)
 
             if (direction) {
                 this.actions.clearActions()
-                this.actions.rotateTo(direction, 5);
+                this.actions.rotateTo(direction / 2, 5);
             }
         }
     }

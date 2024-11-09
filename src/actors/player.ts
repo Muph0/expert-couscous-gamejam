@@ -18,7 +18,7 @@ import {Platform, WheelPlatform} from "@/actors/platform";
 
 
 export class Player extends Actor {
-    GRAVITY = 1000;
+    GRAVITY = 3000;
     JUMP_GRAVITY = this.GRAVITY * 0.5
 
     MAX_VELOCITY = 300
@@ -27,7 +27,7 @@ export class Player extends Actor {
 
     AIR_MOVEMENT_PENALITY = 0.75;
 
-    JUMP_FORCE = 400
+    JUMP_FORCE = 430
 
     isOnWheel = false;
     public runningDirection = 0;
@@ -47,7 +47,7 @@ export class Player extends Actor {
                     spriteWidth: 128,
                     spriteHeight: 25,
                 },
-            }), [0, 1, 2, 3, 4, 5, 6], 100),
+            }), [0, 1, 2, 3, 4, 5, 6], 50),
         flying: ex.Animation.fromSpriteSheet(
             ex.SpriteSheet.fromImageSource({
                 image: Resources.Load.VeverkaRun,
@@ -70,9 +70,9 @@ export class Player extends Actor {
             }), [0, 1, 2], 200),
     }
 
-    public constructor() {
+    public constructor(x: number, y: number) {
         super({
-            pos: vec(150, 150),
+            pos: vec(x, y),
             width: 25,
             height: 25,
             color: new Color(255, 255, 255),
@@ -210,7 +210,8 @@ export class Player extends Actor {
 
         const otherBody = other.owner.get(BodyComponent)
 
-        if (otherBody?.owner instanceof Platform) {
+        // Tom is fucking going to jail
+        if (otherBody?.owner instanceof Platform && otherBody.pos.y > this.pos.y) {
             this.isOnGround = false;
         }
     }
@@ -236,7 +237,7 @@ export class Player extends Actor {
             this.removeChild(this.carryingItem)
 
             this.carryingItem.pos = this.pos.clone();
-            this.carryingItem.vel = ex.vec(this.vel.x, this.vel.y);
+            this.carryingItem.vel = ex.vec(this.vel.x, this.vel.y / 10);
 
             this.carryingItem.body.collisionType = ex.CollisionType.Active;
 
