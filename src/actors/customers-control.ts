@@ -16,6 +16,7 @@ export class CustomerControl extends Actor {
             width: 0,
             height: 0,
             // color: Color.Red,
+            color: Color.Transparent,
             collisionType: CollisionType.Passive,
             // anchor: vec(0, 0),
         });
@@ -35,14 +36,14 @@ export class CustomerControl extends Actor {
             return;
         setTimeout(() => {
             this.customers = this.customers.filter(c => !c.isKilled());
-            if (this.customers.length >= CustomerControl.MAX_CUSTOMERS)
-                return;
-            const product = ProductType.COFFEE; // TODO: choose at random
-            const waitingX = engine.drawWidth - (this.customers.length * 64);
-            const customer = new Customer(waitingX, product);
-            console.log("Adding customer.")
-            this.customers.push(customer);
-            scene.add(customer);
+            if (this.customers.length < CustomerControl.MAX_CUSTOMERS) {
+                const product = ProductType.COFFEE; // TODO: choose at random
+                const waitingX = engine.drawWidth - (this.customers.length * 64);
+                const customer = new Customer(waitingX, product);
+                console.log("Adding customer.")
+                this.customers.push(customer);
+                scene.add(customer);
+            }
 
             this.scheduleCustomer(engine);
         }, timeout);
@@ -56,7 +57,9 @@ export class CustomerControl extends Actor {
         if (!other.owner.item.getProductType)
             return;
         const productType = other.owner.item.getProductType();
-        const customer = this.customers.find(c => c.desiredProductType == productType);
+        const customer = this.customers.find(c =>
+            !c.satisfied && c.desiredProductType == productType
+        );
         if (!customer)
             return;
         customer.goFetchItem(other.owner);

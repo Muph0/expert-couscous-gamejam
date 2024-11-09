@@ -42,7 +42,7 @@ export class Customer extends ex.Actor {
             }), [0, 1, 2], 200),
     };
     public readonly desiredProductType: ProductType;
-    private pickedUp: boolean = false;
+    public satisfied: boolean = false;
     private runningDirection: number | null = null;
     private runningTarget: number | null = null;
 
@@ -66,12 +66,13 @@ export class Customer extends ex.Actor {
             this.runningDirection = Math.sign(this.runningTarget - this.pos.x);
 
             if (Math.abs(this.runningTarget - this.pos.x) < Customer.PICK_UP_THRESHOLD) {
-                this.pickedUp = true;
+                this.satisfied = true;
                 this.runningTarget = null;
                 this.runningDirection = 1;
             }
         }
-        if (this.pickedUp && this.pos.x > engine.drawWidth + this.width) {
+        if (this.satisfied && this.pos.x > engine.drawWidth + this.width) {
+            console.log("Killing customer")
             this.kill();
         }
 
@@ -91,8 +92,8 @@ export class Customer extends ex.Actor {
     }
 
     goFetchItem(item: ItemActor) {
+        console.log("Fetching item");
         this.runningTarget = item.pos.x;
         item.allocatedToCustomer = true;
-        item.kill()
     }
 }
