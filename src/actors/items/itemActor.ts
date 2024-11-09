@@ -1,4 +1,5 @@
 import { Item } from '@/actors/items/items';
+import { Resources } from '@/resources';
 import { Actor, CollisionType, Color, Vector } from 'excalibur';
 
 export class ItemActor extends Actor {
@@ -11,5 +12,7 @@ export class ItemActor extends Actor {
         if (spawnPos) {
             this.pos = spawnPos.clone();
         }
+
+        this.graphics.use(item.getSprite());
     }
 }
