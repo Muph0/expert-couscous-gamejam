@@ -84,7 +84,7 @@ class ResourceStation extends Actor {
                 this.tooltip.text = 'Space'; // Reset tooltip text when cooldown ends
             } else {
                 // Update tooltip text with remaining time
-                this.tooltip.text = `${this.cooldownTimer.toFixed(1)}s`;
+                this.tooltip.text = `${this.cooldownTimer.toFixed(1)}`;
                 this.tooltip.graphics.opacity = 0.5;
             }
         } else if (this.playerReference) {
@@ -101,7 +101,7 @@ class ResourceStation extends Actor {
                 // Start the cooldown
                 this.isOnCooldown = true;
                 this.cooldownTimer = this.COOLDOWN;
-                this.tooltip.text = `${this.COOLDOWN.toFixed(1)}s`; // Display initial cooldown time
+                this.tooltip.text = `${this.COOLDOWN.toFixed(1)}`; // Display initial cooldown time
 
                 this.actions.delay(this.COOLDOWN * 1000).callMethod(() => {
                     // hide
