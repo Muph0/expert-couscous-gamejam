@@ -1,13 +1,17 @@
 import * as ex from 'excalibur';
-import { PlayerSquirrel } from '@/actors/player-squirrel';
-import { AutomaticSquirrel } from '@/actors/automatic-squirrel';
-import { Platform } from '@/actors/platform';
-import { Grinder } from '@/actors/machines/grinder';
-import { Brewer } from '@/actors/machines/brewer';
-import { Customer } from '@/actors/customer';
+import {Player} from "@/actors/player";
+import {AutomaticSquirrel} from '@/actors/automatic-squirrel';
+import {Platform} from '@/actors/platform';
+import {Grinder} from '@/actors/machines/grinder';
+import {Brewer} from '@/actors/machines/brewer';
+import {Customer} from '@/actors/customer';
+import {ExcaliburGraphicsContext, Label} from "excalibur";
 
 export class MainScene extends ex.Scene {
+    entityCounter = new Label({text: ''});
+
     onInitialize(engine: ex.Engine) {
+        this.add(this.entityCounter);
         // Create platforms
         const platforms = [
             new Platform(100, 200, 200, 20),
@@ -17,7 +21,7 @@ export class MainScene extends ex.Scene {
         platforms.forEach(platform => this.add(platform));
 
         // Create player-controlled squirrel
-        const player = new PlayerSquirrel();
+        const player = new Player();
         this.add(player);
 
         // Create AI-controlled squirrel
@@ -84,5 +88,9 @@ export class MainScene extends ex.Scene {
         this.add(rightWall);
         this.add(topWall);
         this.add(bottomWall);
+    }
+
+    onPreDraw(ctx: ExcaliburGraphicsContext, delta: number): void {
+        this.entityCounter.text = `Entities: ${this.entities.length}`;
     }
 }
