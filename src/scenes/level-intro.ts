@@ -1,5 +1,5 @@
 import { Item } from '@/actors/items/items';
-import { Actor, Color, Engine, Keys, Scene, vec } from 'excalibur';
+import { Actor, Color, Engine, Keys, Scene, SceneActivationContext, vec } from 'excalibur';
 import { Game } from '@/game';
 import { Resources } from '@/resources';
 import { TextLabel } from '@/ui/text-label';
@@ -48,5 +48,9 @@ export class LevelIntro extends Scene {
         if (engine.input.keyboard.wasPressed(Keys.Space)) {
             this.game.play();
         }
+    }
+
+    onDeactivate(context: SceneActivationContext): void {
+        this.scaler.deactivate()
     }
 }
