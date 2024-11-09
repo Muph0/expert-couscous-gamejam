@@ -1,10 +1,14 @@
 import { ItemActor } from '../items/itemActor';
 import { Item } from '@/actors/items/items';
-import { Actor, ActorArgs, CollisionType, Color, PreCollisionEvent, Rectangle, vec, Vector } from 'excalibur';
+import {Actor, ActorArgs, Collider, CollisionContact, CollisionType, Color, Engine, Side, Vector} from 'excalibur';
 
 export abstract class Machine extends Actor {
     public isOn: boolean = true;
+
     intakeActor: Actor;
+    private itemQueue: Array<ItemActor>;
+    private isProcessing: boolean = false;
+    private remainingProcessingTime = 0;
 
     constructor(config?: ActorArgs) {
         super({
@@ -12,6 +16,8 @@ export abstract class Machine extends Actor {
             collisionType: CollisionType.Fixed,
             ...config,
         });
+
+        this.itemQueue = [];
 
         let [intakeStart, intakeEnd] = this.getIntake();
         this.intakeActor = new Actor({
@@ -22,24 +28,51 @@ export abstract class Machine extends Actor {
             color: Color.Green,
         });
         this.addChild(this.intakeActor);
-
-        this.intakeActor.on('collisionstart', evt => {
-            if (this.isOn && evt.other instanceof ItemActor) {
-                const item = evt.other as ItemActor;
-                const newItem = this.processItem(item.item);
-                if (newItem) {
-                    let newActor = new ItemActor(newItem);
-                    newActor.pos = this.getOutlet().add(this.pos);
-                    this.scene?.add(newActor);
-                    item.kill();
-                }
-            }
-        });
     }
 
-    /** Position of intage [start, end] in relative coordinates */
-    protected abstract getIntake(): [Vector, Vector];
+    onCollisionStart(
+        self: Collider,
+        other: Collider,
+        side: Side,
+        contact: CollisionContact
+    ): void {
+        if (this.isOn && other.owner instanceof ItemActor) {
+            const itemActor = other.owner as ItemActor;
 
+            if (!this.itemQueue.includes(itemActor)) {
+                this.itemQueue.push(itemActor);
+            }
+        }
+    }
+
+    onPostUpdate(engine: Engine, delta: number): void {
+        if (!this.isProcessing) {
+            if (this.itemQueue.length != 0) {
+                this.isProcessing = true;
+                this.remainingProcessingTime = 1000;
+            }
+        } else {
+            if (this.remainingProcessingTime < 0) {
+                const itemActor = this.itemQueue.shift()!;
+
+                itemActor.kill();
+                this.isProcessing = false;
+
+                const newItem = this.processItem(itemActor.item);
+
+                if (newItem) {
+                    const newActor = new ItemActor(newItem);
+                    newActor.pos = this.getOutlet().add(this.pos);
+                    this.scene?.add(newActor);
+                }
+            }
+
+            this.remainingProcessingTime -= delta;
+        }
+    }
+
+    /** Position of intake [start, end] in relative coordinates */
+    protected abstract getIntake(): [Vector, Vector];
 
     /** Position of the outlet */
     protected abstract getOutlet(): Vector;
