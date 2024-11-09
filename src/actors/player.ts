@@ -1,8 +1,19 @@
-import { Actor, CircleCollider, Collider, CollisionContact, CollisionType, Color, Engine, Keys, Side, vec } from 'excalibur';
-import { Resources } from '@/resources';
-import { Magor } from './magor';
+import {Actor, CircleCollider, clamp, CollisionType, Color, Engine, Keys, vec} from 'excalibur';
+import {Resources} from '@/resources';
+import {Magor} from './magor';
 
 export class Player extends Actor {
+  GRAVITY = 1000;
+  JUMP_GRAVITY = this.GRAVITY * 0.5
+
+  MAX_VELOCITY = 200
+
+  ACCELERATION = 600
+  TURN_ACCELERATION = this.ACCELERATION * 4
+
+  AIR_MOVEMENT_PENALITY = 0.75;
+
+  JUMP_FORCE = 400
 
   public constructor() {
     super({
@@ -30,19 +41,56 @@ export class Player extends Actor {
   }
 
   onPostUpdate(engine: Engine, delta: number): void {
-    let move = vec(0, 0);
+    const jumpPressed = engine.input.keyboard.wasPressed(Keys.Space)
+    const jumpHeld = engine.input.keyboard.isHeld(Keys.Space)
 
-    if (engine.input.keyboard.isHeld(Keys.Left)) move.x -= 1;
-    if (engine.input.keyboard.isHeld(Keys.Right)) move.x += 1;
-    if (engine.input.keyboard.isHeld(Keys.Up)) move.y -= 1;
-    if (engine.input.keyboard.isHeld(Keys.Down)) move.y += 1;
+    const heldLeft = engine.input.keyboard.isHeld(Keys.A)
+    const heldRight = engine.input.keyboard.isHeld(Keys.D)
 
-    let len = move.size;
-    if (len != 0) {
-      move.scaleEqual(1 / len);
+    // TODO: proper platform collisions
+    let isOnGround = this.pos.y > 200;
+
+    let movementDirection = Math.sign(this.vel.x);
+
+    // move left or right
+    if (heldLeft || heldRight) {
+      let direction = 0;
+
+      if (heldLeft) direction -= 1;
+      if (heldRight) direction += 1;
+
+      // turning the other way is faster
+      let accel = (direction != movementDirection ? this.TURN_ACCELERATION : this.ACCELERATION)
+          * direction;
+
+      // turning in air is slower
+      if (!isOnGround) accel *= this.AIR_MOVEMENT_PENALITY;
+
+      this.acc.x = accel;
+    } else {
+      this.acc.x = 0;
+      this.vel.x *= 0.75;
     }
 
-    move.scaleEqual(10);
-    this.vel.addEqual(move);
+    this.vel.x = clamp(this.vel.x, -this.MAX_VELOCITY, this.MAX_VELOCITY)
+
+    // just jumping
+    if (jumpPressed && isOnGround) {
+      this.vel.y = -this.JUMP_FORCE;
+      isOnGround = false;
+    }
+
+    // if space is held and we're going up, apply jump gravity
+    if (jumpHeld && Math.sign(this.vel.y) < 0) {
+      this.acc.y = this.JUMP_GRAVITY
+    } else {
+      this.acc.y = this.GRAVITY
+    }
+
+    // ground cancels all Y movement
+    if (isOnGround) {
+      this.acc.y = 0;
+      this.vel.y = 0;
+    }
   }
 }
