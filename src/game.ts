@@ -36,31 +36,8 @@ export class Game extends Engine {
         this.mainScene = new MainScene();
         this.addScene('idle', new Scene());
         this.addScene('main', this.mainScene);
+        this.addScene('machine-test', new MachineTestScene());
         this.goToScene('main');
-
-        let paddle = new Actor({
-            x: 150,
-            y: this.drawHeight - 40,
-            width: 200,
-            height: 20,
-            color: Color.Chartreuse,
-        });
-
-        paddle.body.collisionType = CollisionType.Passive;
-
-        this.mainScene.add(paddle);
-
-        paddle = new Actor({
-            x: 250,
-            y: this.drawHeight - 120,
-            width: 200,
-            height: 20,
-            color: Color.Chartreuse,
-        });
-
-        paddle.body.collisionType = CollisionType.Passive;
-
-        this.mainScene.add(paddle);
     }
 
     onPreUpdate(engine: Engine, delta: number): void {
