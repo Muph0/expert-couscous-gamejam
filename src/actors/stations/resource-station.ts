@@ -18,6 +18,7 @@ import {
 import {Player} from "@/actors/player";
 import {ItemActor} from "@/actors/items/itemActor";
 import {Item} from "@/actors/items/items";
+import {Resources} from "@/resources";
 
 class ResourceStation extends Actor {
     private tooltip: Label;
@@ -62,7 +63,13 @@ class ResourceStation extends Actor {
 
         this.tooltip.scale = vec(0, 0);
 
+        let itemActor = new ItemActor(item);
+        itemActor.body.collisionType = CollisionType.PreventCollision;
+
         this.addChild(this.tooltip); // Attach tooltip to the ResourceStation
+        this.addChild(itemActor)
+
+        this.graphics.use(Resources.Load.ResourceStation.toSprite())
     }
 
     onPostUpdate(engine: Engine, delta: number): void {

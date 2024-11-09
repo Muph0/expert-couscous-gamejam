@@ -14,6 +14,8 @@ import items from './images/items.png';
 import machines from './images/machines.png';
 import levelTable from './images/level_table.png';
 
+import resourceStation from './images/resource-station.png';
+import { Button } from './ui/button';
 
 /**
  * Default global resource dictionary. This gets loaded immediately
@@ -31,6 +33,7 @@ const Resources = new class Resources {
         PlatformSmall: new ImageSource(platformSmall),
         PlatformMedium: new ImageSource(platformMedium),
         PlatformWheel: new ImageSource(platformWheel),
+        ResourceStation: new ImageSource(resourceStation),
         Wheel: new ImageSource(wheel),
         Button: new ImageSource(button),
         Machines: new ImageSource(machines),
