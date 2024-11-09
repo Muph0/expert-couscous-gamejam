@@ -1,6 +1,7 @@
 import { MainScene } from './scenes/main-scene';
 import {Engine, Loader, DisplayMode, Keys, Scene, CollisionType, Color, Actor} from 'excalibur';
 import { Resources } from './resources';
+import { MachineTestScene } from './scenes/machine-test';
 
 /**
  * Managed game class
@@ -35,7 +36,8 @@ export class Game extends Engine {
         this.mainScene = new MainScene();
         this.addScene('idle', new Scene());
         this.addScene('main', this.mainScene);
-        this.goToScene('main');
+        this.addScene('machine-test', new MachineTestScene());
+        this.goToScene('machine-test');
 
         let paddle = new Actor({
             x: 150,

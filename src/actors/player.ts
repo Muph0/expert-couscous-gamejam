@@ -11,7 +11,7 @@ import {
     Side,
     vec
 } from 'excalibur';
-import {Item} from "@/actors/items/item";
+import {ItemActor} from "@/actors/items/itemActor";
 import * as ex from "excalibur";
 import {Resources} from "@/resources";
 
@@ -31,7 +31,7 @@ export class Player extends Actor {
     isOnGround = false;
     isPressingDown = false;
 
-    private carryingItem: Item | null = null;
+    private carryingItem: ItemActor | null = null;
 
     animations = {
         run: ex.Animation.fromSpriteSheet(
@@ -161,8 +161,8 @@ export class Player extends Actor {
             }
         }
 
-        if (other instanceof Item && !this.carryingItem) {
-            this.carryingItem = other as Item;
+        if (other instanceof ItemActor && !this.carryingItem) {
+            this.carryingItem = other as ItemActor;
             other.kill(); // Remove item from the scene
         }
     }

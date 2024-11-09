@@ -1,5 +1,5 @@
 import * as ex from 'excalibur';
-import { Item } from './items/item';
+import { ItemActor } from './items/itemActor';
 
 export class Customer extends ex.Actor {
     public desiredItemType: string;
@@ -19,8 +19,8 @@ export class Customer extends ex.Actor {
         // TODO: Display desired item above customer
     }
 
-    receiveItem(item: Item): boolean {
-        if (item.itemType === this.desiredItemType) {
+    receiveItem(item: ItemActor): boolean {
+        if (item.item === this.desiredItemType) {
             this.kill(); // Customer leaves after receiving item
             // TODO: Trigger any success feedback
             return true;
