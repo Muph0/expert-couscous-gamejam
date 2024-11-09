@@ -212,7 +212,7 @@ export class Player extends Actor {
             const droppedItem = this.carryingItem;
             droppedItem.pos = this.pos.clone();
             droppedItem.vel = ex.vec(this.vel.x, 0);
-            this.scene.add(droppedItem);
+            this.scene?.add(droppedItem);
             this.carryingItem = null;
         }
     }

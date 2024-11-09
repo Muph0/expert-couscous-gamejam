@@ -1,10 +1,13 @@
 import { Item } from '@/actors/items/items';
 import { Machine } from './machine';
-import { Rectangle, Vector } from 'excalibur';
+import { Rectangle, vec, Vector } from 'excalibur';
 
 export class Brewer extends Machine {
     protected getIntake(): [Vector, Vector] {
-        throw new Error('Method not implemented.');
+        return [
+            this.pos.add(vec(-3, -5)),
+            this.pos.add(vec(3, -4))
+        ];
     }
     constructor(x: number, y: number) {
         super(x, y);

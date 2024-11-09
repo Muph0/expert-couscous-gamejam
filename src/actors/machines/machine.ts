@@ -18,6 +18,8 @@ export abstract class Machine extends Actor {
         let [intakeStart, intakeEnd] = this.getIntake();
         this.intakeActor = new Actor({
             pos: intakeStart.add(intakeEnd).scale(1 / 2),
+            width: intakeEnd.x - intakeStart.x,
+            height: intakeEnd.y - intakeStart.y,
         });
     }
 

@@ -4,9 +4,9 @@ import {BodyComponent, Collider, CollisionContact, Engine, Side, vec} from "exca
 import {Player} from "@/actors/player";
 
 export class Lever extends ex.Actor {
-    public linkedMachine: Machine;
+    public linkedMachine!: Machine;
 
-    playerReference: Player
+    playerReference!: Player | null
 
     constructor(x: number, y: number, linkedMachine?: Machine) {
         super({
@@ -18,7 +18,9 @@ export class Lever extends ex.Actor {
             collisionType: ex.CollisionType.Passive,
         });
 
-        this.linkedMachine = linkedMachine;
+        if (linkedMachine) {
+            this.linkedMachine = linkedMachine;
+        }
     }
 
     onPostUpdate(engine: Engine, delta: number): void {

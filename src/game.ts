@@ -7,7 +7,7 @@ import { MachineTestScene } from './scenes/machine-test';
  * Managed game class
  */
 export class Game extends Engine {
-    private mainScene: MainScene;
+    private mainScene!: MainScene;
 
     constructor() {
         super({
@@ -37,7 +37,7 @@ export class Game extends Engine {
         this.addScene('idle', new Scene());
         this.addScene('main', this.mainScene);
         this.addScene('machine-test', new MachineTestScene());
-        this.goToScene('machine-test');
+        this.goToScene('main');
 
         let paddle = new Actor({
             x: 150,

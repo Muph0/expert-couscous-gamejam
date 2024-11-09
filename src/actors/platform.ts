@@ -18,7 +18,7 @@ export class WheelPlatform extends Platform {
     public isOnPlayform = false;
     public direction  = 0;
 
-    playerReference: Player;
+    playerReference?: Player;
 
     onPostUpdate(engine: Engine, delta: number): void {
         if (this.playerReference && this.playerReference.isOnGround) {
@@ -49,7 +49,7 @@ export class WheelPlatform extends Platform {
 
         if (otherBody.owner instanceof Player) {
             this.isOnPlayform = false;
-            this.playerReference = null;
+            this.playerReference = undefined;
             this.direction = 0;
         }
     }

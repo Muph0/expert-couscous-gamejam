@@ -2,11 +2,9 @@ import * as ex from 'excalibur';
 import { Machine } from '../machines/machine';
 import {Platform, WheelPlatform} from "@/actors/platform";
 import {BodyComponent, Collider, CollisionContact, CollisionType, Engine, Side, vec} from "excalibur";
-import {Item} from "@/actors/items/item";
-import * as diagnostics_channel from "node:diagnostics_channel";
 
 export class HamsterWheel extends ex.Actor {
-    public linkedMachine: Machine;
+    public linkedMachine: Machine | undefined;
 
     public wheel: ex.Actor;
     public platform : WheelPlatform;
