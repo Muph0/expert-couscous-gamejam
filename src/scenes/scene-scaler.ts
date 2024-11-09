@@ -1,9 +1,8 @@
-import { Level } from "@/levels/level_intr";
 import { ExcaliburGraphicsContext, PreDrawEvent, Scene, vec, Vector } from "excalibur";
 
 
 /** Updates the scene camera pos and zoom so that the entire scene is visible */
-export abstract class SceneScaler {
+export class SceneScaler {
 
     private handler: typeof this.onScenePreDraw;
 

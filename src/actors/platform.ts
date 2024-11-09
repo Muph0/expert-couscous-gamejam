@@ -1,17 +1,20 @@
 import * as ex from 'excalibur';
-import {Actor, BodyComponent, Collider, CollisionContact, Engine, Entity, Side} from "excalibur";
+import {Actor, BodyComponent, Collider, CollisionContact, Color, Engine, Entity, Side} from "excalibur";
 import {Player} from "@/actors/player";
 
 export class Platform extends ex.Actor {
-    constructor(x: number, y: number, width: number, height: number) {
+    constructor(x: number, y: number, width: number, height: number, color: Color = Color.DarkGray) {
         super({
             pos: ex.vec(x, y),
             width: width,
             height: height,
-            color: ex.Color.DarkGray,
+            color: color,
             collisionType: ex.CollisionType.Passive,
         });
     }
+}
+
+export class SolidPlatform extends Platform {
 }
 
 export class WheelPlatform extends Platform {
@@ -23,8 +26,6 @@ export class WheelPlatform extends Platform {
     onPostUpdate(engine: Engine, delta: number): void {
         if (this.playerReference && this.playerReference.isOnGround) {
             this.direction = this.playerReference.runningDirection;
-
-            console.log(this.direction)
         }
     }
 
@@ -39,8 +40,6 @@ export class WheelPlatform extends Platform {
         if (otherBody.owner instanceof Player) {
             this.isOnPlayform = true;
             this.playerReference = otherBody.owner;
-
-            console.log("HERE")
         }
     }
 
