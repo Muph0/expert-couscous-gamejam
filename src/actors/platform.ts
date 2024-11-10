@@ -1,17 +1,19 @@
 import * as ex from 'excalibur';
-import {Actor, BodyComponent, Collider, CollisionContact, Color, Engine, Entity, Side} from "excalibur";
+import {BodyComponent, Collider, CollisionContact, CollisionType, Color, Engine, Side} from 'excalibur';
 import {Player} from "@/actors/player";
 import {Resources} from "@/resources";
 
 export class Platform extends ex.Actor {
-    constructor(x: number, y: number, width: number, height: number, color: Color = Color.DarkGray) {
+    constructor(x: number, y: number, width: number, height: number, rotation: number = 0, collisionType: CollisionType = CollisionType.Passive) {
         super({
             pos: ex.vec(x, y),
             width: width,
             height: height,
-            color: color,
-            collisionType: ex.CollisionType.Passive,
+            color: Color.DarkGray,
+            collisionType: collisionType,
         });
+
+        this.rotation = rotation;
 
         if (width == 25)
             this.graphics.use(Resources.Load.PlatformWheel.toSprite());
