@@ -49,6 +49,7 @@ export class LevelOutro extends Scene {
         this.add(new TextLabel(this.width / 2 - 17, 115, 35, `- Points: ${this.statistics.pointsGained}`, TextLabel.WHITE, TextAlign.Left).actor)
         this.add(new TextLabel(this.width / 2 - 17, 120, 35, `- Customers served: ${this.statistics.customersServed}`, TextLabel.WHITE, TextAlign.Left).actor)
         this.add(new TextLabel(this.width / 2 - 17, 125, 35, `- Longest wait: ${this.statistics.customerLongestWait} s`, TextLabel.WHITE, TextAlign.Left).actor)
+        // this.add(new TextLabel(this.width / 2 - 17, 130, 35, `- Unique recipes cooked: ${this.statistics.recipesMade}`, TextLabel.WHITE, TextAlign.Left).actor)
 
 
         this.add(new TextLabel(this.width / 2, 150, 40, "Press [T] to TRY AGAIN", TextLabel.GREY).actor);

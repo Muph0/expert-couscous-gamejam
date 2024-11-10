@@ -6,6 +6,7 @@ import { SceneScaler } from "@/scenes/scene-scaler";
 import { Level } from './level-intro';
 import { Game } from '@/game';
 import { LevelBoundaries } from '@/actors/level-boundary';
+import { Customer } from '@/actors/customer';
 
 
 export interface GameStatistics {
@@ -18,9 +19,10 @@ export interface GameStatistics {
 
 export class MainScene extends ex.Scene {
     entityCounter = new Label({ text: '' });
-    timeLabel= new Label({ text: '' });
-    timePlayed: number
-
+    timeLabel = new Label({ text: '' });
+    private timePlayed: number
+    private timeLastCustomer: number
+    private recipesCooked: Set<string>;
     private statistics: GameStatistics
 
     constructor(
@@ -29,13 +31,29 @@ export class MainScene extends ex.Scene {
     ) {
         super();
         this.timePlayed = 0;
+        this.timeLastCustomer = 0;
         this.statistics = {
             customersServed: 0,
             customerLongestWait: 0,
-            pointsMax: 0,
+            pointsMax: level.maxPoints,
             pointsGained: 0,
             recipesMade: 0,
         }
+        this.recipesCooked = new Set<string>();
+    }
+
+    resolveCustomer(customer: Customer) {
+        const item = customer.desiredItem;
+        this.statistics.customersServed++;
+        this.statistics.pointsGained += item.price;
+        // simplification
+        const customerWait = Math.floor((this.timePlayed - this.timeLastCustomer) / 1000);
+        if (customerWait > this.statistics.customerLongestWait) {
+            this.statistics.customerLongestWait = customerWait;
+        }
+        this.recipesCooked.add(typeof item.item);
+        this.statistics.recipesMade = this.recipesCooked.size;
+        console.log(this.statistics);
     }
 
     onInitialize(engine: ex.Engine) {
@@ -112,8 +130,8 @@ export class MainScene extends ex.Scene {
     onPreUpdate(engine: ex.Engine, delta: number): void {
         this.timePlayed += delta;
         if (this.timePlayed >= this.level.timeLimitMs) {
-            this.statistics.pointsMax = 200;
-            this.statistics.pointsGained = 130;
+            // this.statistics.pointsMax = 200;
+            // this.statistics.pointsGained = 130;
             this.game.showLevelOutro(this.statistics);
         }
 

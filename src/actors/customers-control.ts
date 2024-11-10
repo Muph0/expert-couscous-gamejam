@@ -1,8 +1,6 @@
 import {Engine, Shape, vec, Actor, Color, CollisionType, Collider, Side, CollisionContact} from "excalibur";
 import {Customer} from "@/actors/customer";
 import {ItemActor} from "@/actors/items/itemActor";
-import {Recipe} from "@/scenes/level-intro";
-import {Item} from "@/actors/items/items";
 import { MainScene } from "@/scenes/main-scene";
 import { DesiredItem } from "@/levels/level";
 import {Resources} from "@/resources";
@@ -98,11 +96,13 @@ export class CustomerControl extends Actor {
 
         if (customer) {
             customer.goFetchItem(itemActor);
+            console.log('Fetched item')
+            this.mainScene.resolveCustomer(customer);
         } else {
             // Add item to pendingProducts
             this.pendingProducts.push(itemActor);
 
-            console.log(itemActor)
+            // console.log(itemActor)
 
             // Set a timeout to remove the item if it’s not assigned to a customer
             setTimeout(() => {
