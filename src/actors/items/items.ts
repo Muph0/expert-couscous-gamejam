@@ -20,10 +20,6 @@ export class Leaf implements Item {
     grind(): Item {
         return new GroundLeaf();
     }
-
-    roast(): Item {
-        return new Tea();
-    }
 }
 
 export class Acorn implements Item{
@@ -62,6 +58,10 @@ export class RoastedGroundAcorn implements Item {
 
 export class GroundLeaf implements Item {
     getSprite(): Sprite { return Resources.Items().getSprite(4, 0); }
+
+    brew(): Item {
+        return new Tea();
+    }
 }
 
 export class Tea implements Item {
