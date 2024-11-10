@@ -25,6 +25,9 @@ export class Leaf implements Item {
     grind(): Item {
         return new GroundLeaf();
     }
+    freeze(): Item {
+        return new IcedTea();
+    }
 }
 
 export class Acorn implements Item {
@@ -69,9 +72,6 @@ export class GroundLeaf implements Item {
 
     brew(): Item {
         return new Tea();
-    }
-    freeze(): Item {
-        return new IcedTea();
     }
 }
 
