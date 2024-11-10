@@ -3,25 +3,22 @@ import { Customer } from "@/actors/customer";
 import { ItemActor } from "@/actors/items/itemActor";
 import { ProductType } from "./items/items";
 
-
-let LOL = 480
-
-
 export class CustomerControl extends Actor {
     private static readonly HEIGHT = 100;
     private static readonly MIN_TIMEOUT = 1000;
     private static readonly MAX_TIMEOUT = 3000;
-    private static readonly MAX_WAITING_CUSTOMERS = 3;
+    private static readonly MAX_WAITING_CUSTOMERS = 2;
     private static readonly ITEM_TIMEOUT = 5000;
+    private static readonly CUSTOMER_OFFSET = 40;
 
     private customers: Customer[] = [];
     private pendingProducts: ItemActor[] = [];
 
-    constructor(x: number, y: number) {
+    constructor(x: number, y: number, width: number, height: number = 50) {
         super({
             pos: vec(x, y),
-            width: 480,
-            height: 80,
+            height: height,
+            width: width,
             color: Color.Transparent,
             collisionType: CollisionType.Passive,
         });
@@ -42,14 +39,14 @@ export class CustomerControl extends Actor {
             if (waitingCustomers.length < CustomerControl.MAX_WAITING_CUSTOMERS) {
                 console.log("Adding customer.")
                 const product = ProductType.COFFEE; // TODO: choose at random
-                const waitingX = LOL + 64;
+                const waitingX = this.width + CustomerControl.CUSTOMER_OFFSET;
                 const customer = new Customer(waitingX, product);
 
                 this.customers.push(customer);
                 waitingCustomers = this.customers.filter(c => !c.productAssigned());
 
                 for (let i = 0; i < waitingCustomers.length; i++) {
-                    waitingCustomers[i].goTo(LOL - 64 * (waitingCustomers.length - i));
+                    waitingCustomers[i].goTo(this.width - CustomerControl.CUSTOMER_OFFSET * (waitingCustomers.length - i));
                 }
 
                 scene.add(customer);
