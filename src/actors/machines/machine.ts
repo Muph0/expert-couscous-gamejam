@@ -96,7 +96,7 @@ export abstract class Machine extends Actor implements Drawable {
                 this.remainingProcessingTime = this.maxProcessingTime;
                 this.tooltip.text = `${this.remainingProcessingTime.toFixed(1)}`;
 
-                this.sound?.play(0.5);
+                this.sound?.play(0.3);
             }
         } else {
             if (this.remainingProcessingTime <= 0) {
