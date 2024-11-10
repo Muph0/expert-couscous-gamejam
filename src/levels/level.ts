@@ -12,7 +12,8 @@ import ResourceStation from "@/actors/stations/resource-station";
 import { Resources } from "@/resources";
 import { Level, Recipe } from "@/scenes/level-intro";
 import { MainScene } from "@/scenes/main-scene";
-import { Actor, CollisionType, Scene, vec, Vector } from "excalibur";
+import {Actor, CollisionType, Color, Scene, vec, Vector} from "excalibur";
+import {Freezer} from "@/actors/machines/freezer";
 
 
 export interface DesiredItem {
@@ -74,8 +75,15 @@ export class Level1 implements Level {
         scene.add(wheel)
 
         const background = new Actor({ z: -10 });
-        background.graphics.use(Resources.Load.Background.toSprite(), { anchor: vec(0, 0), offset: vec(-50, 0) });
+        let sprite = Resources.Load.Background.toSprite()
+        sprite.tint = Color.Gray;
+        background.graphics.use(sprite, { anchor: vec(0, 0), offset: vec(-50, 0) });
         scene.add(background);
+
+        const backgroundBranches = new Actor({ z: -10 });
+        sprite = Resources.Load.BackgroundBranches.toSprite()
+        backgroundBranches.graphics.use(sprite, { anchor: vec(0, 0), offset: vec(-50, 0) });
+        scene.add(backgroundBranches);
 
         const customerControl = new CustomerControl(scene, this.size.x / 2, this.size.y, this.size.x, this.getDesiredItems());
         scene.add(customerControl);
@@ -139,8 +147,15 @@ export class Level2 implements Level {
         scene.add(wheel)
 
         const background = new Actor({ z: -10 });
-        background.graphics.use(Resources.Load.Background.toSprite(), { anchor: vec(0, 0), offset: vec(-50, 0) });
+        let sprite = Resources.Load.Background.toSprite()
+        sprite.tint = Color.Gray;
+        background.graphics.use(sprite, { anchor: vec(0, 0), offset: vec(-50, 0) });
         scene.add(background);
+
+        const backgroundBranches = new Actor({ z: -10 });
+        sprite = Resources.Load.BackgroundBranches.toSprite()
+        backgroundBranches.graphics.use(sprite, { anchor: vec(0, 0), offset: vec(-50, 0) });
+        scene.add(backgroundBranches);
 
         const customerControl = new CustomerControl(scene, this.size.x / 2, this.size.y, this.size.x, this.getDesiredItems());
         scene.add(customerControl);
@@ -200,6 +215,9 @@ export class Level3 implements Level {
         const brewer = new Brewer(this.size.x / 2 - 30, 360);
         scene.add(brewer);
 
+        const freezer = new Freezer(this.size.x / 2 + 30, 360);
+        scene.add(freezer);
+
         const wheel = new HamsterWheel(90, 110, 50, grinder);
         scene.add(wheel)
 
@@ -207,8 +225,15 @@ export class Level3 implements Level {
         scene.add(lever);
 
         const background = new Actor({ z: -10 });
-        background.graphics.use(Resources.Load.Background.toSprite(), { anchor: vec(0, 0), offset: vec(-50, 0) });
+        let sprite = Resources.Load.Background.toSprite()
+        sprite.tint = Color.Gray;
+        background.graphics.use(sprite, { anchor: vec(0, 0), offset: vec(-50, 0) });
         scene.add(background);
+
+        const backgroundBranches = new Actor({ z: -10 });
+        sprite = Resources.Load.BackgroundBranches.toSprite()
+        backgroundBranches.graphics.use(sprite, { anchor: vec(0, 0), offset: vec(-50, 0) });
+        scene.add(backgroundBranches);
 
         const customerControl = new CustomerControl(scene, this.size.x / 2, this.size.y, this.size.x, this.getDesiredItems());
         scene.add(customerControl);
@@ -216,5 +241,7 @@ export class Level3 implements Level {
 }
 
 export const LEVELS: Level[] = [
+    new Level1(),
+    new Level2(),
     new Level3(),
 ];
