@@ -16,7 +16,7 @@ import levelTable from './images/level_table.png';
 import starGold from './images/star_gold.png';
 import starGrey from './images/star_grey.png';
 import bubble from './images/bubble.png';
-
+import background from './images/background.png';
 import resourceStation from './images/resource-station.png';
 
 /**
@@ -43,6 +43,7 @@ const Resources = new class Resources {
         StarGold: new ImageSource(starGold),
         StarGrey: new ImageSource(starGrey),
         Bubble: new ImageSource(bubble),
+        Background: new ImageSource(background),
     }
 
     readonly Items = lazy(() =>
