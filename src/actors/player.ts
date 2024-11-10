@@ -76,7 +76,7 @@ export class Player extends Actor {
     public constructor(x: number, y: number) {
         super({
             pos: vec(x, y),
-            z: 1,
+            z: 100,
             width: 25,
             height: 25,
             color: new Color(255, 255, 255),
