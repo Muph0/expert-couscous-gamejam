@@ -5,6 +5,8 @@ import { Coffee } from '@/actors/items/items';
 import { SceneScaler } from "@/scenes/scene-scaler";
 import { Level } from './level-intro';
 import { Game } from '@/game';
+import { Paddle } from '@/actors/paddle';
+import { LevelBoundaries } from '@/actors/level-boundary';
 
 const LEVEL_TIME: number = 5 * 60 * 1000;
 
@@ -54,7 +56,9 @@ export class MainScene extends ex.Scene {
         });
         this.physics.config.gravity = vec(0, 250);
 
-        new SceneScaler(this.level.size, this)
+        new SceneScaler(this.level.size, this);
+
+        this.add(new LevelBoundaries(this.level.size));
     }
 
     onPreDraw(ctx: ExcaliburGraphicsContext, delta: number): void {

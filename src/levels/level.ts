@@ -15,8 +15,8 @@ import { CollisionType, Scene, vec, Vector } from "excalibur";
 
 
 export class Level1 implements Level {
-    maxPoints: number = 100 // determined by playing
-    size: Vector = vec(0, 0);
+    readonly maxPoints: number = 100 // determined by playing
+    readonly size = Object.freeze(vec(400, 400)) as Vector;
 
     getNewRecipes(): Recipe[] {
         throw new Error("Method not implemented.");
@@ -26,10 +26,15 @@ export class Level1 implements Level {
         const lever = new Lever(100, 200 - 10);
         scene.add(lever)
 
-        {[
+        let { x: W, y: H } = this.size;
+
+        ([
+            new SolidPlatform(W / 2, 200, W, 20), // the main solid platform
+            new SolidPlatform(W / 2, H, W, 20, 0, CollisionType.Fixed), // the bottom
+
             // resource station platforms
-            new Platform(270, 100, 60, 10),
-            new Platform(400, 120, 60, 10),
+            new Platform(200, 120, 60, 10),
+            new Platform(300, 120, 60, 10),
 
             // support platforms
             new Platform(330, 160, 30, 10),
@@ -38,21 +43,13 @@ export class Level1 implements Level {
             // brewer platform
             new Platform(480 / 2, 370, 30, 10, -Math.PI / 5, CollisionType.Fixed),
 
-            // the main solid platform
-            new SolidPlatform(480 / 2, 200, 480, 20),
 
-            // the bottom solid platform
-            new SolidPlatform(480 / 2, 480, 480, 20, 0, CollisionType.Fixed),
-        ].forEach(platform => scene.add(platform));}
+        ]).forEach(platform => scene.add(platform));
 
-        {[
+        ([
             new ResourceStation(270, 100 - 15 - 5, 30, new Acorn()),
             new ResourceStation(400, 120 - 15 - 5, 30, new Leaf()),
-        ].forEach(station => scene.add(station));}
-
-        // Create AI-controlled squirrel
-        const aiSquirrel = new AutomaticSquirrel();
-        scene.add(aiSquirrel);
+        ]).forEach(station => scene.add(station));
 
         // Create player-controlled squirrel
         const player = new Player(480 / 2, 180);
@@ -70,7 +67,7 @@ export class Level1 implements Level {
 
         // TODO: Position the machines properly
 
-        const customerControl = new CustomerControl(480 / 2, 480 + 10);
+        const customerControl = new CustomerControl(this.size.x * 0.8, this.size.y);
         scene.add(customerControl);
     }
 }
