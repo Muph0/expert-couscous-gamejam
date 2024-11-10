@@ -14,7 +14,7 @@ export class Freezer extends Machine {
         cover.z = 100;
         this.addChild(cover);
 
-        this.graphics.use(this.getSprite());
+        this.graphics.use(Resources.Machines().getSprite(2, 1));
     }
 
     getSprite(): Sprite {
