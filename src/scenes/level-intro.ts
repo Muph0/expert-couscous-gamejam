@@ -7,6 +7,7 @@ import { SceneScaler } from './scene-scaler';
 import {ItemActor} from "@/actors/items/itemActor";
 
 export interface Level {
+    timeLimitMs: number;
     maxPoints: number;
     size: Vector;
     spawnItems(scene: Scene): void;

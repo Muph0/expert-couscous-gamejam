@@ -15,6 +15,7 @@ import { CollisionType, Scene, vec, Vector } from "excalibur";
 
 
 export class Level1 implements Level {
+    readonly timeLimitMs: number = 5 * 60 * 1000;
     readonly maxPoints: number = 100 // determined by playing
     readonly size = Object.freeze(vec(400, 400)) as Vector;
 
