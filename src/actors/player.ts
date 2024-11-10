@@ -32,6 +32,7 @@ export class Player extends Actor {
     isOnWheel = false;
     public runningDirection = 0;
 
+    lastGroundState = false;
     isOnGround = false;
     isPressingDown = false;
 
@@ -83,6 +84,10 @@ export class Player extends Actor {
             collisionType: CollisionType.Passive,
             collider: Shape.Box(32, 32),
         });
+
+        Resources.Load.RunSound.volume = 0;
+        Resources.Load.RunSound.loop = true;
+        Resources.Load.RunSound.play();
     }
 
     onInitialize(engine: ex.Engine) {
@@ -90,8 +95,11 @@ export class Player extends Actor {
     }
 
     onPostUpdate(engine: Engine, delta: number): void {
-        const jumpPressed = engine.input.keyboard.wasPressed(Keys.W) || engine.input.keyboard.isHeld(Keys.Up)
+        const jumpPressed = engine.input.keyboard.wasPressed(Keys.W) || engine.input.keyboard.wasPressed(Keys.Up)
         const jumpHeld = engine.input.keyboard.isHeld(Keys.W) || engine.input.keyboard.isHeld(Keys.Up)
+
+        if (jumpPressed)
+            Resources.Load.JumpSound.play(0.35);
 
         const heldLeft = engine.input.keyboard.isHeld(Keys.A) || engine.input.keyboard.isHeld(Keys.Left)
         const heldRight = engine.input.keyboard.isHeld(Keys.D) || engine.input.keyboard.isHeld(Keys.Right)
@@ -189,6 +197,22 @@ export class Player extends Actor {
         if (this.isOnWheel) {
             this.acc.x = 0;
             this.vel.x = 0;
+        }
+
+        this.lastGroundState = this.isOnGround;
+
+        if (!this.isOnWheel) {
+            let loudness;
+            if (this.isOnGround) {
+                 loudness = Math.min(Math.abs(this.vel.x) / this.MAX_VELOCITY * 2, 1)
+            } else {
+                loudness=   0
+            }
+
+            Resources.Load.RunSound.volume = loudness * 0.25;
+        } else {
+            if (this.runningDirection)
+                Resources.Load.RunSound.volume = 0.25;
         }
     }
 
