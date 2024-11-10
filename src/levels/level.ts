@@ -3,7 +3,7 @@ import { HamsterWheel } from "@/actors/contols/hamster-wheel";
 import { Lever } from "@/actors/contols/lever";
 import { CustomerControl } from "@/actors/customers-control";
 import { ItemActor } from "@/actors/items/itemActor";
-import {Acorn, Coffee, GroundAcorn, GroundLeaf, Item, Leaf, Tea} from "@/actors/items/items";
+import {Acorn, Coffee, GroundAcorn, GroundLeaf, IceCream, IcedTea, Item, Leaf, Tea} from "@/actors/items/items";
 import { Brewer } from "@/actors/machines/brewer";
 import { Grinder } from "@/actors/machines/grinder";
 import { Platform, SolidPlatform } from "@/actors/platform";
@@ -23,13 +23,13 @@ export interface DesiredItem {
 }
 
 export class Level1 implements Level {
-    readonly timeLimitMs: number = 0.5 * 60 * 1000;
+    readonly timeLimitMs: number = 1 * 60 * 1000;
     readonly maxPoints: number = 100 // determined by playing
     readonly size = Object.freeze(vec(400, 400)) as Vector;
 
     getDesiredItems = (): DesiredItem[] => [
-        // {item: new Tea(),       distribution: 0.6, price: 10},
-        {item: new Coffee(),    distribution: 1.0, price: 15},
+        {item: new Acorn(),     distribution: 0.1, price: 5 },
+        {item: new Coffee(),    distribution: 0.9, price: 15 },
     ];
 
     getNewRecipes(): Recipe[] {
@@ -93,10 +93,11 @@ export class Level1 implements Level {
 
 export class Level2 implements Level {
 
-    timeLimitMs: number = 5 * 60 * 1000;
+    timeLimitMs: number = 3 * 60 * 1000;
     getDesiredItems(): DesiredItem[] {
         return [
-            { item: new Tea(), distribution: 0.6, price: 10 },
+            { item: new Leaf(), distribution: 0.1, price: 5 },
+            { item: new Tea(), distribution: 0.5, price: 10 },
             { item: new Coffee(), distribution: 0.4, price: 15 },
         ];
     }
@@ -164,11 +165,14 @@ export class Level2 implements Level {
 
 export class Level3 implements Level {
 
-    timeLimitMs: number = 5 * 60 * 1000;
+    timeLimitMs: number = 3 * 60 * 1000;
     getDesiredItems(): DesiredItem[] {
         return [
-            { item: new Tea(), distribution: 0.6, price: 10 },
-            { item: new Coffee(), distribution: 0.4, price: 15 },
+            { item: new Acorn(), distribution: 0.1, price: 5 },
+            { item: new Tea(), distribution: 0.3, price: 10 },
+            { item: new Coffee(), distribution: 0.2, price: 15 },
+            { item: new IcedTea(), distribution: 0.2, price: 30 },
+            { item: new IceCream(), distribution: 0.2, price: 30 },
         ];
     }
     readonly maxPoints: number = 100 // determined by playing
@@ -176,8 +180,8 @@ export class Level3 implements Level {
 
     getNewRecipes(): Recipe[] {
         return [
-            new Recipe(new Leaf(), new Grinder(0, 0), new GroundLeaf()),
-            new Recipe(new GroundLeaf(), new Brewer(0, 0), new Tea()),
+            new Recipe(new Leaf(), new Freezer(0, 0), new IcedTea()),
+            new Recipe(new GroundAcorn(), new Freezer(0, 0), new IceCream()),
         ];
     }
 
