@@ -11,14 +11,21 @@ import { Player } from "@/actors/player";
 import ResourceStation from "@/actors/stations/resource-station";
 import { Level, Recipe } from "@/scenes/level-intro";
 import { CollisionType, Scene, vec, Vector } from "excalibur";
+import { DesiredItem } from "./level";
+import { MainScene } from "@/scenes/main-scene";
 
 
 export class Level2 implements Level {
+
+    timeLimitMs: number = 5 * 60 * 1000;
+    getDesiredItems(): DesiredItem[] {
+        return [
+            { item: new Tea(), distribution: 0.6, price: 10 },
+            { item: new Coffee(), distribution: 0.4, price: 15 },
+        ];
+    }
     readonly maxPoints: number = 100 // determined by playing
     readonly size = Object.freeze(vec(400, 400)) as Vector;
-
-    getDesiredItems = (): Item[] => [new Tea(), new Coffee(), new Acorn()];
-    getItemDistribution = (): number[] => [0.5, 0.5];
 
     getNewRecipes(): Recipe[] {
         return [
@@ -27,7 +34,7 @@ export class Level2 implements Level {
         ];
     }
 
-    spawnItems(scene: Scene): void {
+    spawnItems(scene: MainScene): void {
         let { x: W, y: H } = this.size;
 
         ([
@@ -65,7 +72,7 @@ export class Level2 implements Level {
 
         // TODO: Position the machines properly
 
-        const customerControl = new CustomerControl(this.size.x / 2, this.size.y, this.size.x, this);
+        const customerControl = new CustomerControl(scene, this.size.x / 2, this.size.y, this.size.x, this.getDesiredItems());
         scene.add(customerControl);
     }
 }

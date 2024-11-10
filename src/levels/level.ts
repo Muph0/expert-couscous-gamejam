@@ -11,12 +11,8 @@ import { Player } from "@/actors/player";
 import ResourceStation from "@/actors/stations/resource-station";
 import { Resources } from "@/resources";
 import { Level, Recipe } from "@/scenes/level-intro";
-<<<<<<< HEAD
-import { Actor, CollisionType, Scene, vec, Vector } from "excalibur";
-=======
 import { MainScene } from "@/scenes/main-scene";
-import { CollisionType, Scene, vec, Vector } from "excalibur";
->>>>>>> e4b18c6f21eabf9ff236a7986e599b2055f38e9c
+import { Actor, CollisionType, Scene, vec, Vector } from "excalibur";
 
 
 export interface DesiredItem {
@@ -45,7 +41,7 @@ export class Level1 implements Level {
         ];
     }
 
-    spawnItems(scene: Scene): void {
+    spawnItems(scene: MainScene): void {
         let { x: W, y: H } = this.size;
 
         ([
