@@ -24,7 +24,7 @@ export interface DesiredItem {
 
 export class Level1 implements Level {
     readonly timeLimitMs: number = 1 * 60 * 1000;
-    readonly maxPoints: number = 100 // determined by playing
+    readonly maxPoints: number = 100; // determined by playing
     readonly size = Object.freeze(vec(400, 400)) as Vector;
 
     getDesiredItems = (): DesiredItem[] => [
@@ -101,7 +101,7 @@ export class Level2 implements Level {
             { item: new Coffee(), distribution: 0.4, price: 15 },
         ];
     }
-    readonly maxPoints: number = 100 // determined by playing
+    readonly maxPoints: number = 300; // determined by playing
     readonly size = Object.freeze(vec(400, 400)) as Vector;
 
     getNewRecipes(): Recipe[] {
@@ -175,7 +175,7 @@ export class Level3 implements Level {
             { item: new IceCream(), distribution: 0.2, price: 30 },
         ];
     }
-    readonly maxPoints: number = 100 // determined by playing
+    readonly maxPoints: number = 400; // determined by playing
     readonly size = Object.freeze(vec(400, 400)) as Vector;
 
     getNewRecipes(): Recipe[] {
