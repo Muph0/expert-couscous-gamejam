@@ -53,9 +53,7 @@ const Resources = new class Resources {
         StarGold: new ImageSource(starGold),
         StarGrey: new ImageSource(starGrey),
         Bubble: new ImageSource(bubble),
-<<<<<<< HEAD
         Background: new ImageSource(background),
-=======
 
         JumpSound: new Sound(jumpSound),
         RunSound: new Sound(runSound),
@@ -65,7 +63,6 @@ const Resources = new class Resources {
         MainMusic: new Sound(mainMusic),
         GrinderSound: new Sound(grinderSound),
         BrewerSound: new Sound(brewerSound),
->>>>>>> e4b18c6f21eabf9ff236a7986e599b2055f38e9c
     }
 
     readonly Items = lazy(() =>

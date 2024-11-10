@@ -6,12 +6,13 @@ import {TextLabel} from '@/ui/text-label';
 import {SceneScaler} from './scene-scaler';
 import {ItemActor} from "@/actors/items/itemActor";
 import { DesiredItem } from '@/levels/level';
+import { MainScene } from './main-scene';
 
 export interface Level {
     timeLimitMs: number;
     maxPoints: number;
     size: Vector;
-    spawnItems(scene: Scene): void;
+    spawnItems(scene: MainScene): void;
     getNewRecipes(): Recipe[];
 
     getDesiredItems(): DesiredItem[];
