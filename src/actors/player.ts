@@ -222,6 +222,8 @@ export class Player extends Actor {
                 Resources.Load.RunSound.volume = 0.25;
             }
         }
+
+        this.pos.x = clamp(this.pos.x, 20, 380)
     }
 
     onCollisionStart(

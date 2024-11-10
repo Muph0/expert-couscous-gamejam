@@ -64,13 +64,13 @@ export class MainScene extends ex.Scene {
         this.initializeClock();
 
         // TODO: remove!
-        let mouse = engine.input.pointers.primary;
-        mouse.on('down', e => {
-            console.log('spawn');
-            let acorn = new ItemActor(new Coffee());
-            acorn.pos = mouse.lastWorldPos.clone();
-            this.add(acorn);
-        });
+        // let mouse = engine.input.pointers.primary;
+        // mouse.on('down', e => {
+        //     console.log('spawn');
+        //     let acorn = new ItemActor(new Coffee());
+        //     acorn.pos = mouse.lastWorldPos.clone();
+        //     this.add(acorn);
+        // });
         this.physics.config.gravity = vec(0, 250);
 
         new SceneScaler(this.level.size, this);
@@ -88,12 +88,12 @@ export class MainScene extends ex.Scene {
                 family: 'Pixelify Sans',
                 size: 80,
                 unit: ex.FontUnit.Px,
-                color: ex.Color.Black,
+                color: ex.Color.White,
                 smoothing: false,
                 shadow: {
                     blur: 5,
                     offset: vec(0, 0),
-                    color: Color.White,
+                    color: Color.Black,
                 },
             }),
             scale: vec(1, 1).scale(0.2),
@@ -108,12 +108,12 @@ export class MainScene extends ex.Scene {
                 family: 'Pixelify Sans',
                 size: 35,
                 unit: ex.FontUnit.Px,
-                color: ex.Color.Black,
+                color: ex.Color.White,
                 smoothing: false,
                 shadow: {
                     blur: 5,
                     offset: vec(0, 0),
-                    color: Color.White,
+                    color: Color.Black,
                 },
             }),
             scale: vec(1, 1).scale(0.2),
