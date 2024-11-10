@@ -97,7 +97,7 @@ export class CustomerControl extends Actor {
         let item = itemActor.item;
 
         const customer = this.customers.find(c =>
-            !c.satisfied && !c.productAssigned() && Object.getPrototypeOf(c.desiredItem) == Object.getPrototypeOf(item)
+            !c.satisfied && !c.productAssigned() && Object.getPrototypeOf(c.desiredItem.item) == Object.getPrototypeOf(item)
         );
 
         if (customer) {
@@ -116,6 +116,7 @@ export class CustomerControl extends Actor {
                     this.pendingProducts = this.pendingProducts.filter(p => p !== itemActor);
 
                     itemActor.actions.fade(0, 1000).callMethod(() => {
+                        itemActor.kill();
                     });
                 }
             }, CustomerControl.ITEM_TIMEOUT);
