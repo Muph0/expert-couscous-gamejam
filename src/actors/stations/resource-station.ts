@@ -57,7 +57,8 @@ class ResourceStation extends Actor {
                 family: 'Silkscreen',
                 size: 15,
                 unit: FontUnit.Px,
-                color: Color.White
+                color: Color.White,
+                smoothing: false,
             })
         });
 

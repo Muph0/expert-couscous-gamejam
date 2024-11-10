@@ -57,7 +57,8 @@ export abstract class Machine extends Actor implements Drawable {
                 family: 'Silkscreen',
                 size: 15,
                 unit: FontUnit.Px,
-                color: Color.White
+                color: Color.White,
+                smoothing: false,
             })
         });
 

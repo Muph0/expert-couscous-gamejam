@@ -61,7 +61,7 @@ export class CustomerControl extends Actor {
 
                 const product = this.sampleItem()
                 const waitingX = this.width + CustomerControl.CUSTOMER_OFFSET;
-                const customer = new Customer(waitingX, product);
+                const customer = new Customer(waitingX, this.pos.y - 10, product);
 
                 if (Math.random() < 0.5) {
                     Resources.Load.Chirp1Sound.play(0.5)

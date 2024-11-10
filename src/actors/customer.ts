@@ -53,13 +53,13 @@ export class Customer extends ex.Actor {
 
     private carryingItem: ItemActor | null = null;
 
-    constructor(waitingX: number, desiredProduct: DesiredItem) {
+    constructor(waitingX: number, startY: number, desiredProduct: DesiredItem) {
         super({
-            pos: ex.vec(waitingX, 0),
+            pos: ex.vec(waitingX, startY - 16),
             width: 32,
             height: 32,
             color: ex.Color.Yellow,
-            collisionType: ex.CollisionType.Passive,
+            collisionType: ex.CollisionType.PreventCollision,
             z: 5
         });
         this.desiredItem = desiredProduct;
@@ -114,7 +114,7 @@ export class Customer extends ex.Actor {
         let uglyOffset = Math.sin(frame);
 
         let handOffset = vec(facing ? -10 : 10, 3 + uglyOffset);
-        let backOffset = vec(facing ? -20 : 20, 2 + uglyOffset);
+        let backOffset = vec(facing ? -20 : 20, 7 + uglyOffset);
 
         if (this.carryingItem != undefined) {
             this.carryingItem.graphics.flipHorizontal = facing;
@@ -126,10 +126,6 @@ export class Customer extends ex.Actor {
                 this.carryingItem.offset = backOffset;
             }
         }
-    }
-
-    onInitialize(engine: ex.Engine) {
-        this.pos = ex.vec(this.pos.x, engine.drawHeight - this.height / 2);
     }
 
     onPostUpdate(engine: Engine, delta: number): void {
@@ -166,13 +162,16 @@ export class Customer extends ex.Actor {
         if (this.runningDirection == -1) {
             this.graphics.flipHorizontal = true;
             this.graphics.use(this.animations.run);
+            this.graphics.offset = vec(0, 4);
             this.updateItemPosition('back');
         } else if (this.runningDirection == 1) {
             this.graphics.flipHorizontal = false;
             this.graphics.use(this.animations.run);
+            this.graphics.offset = vec(0, 4);
             this.updateItemPosition('back');
         } else {
             this.graphics.use(this.animations.idle);
+            this.graphics.offset = vec(0, 0);
             this.updateItemPosition('hand');
         }
         this.vel.x = clamp(this.vel.x, -Customer.MAX_VELOCITY, Customer.MAX_VELOCITY)

@@ -163,16 +163,19 @@ export class Player extends Actor {
         // not on the ground always means flying
         if (!this.isOnGround) {
             this.graphics.use(this.animations.flying);
+            this.graphics.offset = vec(0, 4);
             this.updateItemPosition('back');
         } else {
             // when on the ground, we are either running on the wheel
             if (this.isOnWheel) {
                 if (this.runningDirection == 0) {
                     this.graphics.use(this.animations.idle);
+                    this.graphics.offset = vec(0, 0);
                     this.updateItemPosition('hand');
                 }
                 else {
                     this.graphics.use(this.animations.run);
+                    this.graphics.offset = vec(0, 4);
                     this.updateItemPosition('back');
                 }
             }
@@ -180,10 +183,12 @@ export class Player extends Actor {
             // else we're idling
             else if (Math.abs(this.vel.x) < 50) {
                 this.graphics.use(this.animations.idle);
+                this.graphics.offset = vec(0, 0);
                 this.updateItemPosition('hand');
             }
             else {
                 this.graphics.use(this.animations.run);
+                this.graphics.offset = vec(0, 4);
                 this.updateItemPosition('back');
             }
         }
@@ -296,7 +301,7 @@ export class Player extends Actor {
         let uglyOffset  = Math.sin(frame);
 
         let handOffset = vec(facing ? -10 : 10, 3 + uglyOffset);
-        let backOffset = vec(facing ? -20 : 20, 2 + uglyOffset);
+        let backOffset = vec(facing ? -20 : 20, 6 + uglyOffset);
 
         if (this.carryingItem != undefined) {
             this.carryingItem.graphics.flipHorizontal = facing;
