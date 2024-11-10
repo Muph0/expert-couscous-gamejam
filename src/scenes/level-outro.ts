@@ -18,9 +18,8 @@ export class LevelOutro extends Scene {
     ) {
         super();
         const ratio = statistics.pointsGained / statistics.pointsMax;
-        this.starsGained = ratio < 0.33
-            ? 1
-            : (ratio < 0.66 ? 2 : 3);
+        const ratios = [0.15, 0.33, 0.66]
+        this.starsGained = ratios.findIndex(val => val < ratio) + 1;
         this.height = 180;
         this.width = 180;
         this.scaler = new SceneScaler(vec(this.width, this.height), this);
@@ -36,7 +35,7 @@ export class LevelOutro extends Scene {
         this.add(levelTable);
         this.add(new TextLabel(this.width / 2 + 2, 58, 56, `Level  ${this.levelId + 1}`, TextLabel.WHITE).actor);
 
-        const resultMessage = this.starsGained == 1 ? "Good start!" : (this.starsGained == 2 ? "Well done!" : "Barista Master <3")
+        const resultMessage = this.starsGained == 0 ? "Maybe try again.." : (this.starsGained == 1 ? "Good start!" : (this.starsGained == 2 ? "Well done!" : "Barista Master <3"))
         this.add(new TextLabel(this.width / 2 + 2, 78, 56, resultMessage, TextLabel.GREY).actor)
 
         for (let i = 1; i <= 3; i++) {
