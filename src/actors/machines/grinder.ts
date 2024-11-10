@@ -14,7 +14,7 @@ export class Grinder extends Machine {
         super({
             pos: vec(x, y),
             z: 1,
-        });
+        }, true);
 
         this.graphics.add(Resources.Machines().getSprite(0, 0));
         this.collider.set(new CircleCollider({ radius: 16, offset: vec(0, 6) }));
@@ -35,7 +35,7 @@ export class Grinder extends Machine {
         super.onPostUpdate(engine, delta);
 
         if (this.isOn) {
-            this.crank.rotation += 0.005 * delta;
+            this.crank.rotation = -this.remainingProcessingTime * Math.PI * 2;
         }
     }
 

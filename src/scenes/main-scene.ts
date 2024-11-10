@@ -53,9 +53,6 @@ export class MainScene extends ex.Scene {
             new ResourceStation(400, 120 - 15 - 5, 30, new Acorn()),
         ].forEach(station => this.add(station));}
 
-        const wheel = new HamsterWheel(100, 80, 50);
-        this.add(wheel)
-
         // Create AI-controlled squirrel
         const aiSquirrel = new AutomaticSquirrel();
         this.add(aiSquirrel);
@@ -70,6 +67,9 @@ export class MainScene extends ex.Scene {
 
         const brewer = new Brewer(500, 450);
         this.add(brewer);
+
+        const wheel = new HamsterWheel(100, 80, 50, grinder);
+        this.add(wheel)
 
         // TODO: Position the machines properly
 

@@ -10,8 +10,6 @@ export class HamsterWheel extends ex.Actor {
     public wheel: ex.Actor;
     public platform: WheelPlatform;
 
-    playerOnWheel = false;
-
     constructor(x: number, y: number, radius: number, linkedMachine?: Machine) {
         super({ pos: ex.vec(x, y) });
 
@@ -40,10 +38,10 @@ export class HamsterWheel extends ex.Actor {
     onPostUpdate(engine: Engine, delta: number): void {
         if (this.platform.direction != 0) {
             this.wheel.actions.rotateBy(this.platform.direction / 20, 100);
-        }
-    }
 
-    onInitialize(engine: ex.Engine) {
-        // TODO: Implement hamster wheel interaction to control machine intensity
+            if (this.linkedMachine != undefined) {
+                this.linkedMachine.remainingProcessingTime = Math.max(this.linkedMachine.remainingProcessingTime - delta / 1000, 0);
+            }
+        }
     }
 }
