@@ -62,25 +62,20 @@ export abstract class Machine extends Actor {
             collisionType: CollisionType.Fixed,
             color: Color.Green,
         });
+        this.intakeActor.on('collisionstart', e => {
+            if (this.isOn && e.other instanceof ItemActor) {
+                const itemActor = e.other as ItemActor;
+
+                if (!this.itemQueue.includes(itemActor) && !this.blacklistedItemQueue.includes(itemActor)) {
+                    this.itemQueue.push(itemActor);
+                }
+            }
+        });
 
         this.addChild(this.intakeActor);
         this.addChild(this.tooltip);
     }
 
-    onCollisionStart(
-        self: Collider,
-        other: Collider,
-        side: Side,
-        contact: CollisionContact
-    ): void {
-        if (this.isOn && other.owner instanceof ItemActor) {
-            const itemActor = other.owner as ItemActor;
-
-            if (!this.itemQueue.includes(itemActor) && !this.blacklistedItemQueue.includes(itemActor)) {
-                this.itemQueue.push(itemActor);
-            }
-        }
-    }
 
     onPostUpdate(engine: Engine, delta: number): void {
         if (!this.isProcessing) {

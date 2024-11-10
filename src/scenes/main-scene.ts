@@ -15,7 +15,7 @@ import {SceneScaler} from "@/scenes/scene-scaler";
 import { Level } from './level-intro';
 import { Game } from '@/game';
 
-const LEVEL_TIME: number = 0.5 * 60 * 1000;
+const LEVEL_TIME: number = 5 * 60 * 1000;
 
 export class MainScene extends ex.Scene {
     entityCounter = new Label({ text: '' });
