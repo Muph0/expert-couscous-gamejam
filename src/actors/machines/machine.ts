@@ -22,16 +22,21 @@ export abstract class Machine extends Actor {
     private blacklistedItemQueue: Array<ItemActor> = [];
 
     private isProcessing: boolean = false;
-    private remainingProcessingTime = 0;
+    private manual: boolean;
+
+    public remainingProcessingTime = 0;
+    public maxProcessingTime = 1.5;
 
     private tooltip: Label;
 
-    constructor(config?: ActorArgs) {
+    constructor(config?: ActorArgs, manual: boolean = false) {
         super({
             color: Color.Gray,
             collisionType: CollisionType.Fixed,
             ...config,
         });
+
+        this.manual = manual;
 
         // Create tooltip (initially hidden)
         this.tooltip = new Label({
@@ -62,31 +67,26 @@ export abstract class Machine extends Actor {
             collisionType: CollisionType.Fixed,
             color: Color.Green,
         });
+        this.intakeActor.on('collisionstart', e => {
+            if (this.isOn && e.other instanceof ItemActor) {
+                const itemActor = e.other as ItemActor;
+
+                if (!this.itemQueue.includes(itemActor) && !this.blacklistedItemQueue.includes(itemActor)) {
+                    this.itemQueue.push(itemActor);
+                }
+            }
+        });
 
         this.addChild(this.intakeActor);
         this.addChild(this.tooltip);
     }
 
-    onCollisionStart(
-        self: Collider,
-        other: Collider,
-        side: Side,
-        contact: CollisionContact
-    ): void {
-        if (this.isOn && other.owner instanceof ItemActor) {
-            const itemActor = other.owner as ItemActor;
-
-            if (!this.itemQueue.includes(itemActor) && !this.blacklistedItemQueue.includes(itemActor)) {
-                this.itemQueue.push(itemActor);
-            }
-        }
-    }
 
     onPostUpdate(engine: Engine, delta: number): void {
         if (!this.isProcessing) {
             if (this.itemQueue.length != 0) {
                 this.isProcessing = true;
-                this.remainingProcessingTime = 1;
+                this.remainingProcessingTime = this.maxProcessingTime;
                 this.tooltip.text = `${this.remainingProcessingTime.toFixed(1)}`;
 
             }
@@ -109,7 +109,9 @@ export abstract class Machine extends Actor {
                     this.scene?.add(newActor);
                 }
             } else {
-                this.remainingProcessingTime = Math.max(this.remainingProcessingTime - delta / 1000, 0);
+                if (!this.manual) {
+                    this.remainingProcessingTime = Math.max(this.remainingProcessingTime - delta / 1000, 0);
+                }
 
                 this.tooltip.text = `${this.remainingProcessingTime.toFixed(1)}`;
             }

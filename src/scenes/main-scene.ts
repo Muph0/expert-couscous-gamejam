@@ -1,21 +1,21 @@
 import * as ex from 'excalibur';
-import { Player } from "@/actors/player";
-import { AutomaticSquirrel } from '@/actors/automatic-squirrel';
+import {CollisionType, ExcaliburGraphicsContext, Label, vec} from 'excalibur';
+import {Player} from "@/actors/player";
+import {AutomaticSquirrel} from '@/actors/automatic-squirrel';
 import {Platform, SolidPlatform} from '@/actors/platform';
-import {Engine, ExcaliburGraphicsContext, Label, vec} from "excalibur";
-import { HamsterWheel } from "@/actors/contols/hamster-wheel";
-import { Lever } from "@/actors/contols/lever";
-import { Grinder } from '@/actors/machines/grinder';
-import { Brewer } from '@/actors/machines/brewer';
-import { ItemActor } from '@/actors/items/itemActor';
-import {Acorn, Coffee} from '@/actors/items/items';
+import {HamsterWheel} from "@/actors/contols/hamster-wheel";
+import {Lever} from "@/actors/contols/lever";
+import {Grinder} from '@/actors/machines/grinder';
+import {Brewer} from '@/actors/machines/brewer';
+import {ItemActor} from '@/actors/items/itemActor';
+import {Acorn} from '@/actors/items/items';
 import ResourceStation from '@/actors/stations/resource-station';
 import {CustomerControl} from "@/actors/customers-control";
 import {SceneScaler} from "@/scenes/scene-scaler";
-import { Level } from './level-intro';
-import { Game } from '@/game';
+import {Level} from './level-intro';
+import {Game} from '@/game';
 
-const LEVEL_TIME: number = 0.5 * 60 * 1000;
+const LEVEL_TIME: number = 5 * 60 * 1000;
 
 export class MainScene extends ex.Scene {
     entityCounter = new Label({ text: '' });
@@ -39,12 +39,18 @@ export class MainScene extends ex.Scene {
         this.add(lever)
 
         {[
+            // resource station platforms
             new Platform(270, 100, 60, 10),
             new Platform(400, 120, 60, 10),
 
+            // support platforms
             new Platform(330, 160, 30, 10),
             new Platform(200, 150, 30, 10),
 
+            // brewer platform
+            new Platform(480 / 2, 370, 30, 10, -Math.PI / 5, CollisionType.Fixed),
+
+            // the main solid platform
             new SolidPlatform(480 / 2, 200, 600, 20),
         ].forEach(platform => this.add(platform));}
 
@@ -52,9 +58,6 @@ export class MainScene extends ex.Scene {
             new ResourceStation(270, 100 - 15 - 5, 30, new Acorn()),
             new ResourceStation(400, 120 - 15 - 5, 30, new Acorn()),
         ].forEach(station => this.add(station));}
-
-        const wheel = new HamsterWheel(100, 80, 50);
-        this.add(wheel)
 
         // Create AI-controlled squirrel
         const aiSquirrel = new AutomaticSquirrel();
@@ -65,11 +68,14 @@ export class MainScene extends ex.Scene {
         this.add(player);
 
         // // Create machines
-        const grinder = new Grinder(300, 400);
+        const grinder = new Grinder(480 / 2, 300);
         this.add(grinder);
 
-        const brewer = new Brewer(500, 450);
+        const brewer = new Brewer(480, 350);
         this.add(brewer);
+
+        const wheel = new HamsterWheel(100, 80, 50, grinder);
+        this.add(wheel)
 
         // TODO: Position the machines properly
 
