@@ -17,9 +17,9 @@ export class LevelOutro extends Scene {
         private statistics: GameStatistics,
     ) {
         super();
+        statistics.pointsGained = 80
         const ratio = statistics.pointsGained / statistics.pointsMax;
-        const ratios = [0.15, 0.33, 0.66]
-        this.starsGained = ratios.findIndex(val => val < ratio) + 1;
+        this.starsGained = ratio < 0.15 ? 0 : (ratio < 0.33 ? 1 : (ratio < 0.66 ? 2 : 3))
         this.height = 180;
         this.width = 180;
         this.scaler = new SceneScaler(vec(this.width, this.height), this);

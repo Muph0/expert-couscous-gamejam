@@ -26,7 +26,7 @@ let FUCK_OFFSET = -40
 
 export class Level1 implements Level {
     readonly timeLimitMs: number = 1 * 60 * 1000;
-    readonly maxPoints: number = 100; // determined by playing
+    readonly maxPoints: number = 130; // determined by playing
     readonly size = Object.freeze(vec(400, 400)) as Vector;
 
     getDesiredItems = (): DesiredItem[] => [
