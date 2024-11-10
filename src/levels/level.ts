@@ -23,9 +23,6 @@ export class Level1 implements Level {
     }
 
     spawnItems(scene: Scene): void {
-        const lever = new Lever(100, 200 - 10);
-        scene.add(lever)
-
         let { x: W, y: H } = this.size;
 
         ([
@@ -33,22 +30,18 @@ export class Level1 implements Level {
             new SolidPlatform(W / 2, H, W, 20, 0, CollisionType.Fixed), // the bottom
 
             // resource station platforms
-            new Platform(200, 120, 60, 10),
-            new Platform(300, 120, 60, 10),
-
-            // support platforms
-            new Platform(330, 160, 30, 10),
-            new Platform(200, 150, 30, 10),
+            new Platform(210, 150, 60, 10),
+            new Platform(320, 150, 60, 10),
 
             // brewer platform
-            new Platform(this.size.x / 2, 370, 30, 10, -Math.PI / 5, CollisionType.Fixed),
+            new Platform(this.size.x / 2 + 5, 310, 30, 10, -Math.PI / 5, CollisionType.Fixed),
 
 
         ]).forEach(platform => scene.add(platform));
 
         ([
-            new ResourceStation(270, 100 - 15 - 5, 30, new Acorn()),
-            new ResourceStation(400, 120 - 15 - 5, 30, new Leaf()),
+            new ResourceStation(210, 150 - 15 - 5, 30, new Acorn()),
+            new ResourceStation(320, 150 - 15 - 5, 30, new Leaf()),
         ]).forEach(station => scene.add(station));
 
         // Create player-controlled squirrel
@@ -56,13 +49,13 @@ export class Level1 implements Level {
         scene.add(player);
 
         // // Create machines
-        const grinder = new Grinder(this.size.x / 2, 300);
+        const grinder = new Grinder(this.size.x / 2, 260);
         scene.add(grinder);
 
-        const brewer = new Brewer(this.size.x, 350);
+        const brewer = new Brewer(this.size.x / 2 - 30, 360);
         scene.add(brewer);
 
-        const wheel = new HamsterWheel(100, 80, 50, grinder);
+        const wheel = new HamsterWheel(90, 110, 50, grinder);
         scene.add(wheel)
 
         // TODO: Position the machines properly

@@ -107,8 +107,6 @@ export class Customer extends ex.Actor {
         let frame = (this.graphics.current as any)._currentFrame;
         let uglyOffset  = Math.sin(frame);
 
-        console.log(uglyOffset)
-
         this.bubble.pos = ex.vec(0, -16 + uglyOffset);
     }
 
