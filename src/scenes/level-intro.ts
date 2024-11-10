@@ -1,19 +1,20 @@
-import { Drawable, Item } from '@/actors/items/items';
-import { Actor, Color, Engine, Keys, Scene, SceneActivationContext, vec, Vector } from 'excalibur';
-import { Game } from '@/game';
-import { Resources } from '@/resources';
-import { TextLabel } from '@/ui/text-label';
-import { SceneScaler } from './scene-scaler';
+import {Drawable, Item} from '@/actors/items/items';
+import {Actor, CollisionType, Color, Engine, Keys, Scene, SceneActivationContext, vec, Vector} from 'excalibur';
+import {Game} from '@/game';
+import {Resources} from '@/resources';
+import {TextLabel} from '@/ui/text-label';
+import {SceneScaler} from './scene-scaler';
 import {ItemActor} from "@/actors/items/itemActor";
+import { DesiredItem } from '@/levels/level';
 
 export interface Level {
+    timeLimitMs: number;
     maxPoints: number;
     size: Vector;
     spawnItems(scene: Scene): void;
     getNewRecipes(): Recipe[];
 
-    getDesiredItems(): Item[];
-    getItemDistribution(): number[];
+    getDesiredItems(): DesiredItem[];
 }
 
 export class Recipe {
@@ -44,6 +45,7 @@ export class Recipe {
         scene.add(eqAct);
 
         const resultAct = new ItemActor(this.result, vec(x + 4 * 16, y));
+        resultAct.body.collisionType = CollisionType.PreventCollision;
         resultAct.graphics.add(this.result.getSprite());
         scene.add(resultAct);
     }
@@ -59,6 +61,7 @@ export class LevelIntro extends Scene {
         private game: Game,
         private level: Level,
         private levelId: number,
+        private paused: boolean = false,
     ) {
         super();
         this.height = 180;
@@ -80,7 +83,13 @@ export class LevelIntro extends Scene {
         this.add(this.hintText);
         this.showHint();
 
-        this.add(new TextLabel(this.width / 2, this.height / 2 + 60, 40, "Press [SPACE] to play", TextLabel.GREY).actor);
+        if (this.paused) {
+            this.add(new TextLabel(this.width / 2, this.height / 2 + 50, 70, "PAUSED", TextLabel.GREY).actor);
+            this.add(new TextLabel(this.width / 2, this.height / 2 + 60, 40, "Press [SPACE] to continue", TextLabel.GREY).actor);
+
+        } else {
+            this.add(new TextLabel(this.width / 2, this.height / 2 + 60, 40, "Press [SPACE] to play", TextLabel.GREY).actor);
+        }
     }
 
     showHint() {
@@ -93,8 +102,11 @@ export class LevelIntro extends Scene {
 
     onPreUpdate(engine: Engine, delta: number): void {
         if (engine.input.keyboard.wasPressed(Keys.Space)) {
-            this.game.showCurrentLevel();
-            return;
+            if (this.paused) {
+                this.game.exitPause();
+            } else {
+                this.game.showCurrentLevel();
+            }
         }
     }
 

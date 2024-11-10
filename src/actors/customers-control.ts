@@ -3,6 +3,9 @@ import {Customer} from "@/actors/customer";
 import {ItemActor} from "@/actors/items/itemActor";
 import {Recipe} from "@/scenes/level-intro";
 import {Item} from "@/actors/items/items";
+import { MainScene } from "@/scenes/main-scene";
+import { DesiredItem } from "@/levels/level";
+import {Resources} from "@/resources";
 
 export class CustomerControl extends Actor {
     private static readonly HEIGHT = 100;
@@ -12,13 +15,13 @@ export class CustomerControl extends Actor {
     private static readonly ITEM_TIMEOUT = 5000;
     private static readonly CUSTOMER_OFFSET = 40;
 
+    private mainScene: MainScene;
     private customers: Customer[] = [];
     private pendingProducts: ItemActor[] = [];
 
-    private desiredItems: Item[];
-    private itemDistribution: number[];
+    private desiredItems: DesiredItem[];
 
-    constructor(x: number, y: number, width: number, desiredItems: Item[], itemDistribution: number[], height: number = 80) {
+    constructor(scene: MainScene, x: number, y: number, width: number, desiredItems: DesiredItem[], height: number = 80) {
         super({
             pos: vec(x, y),
             height: height,
@@ -27,14 +30,14 @@ export class CustomerControl extends Actor {
             collisionType: CollisionType.Passive,
         });
 
+        this.mainScene = scene;
         this.desiredItems = desiredItems;
-        this.itemDistribution = itemDistribution;
     }
 
-    sampleItem() {
+    sampleItem(): DesiredItem {
         const cumulativeWeights: number[] = [];
-        this.itemDistribution.reduce((acc, weight, i) => {
-            cumulativeWeights[i] = acc + weight;
+        this.desiredItems.reduce((acc, item, i) => {
+            cumulativeWeights[i] = acc + item.distribution;
             return cumulativeWeights[i];
         }, 0);
 
@@ -49,7 +52,7 @@ export class CustomerControl extends Actor {
 
     private scheduleCustomersRefresh(engine: Engine) {
         const timeout = Math.random() * (CustomerControl.MAX_TIMEOUT - CustomerControl.MIN_TIMEOUT) + CustomerControl.MIN_TIMEOUT;
-        const scene = this.scene;
+        const scene = this.mainScene;
         if (scene === null)
             return;
         setTimeout(() => {
@@ -62,6 +65,12 @@ export class CustomerControl extends Actor {
                 const waitingX = this.width + CustomerControl.CUSTOMER_OFFSET;
                 const customer = new Customer(waitingX, product);
 
+                if (Math.random() < 0.5) {
+                    Resources.Load.Chirp1Sound.play(0.5)
+                } else {
+                    Resources.Load.Chirp2Sound.play(0.5)
+                }
+
                 this.customers.push(customer);
                 waitingCustomers = this.customers.filter(c => !c.productAssigned());
 
@@ -70,10 +79,6 @@ export class CustomerControl extends Actor {
                 }
 
                 scene.add(customer);
-
-                if (this.pendingProducts.length > 0) {
-                    customer.goFetchItem(this.pendingProducts.pop()!);
-                }
             }
 
             this.scheduleCustomersRefresh(engine);
@@ -88,7 +93,7 @@ export class CustomerControl extends Actor {
         let item = itemActor.item;
 
         const customer = this.customers.find(c =>
-            !c.satisfied && !c.productAssigned() && Object.getPrototypeOf(c.desiredItem) == Object.getPrototypeOf(item)
+            !c.satisfied && !c.productAssigned() && Object.getPrototypeOf(c.desiredItem.item) == Object.getPrototypeOf(item)
         );
 
         if (customer) {
@@ -107,6 +112,7 @@ export class CustomerControl extends Actor {
                     this.pendingProducts = this.pendingProducts.filter(p => p !== itemActor);
 
                     itemActor.actions.fade(0, 1000).callMethod(() => {
+                        itemActor.kill();
                     });
                 }
             }, CustomerControl.ITEM_TIMEOUT);

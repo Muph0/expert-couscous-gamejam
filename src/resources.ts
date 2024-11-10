@@ -1,4 +1,4 @@
-import { ImageSource, Sprite, SpriteSheet } from 'excalibur';
+import {ImageSource, Sound, Sprite, SpriteSheet} from 'excalibur';
 import sword from './images/sword.png';
 import magor from './images/magor.png';
 import button from './images/button.png';
@@ -17,6 +17,16 @@ import starGold from './images/star_gold.png';
 import starGrey from './images/star_grey.png';
 import bubble from './images/bubble.png';
 import background from './images/background.png';
+
+var runSound = require('./music/running.mp3')
+var jumpSound = require('./music/jump.mp3')
+var drop = require('./music/drop.mp3')
+var chirp1 = require('./music/chirp1.mp3')
+var chirp2 = require('./music/chirp2.mp3')
+var mainMusic = require('./music/main.mp3')
+var grinderSound = require('./music/grinder.mp3')
+var brewerSound = require('./music/brewing.mp3')
+
 import resourceStation from './images/resource-station.png';
 
 /**
@@ -43,7 +53,19 @@ const Resources = new class Resources {
         StarGold: new ImageSource(starGold),
         StarGrey: new ImageSource(starGrey),
         Bubble: new ImageSource(bubble),
+<<<<<<< HEAD
         Background: new ImageSource(background),
+=======
+
+        JumpSound: new Sound(jumpSound),
+        RunSound: new Sound(runSound),
+        Chirp1Sound: new Sound(chirp1),
+        Chirp2Sound: new Sound(chirp2),
+        DropSound: new Sound(drop),
+        MainMusic: new Sound(mainMusic),
+        GrinderSound: new Sound(grinderSound),
+        BrewerSound: new Sound(brewerSound),
+>>>>>>> e4b18c6f21eabf9ff236a7986e599b2055f38e9c
     }
 
     readonly Items = lazy(() =>

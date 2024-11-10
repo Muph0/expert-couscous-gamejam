@@ -1,6 +1,6 @@
 import { Item } from '@/actors/items/items';
 import { Machine } from './machine';
-import { CompositeCollider, Rectangle, Resource, Shape, Sprite, vec, Vector } from 'excalibur';
+import {CompositeCollider, Loader, Rectangle, Resource, Shape, Sprite, vec, Vector} from 'excalibur';
 import { Resources } from '@/resources';
 import { Paddle } from '../paddle';
 
@@ -10,11 +10,12 @@ export class Brewer extends Machine {
         sprite.scale = vec(0.22, 0.22);
         return sprite;
     }
+
     constructor(x: number, y: number) {
         super({
             pos: vec(x, y),
             z: 1,
-        });
+        }, false, Resources.Load.BrewerSound);
         this.graphics.use(Resources.Machines().getSprite(2, 0));
 
         this.collider.set(new CompositeCollider([

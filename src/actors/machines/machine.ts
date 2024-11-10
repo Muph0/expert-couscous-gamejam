@@ -1,5 +1,5 @@
 import { ItemActor } from '../items/itemActor';
-import { Drawable, Item } from '@/actors/items/items';
+import {Drawable, Garbage, Item} from '@/actors/items/items';
 import {
     Actor,
     ActorArgs, BaseAlign,
@@ -9,7 +9,7 @@ import {
     Color,
     Engine, Font, FontUnit,
     Label,
-    Side, Sprite, TextAlign, vec,
+    Side, Sound, Sprite, TextAlign, vec,
     Vector
 } from 'excalibur';
 
@@ -29,7 +29,9 @@ export abstract class Machine extends Actor implements Drawable {
 
     private tooltip: Label;
 
-    constructor(config?: ActorArgs, manual: boolean = false) {
+    private sound: Sound | undefined;
+
+    constructor(config?: ActorArgs, manual: boolean = false, sound?: Sound) {
         super({
             color: Color.Gray,
             collisionType: CollisionType.Fixed,
@@ -38,10 +40,12 @@ export abstract class Machine extends Actor implements Drawable {
 
         this.manual = manual;
 
+        this.sound = sound;
+
         // Create tooltip (initially hidden)
         this.tooltip = new Label({
             text: '',
-            pos: vec(0, -20), // Position the label above the station
+            pos: vec(0, 5), // Position the label above the station
             font: new Font({
                 textAlign: TextAlign.Center,
                 baseAlign: BaseAlign.Middle,
@@ -91,6 +95,7 @@ export abstract class Machine extends Actor implements Drawable {
                 this.remainingProcessingTime = this.maxProcessingTime;
                 this.tooltip.text = `${this.remainingProcessingTime.toFixed(1)}`;
 
+                this.sound?.play(0.5);
             }
         } else {
             if (this.remainingProcessingTime <= 0) {
@@ -99,17 +104,25 @@ export abstract class Machine extends Actor implements Drawable {
                 itemActor.kill();
                 this.isProcessing = false;
 
+                this.sound?.stop();
+
                 this.remainingProcessingTime = 0;
                 this.tooltip.text = '';
 
-                const newItem = this.processItem(itemActor.item);
+                let newItem = this.processItem(itemActor.item);
 
-                if (newItem) {
-                    const newActor = new ItemActor(newItem);
-                    newActor.pos = this.getOutlet().add(this.pos);
-                    this.blacklistedItemQueue.push(newActor);
-                    this.scene?.add(newActor);
+                if (!newItem) {
+                    newItem = new Garbage();
                 }
+
+                const newActor = new ItemActor(newItem);
+                newActor.pos = this.getOutlet().add(this.pos);
+
+                newActor.vel = vec(Math.random(), 10)
+
+                this.blacklistedItemQueue.push(newActor);
+                this.scene?.add(newActor);
+
             } else {
                 if (!this.manual) {
                     this.remainingProcessingTime = Math.max(this.remainingProcessingTime - delta / 1000, 0);

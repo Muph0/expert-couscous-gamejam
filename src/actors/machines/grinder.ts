@@ -4,6 +4,7 @@ import { Item } from '@/actors/items/items';
 import { Actor, CircleCollider, Color, CompositeCollider, EdgeCollider, Engine, Sprite, vec, Vector } from 'excalibur';
 import { Resources } from '@/resources';
 import { Paddle } from '../paddle';
+import {Recipe} from "@/scenes/level-intro";
 
 
 export class Grinder extends Machine {
@@ -14,6 +15,8 @@ export class Grinder extends Machine {
     }
 
     crank: Actor;
+
+    grindedLastTick: boolean = true
 
     constructor(x: number, y: number) {
         super({
@@ -39,9 +42,29 @@ export class Grinder extends Machine {
     onPostUpdate(engine: Engine, delta: number): void {
         super.onPostUpdate(engine, delta);
 
+        let grinding = false;
         if (this.isOn) {
+            let oldRotation = this.crank.rotation;
+
             this.crank.rotation = -(this.remainingProcessingTime / this.maxProcessingTime)  * Math.PI * 2;
+
+            if (oldRotation != this.crank.rotation) {
+                grinding = true;
+            } else {
+                this.grindedLastTick = false;
+            }
         }
+
+        if (grinding) {
+             if (!this.grindedLastTick) {
+                 Resources.Load.GrinderSound.seek(this.maxProcessingTime - this.remainingProcessingTime);
+                 Resources.Load.GrinderSound.play(0.5);
+             }
+        } else {
+            Resources.Load.GrinderSound.stop();
+        }
+
+        this.grindedLastTick = grinding;
     }
 
     protected processItem(item: Item): Item | null {
