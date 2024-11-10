@@ -13,6 +13,7 @@ export class Brewer extends Machine {
     constructor(x: number, y: number) {
         super({
             pos: vec(x, y),
+            z: 1,
         });
         this.graphics.use(Resources.Machines().getSprite(2, 0));
 
