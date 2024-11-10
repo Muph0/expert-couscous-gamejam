@@ -1,5 +1,5 @@
-import {Resources} from "@/resources";
-import {Sprite} from "excalibur";
+import { Resources } from "@/resources";
+import { Sprite } from "excalibur";
 
 
 export interface Drawable {
@@ -27,7 +27,7 @@ export class Leaf implements Item {
     }
 }
 
-export class Acorn implements Item{
+export class Acorn implements Item {
     getSprite(): Sprite { return Resources.Items().getSprite(0, 0); }
 
     grind(): Item {
@@ -45,6 +45,9 @@ export class GroundAcorn implements Item {
     }
     roast(): Item {
         return new RoastedGroundAcorn();
+    }
+    freeze(): Item {
+        return new IceCream();
     }
 }
 
@@ -67,12 +70,19 @@ export class GroundLeaf implements Item {
     brew(): Item {
         return new Tea();
     }
+    freeze(): Item {
+        return new IcedTea();
+    }
 }
 
 export class Tea implements Item {
     getSprite(): Sprite { return Resources.Items().getSprite(5, 0); }
 }
 
-export class IceTea implements Item {
-    getSprite(): Sprite { return Resources.Items().getSprite(5, 0); }
+export class IcedTea implements Item {
+    getSprite(): Sprite { return Resources.Items().getSprite(5, 1); }
+}
+
+export class IceCream implements Item {
+    getSprite(): Sprite { return Resources.Items().getSprite(4, 1); }
 }

@@ -11,7 +11,10 @@ export class Freezer extends Machine {
 
         const cover = new Actor();
         cover.graphics.use(Resources.Machines().getSprite(3,1));
+        cover.z = 100;
         this.addChild(cover);
+
+        this.graphics.use(this.getSprite());
     }
 
     getSprite(): Sprite {
