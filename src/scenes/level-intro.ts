@@ -1,5 +1,5 @@
 import { Item } from '@/actors/items/items';
-import { Actor, Color, Engine, Keys, Scene, SceneActivationContext, vec } from 'excalibur';
+import { Actor, Color, Engine, Keys, Scene, SceneActivationContext, vec, Vector } from 'excalibur';
 import { Game } from '@/game';
 import { Resources } from '@/resources';
 import { TextLabel } from '@/ui/text-label';
@@ -7,6 +7,7 @@ import { SceneScaler } from './scene-scaler';
 
 export interface Level {
     maxPoints: number;
+    size: Vector;
     spawnItems(scene: Scene): void;
     getNewRecipes(): Recipe[];
 }

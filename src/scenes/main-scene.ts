@@ -52,55 +52,7 @@ export class MainScene extends ex.Scene {
         this.add(this.entityCounter);
         this.add(this.timeLabel);
 
-        const lever = new Lever(100, 200 - 10);
-        this.add(lever)
-
-        {[
-            // resource station platforms
-            new Platform(270, 100, 60, 10),
-            new Platform(400, 120, 60, 10),
-
-            // support platforms
-            new Platform(330, 160, 30, 10),
-            new Platform(200, 150, 30, 10),
-
-            // brewer platform
-            new Platform(480 / 2, 370, 30, 10, -Math.PI / 5, CollisionType.Fixed),
-
-            // the main solid platform
-            new SolidPlatform(480 / 2, 200, 480, 20),
-
-            // the bottom solid platform
-            new SolidPlatform(480 / 2, 480, 480, 20, 0, CollisionType.Fixed),
-        ].forEach(platform => this.add(platform));}
-
-        {[
-            new ResourceStation(270, 100 - 15 - 5, 30, new Acorn()),
-            new ResourceStation(400, 120 - 15 - 5, 30, new Leaf()),
-        ].forEach(station => this.add(station));}
-
-        // Create AI-controlled squirrel
-        const aiSquirrel = new AutomaticSquirrel();
-        this.add(aiSquirrel);
-
-        // Create player-controlled squirrel
-        const player = new Player(480 / 2, 180);
-        this.add(player);
-
-        // // Create machines
-        const grinder = new Grinder(480 / 2, 300);
-        this.add(grinder);
-
-        const brewer = new Brewer(480, 350);
-        this.add(brewer);
-
-        const wheel = new HamsterWheel(100, 80, 50, grinder);
-        this.add(wheel)
-
-        // TODO: Position the machines properly
-
-        const customerControl = new CustomerControl(480 / 2, 480 + 10);
-        this.add(customerControl);
+        this.level.spawnItems(this);
 
         let mouse = engine.input.pointers.primary;
         mouse.on('down', e => {
