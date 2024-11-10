@@ -17,6 +17,7 @@ import starGold from './images/star_gold.png';
 import starGrey from './images/star_grey.png';
 import bubble from './images/bubble.png';
 import background from './images/background.png';
+import backgroundBranches from './images/backgroundBranches.png';
 
 var runSound = require('./music/running.mp3')
 var jumpSound = require('./music/jump.mp3')
@@ -54,6 +55,7 @@ const Resources = new class Resources {
         StarGrey: new ImageSource(starGrey),
         Bubble: new ImageSource(bubble),
         Background: new ImageSource(background),
+        BackgroundBranches: new ImageSource(backgroundBranches),
 
         JumpSound: new Sound(jumpSound),
         RunSound: new Sound(runSound),

@@ -6,8 +6,8 @@ import { Resources } from "@/resources";
 
 export class Freezer extends Machine {
 
-    constructor() {
-        super({});
+    constructor(x: number, y: number) {
+        super({pos: vec(x, y), z: 1});
 
         const cover = new Actor();
         cover.graphics.use(Resources.Machines().getSprite(3,1));
