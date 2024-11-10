@@ -70,12 +70,13 @@ export class Player extends Actor {
                     spriteWidth: 32,
                     spriteHeight: 32,
                 },
-            }), [0, 1, 2], 200),
+            }), [0, 1, 2, 1], 200),
     }
 
     public constructor(x: number, y: number) {
         super({
             pos: vec(x, y),
+            z: 1,
             width: 25,
             height: 25,
             color: new Color(255, 255, 255),
