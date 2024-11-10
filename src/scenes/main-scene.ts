@@ -8,7 +8,7 @@ import {Lever} from "@/actors/contols/lever";
 import {Grinder} from '@/actors/machines/grinder';
 import {Brewer} from '@/actors/machines/brewer';
 import {ItemActor} from '@/actors/items/itemActor';
-import {Acorn} from '@/actors/items/items';
+import {Acorn, Leaf} from '@/actors/items/items';
 import ResourceStation from '@/actors/stations/resource-station';
 import {CustomerControl} from "@/actors/customers-control";
 import {SceneScaler} from "@/scenes/scene-scaler";
@@ -73,7 +73,7 @@ export class MainScene extends ex.Scene {
 
         {[
             new ResourceStation(270, 100 - 15 - 5, 30, new Acorn()),
-            new ResourceStation(400, 120 - 15 - 5, 30, new Acorn()),
+            new ResourceStation(400, 120 - 15 - 5, 30, new Leaf()),
         ].forEach(station => this.add(station));}
 
         // Create AI-controlled squirrel

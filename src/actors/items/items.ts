@@ -11,6 +11,14 @@ export interface Item {
     getProductType?(): ProductType;
 }
 
+export class Leaf<T> implements Item {
+    getSprite(): Sprite { return Resources.Items().getSprite(3, 0); }
+
+    grind(): Item {
+        return new GroundLeaf();
+    }
+}
+
 export class Acorn<T> implements Item {
     getSprite(): Sprite { return Resources.Items().getSprite(0, 0); }
 
@@ -45,4 +53,16 @@ export class RoastedAcorn implements Item {
 
 export class RoastedGroundAcorn implements Item {
     getSprite(): Sprite { return Resources.Items().getSprite(0, 2); }
+}
+
+
+export class GroundLeaf implements Item {
+    getSprite(): Sprite { return Resources.Items().getSprite(4, 0); }
+}
+
+export class Tea implements Item {
+    getSprite(): Sprite { return Resources.Items().getSprite(5, 0); }
+    getProductType(): ProductType {
+        return ProductType.TEA;
+    }
 }
