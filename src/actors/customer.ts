@@ -92,8 +92,12 @@ export class Customer extends ex.Actor {
 
     pickUpItem(item: ItemActor) {
         this.carryingItem = item;
-        item.body.collisionType = ex.CollisionType.Passive;
+        item.body.collisionType = ex.CollisionType.PreventCollision;
         item.pos = vec(0, 0);
+        item.vel = vec(0, 0);
+        item.angularVelocity = 0;
+
+        item.rotation = 0;
         this.addChild(this.carryingItem);
 
         this.bubble.actions.scaleTo(vec(0, 0), vec(5, 10));
