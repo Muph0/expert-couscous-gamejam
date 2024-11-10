@@ -60,20 +60,20 @@ export class Game extends Engine {
         this.goToScene(Scenes.Intro);
     }
 
-    public showLevelOutro(statics: GameStatistics) {
-        this.removeScene(Scenes.Outro);
-        this.addScene(Scenes.Outro, new LevelOutro(this, this.curLevelId, statics));
-        this.goToScene(Scenes.Outro);
-    }
-
-    public showNextLevel(): void {
+    public showNextLevelIntro(): void {
         this.curLevelId++;
         if (this.curLevelId >= LEVELS.length) {
             this.curLevelId = 0;
             this.restart();
         } else {
-            this.showCurrentLevel();
+            this.showLevelIntro();
         }
+    }
+
+    public showLevelOutro(statics: GameStatistics) {
+        this.removeScene(Scenes.Outro);
+        this.addScene(Scenes.Outro, new LevelOutro(this, this.curLevelId, statics));
+        this.goToScene(Scenes.Outro);
     }
 
     public showCurrentLevel(): void {

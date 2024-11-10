@@ -19,6 +19,8 @@ export class Freezer extends Machine {
 
         this.addChild(new Paddle(vec(-11, -18), vec(27, 2), 75));
         this.addChild(new Paddle(vec(12, -18), vec(27, 2), -75));
+
+        this.addChild(new Paddle(vec(-.5, -18), vec(45, 2), 0));
     }
 
     getSprite(): Sprite {
@@ -29,8 +31,8 @@ export class Freezer extends Machine {
 
     protected getIntake(): [Vector, Vector] {
         return [
-            vec(-5, -18),
-            vec(5, -5),
+            vec(-5, -22),
+            vec(5, -15),
         ]
     }
 

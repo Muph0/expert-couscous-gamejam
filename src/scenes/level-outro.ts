@@ -60,7 +60,8 @@ export class LevelOutro extends Scene {
             this.game.showCurrentLevel();
         }
         if(engine.input.keyboard.wasPressed(Keys.N)) {
-            this.game.showNextLevel();
+            this.game.showNextLevelIntro();
+            this.game.showLevelIntro();
         }
     }
 

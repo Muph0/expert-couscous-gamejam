@@ -1,6 +1,6 @@
 import { Item } from '@/actors/items/items';
 import { Machine } from './machine';
-import {CompositeCollider, Loader, Rectangle, Resource, Shape, Sprite, vec, Vector} from 'excalibur';
+import {Actor, CompositeCollider, Loader, Rectangle, Resource, Shape, Sprite, vec, Vector} from 'excalibur';
 import { Resources } from '@/resources';
 import { Paddle } from '../paddle';
 
@@ -24,6 +24,10 @@ export class Brewer extends Machine {
             Shape.Polygon([vec(10, 1), vec(14, 21), vec(15, 21), vec(11, 0)], vec(-24, -35)),
             Shape.Polygon([vec(43, 1), vec(42, 0), vec(39, 21), vec(40, 21)], vec(-24, -35)),
         ]));
+
+        const funnelSprite = new Actor();
+        funnelSprite.graphics.use(Resources.Machines().getSprite(3,0))        ;
+        this.addChild(funnelSprite);
     }
 
     processItem(item: Item): Item | null {
