@@ -1,6 +1,16 @@
 import {Resources} from "@/resources";
 import {Sprite} from "excalibur";
-import {ProductType} from "@/levels/level";
+
+
+export enum ProductType {
+    COFFEE,
+    TEA,
+}
+
+export enum MachineType {
+    BREWER,
+    GRINDER,
+}
 
 export interface Item {
     grind?(): Item;
@@ -9,6 +19,14 @@ export interface Item {
 
     getSprite(): Sprite;
     getProductType?(): ProductType;
+}
+
+export class Leaf<T> implements Item {
+    getSprite(): Sprite { return Resources.Items().getSprite(3, 0); }
+
+    grind(): Item {
+        return new GroundLeaf();
+    }
 }
 
 export class Acorn<T> implements Item {
@@ -45,4 +63,16 @@ export class RoastedAcorn implements Item {
 
 export class RoastedGroundAcorn implements Item {
     getSprite(): Sprite { return Resources.Items().getSprite(0, 2); }
+}
+
+
+export class GroundLeaf implements Item {
+    getSprite(): Sprite { return Resources.Items().getSprite(4, 0); }
+}
+
+export class Tea implements Item {
+    getSprite(): Sprite { return Resources.Items().getSprite(5, 0); }
+    getProductType(): ProductType {
+        return ProductType.TEA;
+    }
 }

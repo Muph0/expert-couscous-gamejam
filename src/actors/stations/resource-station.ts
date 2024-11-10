@@ -69,6 +69,8 @@ class ResourceStation extends Actor {
         this.addChild(this.tooltip); // Attach tooltip to the ResourceStation
         this.addChild(itemActor)
 
+        itemActor.scale = vec(0.8, 0.8)
+
         this.graphics.use(Resources.Load.ResourceStation.toSprite())
     }
 

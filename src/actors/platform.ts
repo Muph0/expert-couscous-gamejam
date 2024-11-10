@@ -40,6 +40,10 @@ export class SolidPlatform extends Platform {
     }
 
     onCollisionEnd(self: Collider, other: Collider, side: Side, lastContact: CollisionContact) {
+        // this happened. no idea why
+        if (other.owner == null)
+            return;
+
         const otherBody = other.owner.get(BodyComponent)
 
         if (otherBody.owner instanceof Player) {

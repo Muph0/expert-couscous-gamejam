@@ -1,17 +1,25 @@
+import { Engine, Loader, DisplayMode, Keys, Scene, CollisionType, Color, Actor } from 'excalibur';
 import { GameStatistics, MainScene } from './scenes/main-scene';
-import {Engine, Loader, DisplayMode, Keys, Scene, CollisionType, Color, Actor} from 'excalibur';
 import { Resources } from './resources';
 import { Level, LevelIntro } from './scenes/level-intro';
 import { GameStart } from './scenes/game-start';
 import { LevelOutro } from './scenes/level-outro';
+import { LEVELS } from './levels/level';
+
+const enum Scenes {
+    Idle = 'idle',
+    Start = 'start',
+    Intro = 'intro',
+    Outro = 'outro',
+    Main = 'main',
+}
 
 /**
  * Managed game class
  */
 export class Game extends Engine {
     private mainScene!: MainScene;
-    private levels: Level[]
-    private curLevelId: number
+    private curLevelId: number = 0
     private isShowDebug = false;
 
     constructor() {
@@ -19,8 +27,6 @@ export class Game extends Engine {
             displayMode: DisplayMode.FillScreen,
             antialiasing: false,
         });
-        this.levels = []
-        this.curLevelId = 0
 
         this.debug.collider.boundsColor = Color.Red;
         this.debug.collider.showAll = true;
@@ -35,51 +41,40 @@ export class Game extends Engine {
     }
 
     restart(): void {
-        this.goToScene('idle').then(() => {
+        this.goToScene(Scenes.Idle).then(() => {
             this.removeScene(this.mainScene);
-            this.play();
+            this.showCurrentLevel();
         });
     }
 
     onStart(): void {
-        this.addScene('start', new GameStart(this));
-        this.goToScene('start');
+        this.addScene(Scenes.Start, new GameStart(this));
+        this.goToScene(Scenes.Start);
     }
 
-    public firstLevel(): void {
-        this.curLevelId = 0;
-        this.addScene('intro', new LevelIntro(this, this.levels[this.curLevelId], this.curLevelId));
-        this.goToScene('intro');
+    public showLevelIntro(): void {
+        this.addScene(Scenes.Intro, new LevelIntro(this, LEVELS[this.curLevelId], this.curLevelId));
+        this.goToScene(Scenes.Intro);
     }
 
-    public newLevel(next: boolean): void {
-        if (next) {
-            this.curLevelId++;
-        }
-        if (this.curLevelId >= this.levels.length) {
-            // TODO: add and screen or restart
+    public showLevelOutro(statics: GameStatistics) {
+        this.addScene(Scenes.Outro, new LevelOutro(this, this.curLevelId, statics));
+        this.goToScene(Scenes.Outro);
+    }
+
+    public showNextLevel(): void {
+        this.curLevelId++;
+        if (this.curLevelId >= LEVELS.length) {
             this.restart()
+            // TODO: add and screen or restart
+        } else {
+            this.showCurrentLevel();
         }
-        this.removeScene('intro');
-        this.addScene('intro', new LevelIntro(this, this.levels[this.curLevelId], this.curLevelId));
-        this.goToScene('intro');
-
     }
-
-    public endLevel(statics: GameStatistics) {
-        this.addScene('outro', new LevelOutro(this, this.curLevelId, statics));
-        this.goToScene('outro');
+    public showCurrentLevel(): void {
+        this.addScene(Scenes.Main, new MainScene(this, LEVELS[this.curLevelId]));
+        this.goToScene(Scenes.Main);
     }
-
-    public play(): void {
-        // Create new scene with a player
-        this.mainScene = new MainScene(this, {maxPoints: 100});
-        this.addScene('idle', new Scene());
-        this.addScene('main', this.mainScene);
-        this.goToScene('main');
-    }
-
-
 
     onPreUpdate(engine: Engine, delta: number): void {
         if (engine.input.keyboard.wasPressed(Keys.R)) {
