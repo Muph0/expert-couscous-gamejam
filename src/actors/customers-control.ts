@@ -62,23 +62,36 @@ export class CustomerControl extends Actor {
 
     onCollisionStart(self: Collider, other: Collider, side: Side, contact: CollisionContact) {
         const item = other.owner;
-        if (!(item instanceof ItemActor))
-            return;
-        if (item.allocatedToCustomer)
-            return;
-        if (!item.item.getProductType)
-            return;
-        const productType = item.item.getProductType();
+        if (!(item instanceof ItemActor)) return;
+        if (item.allocatedToCustomer) return;
+
+        let productType: ProductType | undefined;
+        if (item.item.getProductType) {
+            productType = item.item.getProductType();
+        } else {
+            productType = undefined
+        }
+
         const customer = this.customers.find(c =>
             !c.satisfied && !c.productAssigned() && c.desiredProductType == productType
         );
+
         if (customer) {
             customer.goFetchItem(item);
         } else {
+            // Add item to pendingProducts
             this.pendingProducts.push(item);
+
+            console.log(item)
+
+            // Set a timeout to remove the item if it’s not assigned to a customer
             setTimeout(() => {
+                // Check if item is still in pendingProducts and not assigned
                 if (this.pendingProducts.includes(item) && !item.allocatedToCustomer) {
-                    this.pendingProducts = this.pendingProducts.filter(p => p != item);
+                    // Remove from pendingProducts
+                    this.pendingProducts = this.pendingProducts.filter(p => p !== item);
+
+                    item.actions.fade(0, 1000).callMethod(() => {});
                 }
             }, CustomerControl.ITEM_TIMEOUT);
         }
