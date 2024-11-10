@@ -41,7 +41,7 @@ export class Level1 implements Level {
             new Platform(200, 150, 30, 10),
 
             // brewer platform
-            new Platform(480 / 2, 370, 30, 10, -Math.PI / 5, CollisionType.Fixed),
+            new Platform(this.size.x / 2, 370, 30, 10, -Math.PI / 5, CollisionType.Fixed),
 
 
         ]).forEach(platform => scene.add(platform));
@@ -52,14 +52,14 @@ export class Level1 implements Level {
         ]).forEach(station => scene.add(station));
 
         // Create player-controlled squirrel
-        const player = new Player(480 / 2, 180);
+        const player = new Player(this.size.x / 2, 180);
         scene.add(player);
 
         // // Create machines
-        const grinder = new Grinder(480 / 2, 300);
+        const grinder = new Grinder(this.size.x / 2, 300);
         scene.add(grinder);
 
-        const brewer = new Brewer(480, 350);
+        const brewer = new Brewer(this.size.x, 350);
         scene.add(brewer);
 
         const wheel = new HamsterWheel(100, 80, 50, grinder);
@@ -67,7 +67,7 @@ export class Level1 implements Level {
 
         // TODO: Position the machines properly
 
-        const customerControl = new CustomerControl(this.size.x * 0.8, this.size.y);
+        const customerControl = new CustomerControl(this.size.x / 2, this.size.y, this.size.x);
         scene.add(customerControl);
     }
 }
