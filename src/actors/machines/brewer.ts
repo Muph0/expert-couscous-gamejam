@@ -16,7 +16,6 @@ export class Brewer extends Machine {
         });
         this.graphics.use(Resources.Machines().getSprite(2, 0));
 
-
         this.collider.set(new CompositeCollider([
             Shape.Box(45, 16, undefined, vec(0, -6)),
             // in tile coordinates

@@ -1,6 +1,6 @@
 import * as ex from 'excalibur';
 import { ItemActor } from './items/itemActor';
-import { ProductType } from './items/items';
+import {Item} from './items/items';
 import { Resources } from "@/resources";
 import { clamp, CollisionType, Engine, vec } from 'excalibur';
 import { Coffee, Tea } from "@/actors/items/items";
@@ -44,7 +44,7 @@ export class Customer extends ex.Actor {
     };
 
     private bubble: ex.Actor; // New bubble actor
-    public readonly desiredProductType: ProductType;
+    public readonly desiredItem: Item;
     public satisfied: boolean = false;
     private assignedItem: ItemActor | null = null;
     private runningDirection: number | null = null;
@@ -52,7 +52,7 @@ export class Customer extends ex.Actor {
 
     private carryingItem: ItemActor | null = null;
 
-    constructor(waitingX: number, desiredProductType: ProductType) {
+    constructor(waitingX: number, desiredProductType: Item) {
         super({
             pos: ex.vec(waitingX, 0),
             width: 32,
@@ -60,7 +60,7 @@ export class Customer extends ex.Actor {
             color: ex.Color.Yellow,
             collisionType: ex.CollisionType.Passive,
         });
-        this.desiredProductType = desiredProductType;
+        this.desiredItem = desiredProductType;
 
         // Initialize the bubble actor
         this.bubble = new ex.Actor({
@@ -74,14 +74,7 @@ export class Customer extends ex.Actor {
         this.bubble.graphics.use(Resources.Load.Bubble.toSprite());
         this.bubble.scale = vec(1, 1)
 
-        let itemActor;
-        if (desiredProductType == ProductType.COFFEE) {
-            itemActor = new ItemActor(new Coffee());
-        }
-        else {
-            itemActor = new ItemActor(new Tea());
-        }
-
+        let itemActor = new ItemActor(desiredProductType);
         itemActor.pos = vec(0, -18)
         itemActor.body.collisionType = CollisionType.PreventCollision;
         this.bubble.addChild(itemActor)
