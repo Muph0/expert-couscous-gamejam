@@ -10,17 +10,27 @@ import { Platform, SolidPlatform } from "@/actors/platform";
 import { Player } from "@/actors/player";
 import ResourceStation from "@/actors/stations/resource-station";
 import { Level, Recipe } from "@/scenes/level-intro";
+import { MainScene } from "@/scenes/main-scene";
 import { CollisionType, Scene, vec, Vector } from "excalibur";
 
 
+export interface DesiredItem {
+    item: Item;
+    distribution: number;
+    price: number;
+}
 
 export class Level1 implements Level {
     readonly timeLimitMs: number = 5 * 60 * 1000;
     readonly maxPoints: number = 100 // determined by playing
     readonly size = Object.freeze(vec(400, 400)) as Vector;
 
-    getDesiredItems = (): Item[] => [new Tea(), new Coffee()];
-    getItemDistribution = (): number[] => [0.5, 0.5];
+    getDesiredItems = (): DesiredItem[] => [
+        {item: new Tea(),       distribution: 0.6, price: 10},
+        {item: new Coffee(),    distribution: 0.4, price: 15},
+    ];
+    // getItemDistribution = (): number[] => [0.6, 0.4];
+    // getItemPrice = (): number[] => [10, 15];
 
     getNewRecipes(): Recipe[] {
         // throw new Error("Method not implemented.");
@@ -30,7 +40,7 @@ export class Level1 implements Level {
         ];
     }
 
-    spawnItems(scene: Scene): void {
+    spawnItems(scene: MainScene): void {
         let { x: W, y: H } = this.size;
 
         ([
@@ -68,7 +78,7 @@ export class Level1 implements Level {
 
         // TODO: Position the machines properly
 
-        const customerControl = new CustomerControl(this.size.x / 2, this.size.y, this.size.x, this.getDesiredItems(), this.getItemDistribution());
+        const customerControl = new CustomerControl(scene, this.size.x / 2, this.size.y, this.size.x, this.getDesiredItems());
         scene.add(customerControl);
     }
 }

@@ -3,6 +3,8 @@ import {Customer} from "@/actors/customer";
 import {ItemActor} from "@/actors/items/itemActor";
 import {Recipe} from "@/scenes/level-intro";
 import {Item} from "@/actors/items/items";
+import { MainScene } from "@/scenes/main-scene";
+import { DesiredItem } from "@/levels/level";
 
 export class CustomerControl extends Actor {
     private static readonly HEIGHT = 100;
@@ -12,13 +14,13 @@ export class CustomerControl extends Actor {
     private static readonly ITEM_TIMEOUT = 5000;
     private static readonly CUSTOMER_OFFSET = 40;
 
+    private mainScene: MainScene;
     private customers: Customer[] = [];
     private pendingProducts: ItemActor[] = [];
 
-    private desiredItems: Item[];
-    private itemDistribution: number[];
+    private desiredItems: DesiredItem[];
 
-    constructor(x: number, y: number, width: number, desiredItems: Item[], itemDistribution: number[], height: number = 80) {
+    constructor(scene: MainScene, x: number, y: number, width: number, desiredItems: DesiredItem[], height: number = 80) {
         super({
             pos: vec(x, y),
             height: height,
@@ -27,14 +29,14 @@ export class CustomerControl extends Actor {
             collisionType: CollisionType.Passive,
         });
 
+        this.mainScene = scene;
         this.desiredItems = desiredItems;
-        this.itemDistribution = itemDistribution;
     }
 
-    sampleItem() {
+    sampleItem(): DesiredItem {
         const cumulativeWeights: number[] = [];
-        this.itemDistribution.reduce((acc, weight, i) => {
-            cumulativeWeights[i] = acc + weight;
+        this.desiredItems.reduce((acc, item, i) => {
+            cumulativeWeights[i] = acc + item.distribution;
             return cumulativeWeights[i];
         }, 0);
 
@@ -49,7 +51,7 @@ export class CustomerControl extends Actor {
 
     private scheduleCustomersRefresh(engine: Engine) {
         const timeout = Math.random() * (CustomerControl.MAX_TIMEOUT - CustomerControl.MIN_TIMEOUT) + CustomerControl.MIN_TIMEOUT;
-        const scene = this.scene;
+        const scene = this.mainScene;
         if (scene === null)
             return;
         setTimeout(() => {

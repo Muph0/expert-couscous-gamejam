@@ -5,6 +5,7 @@ import { Resources } from '@/resources';
 import { TextLabel } from '@/ui/text-label';
 import { SceneScaler } from './scene-scaler';
 import {ItemActor} from "@/actors/items/itemActor";
+import { DesiredItem } from '@/levels/level';
 
 export interface Level {
     timeLimitMs: number;
@@ -13,8 +14,7 @@ export interface Level {
     spawnItems(scene: Scene): void;
     getNewRecipes(): Recipe[];
 
-    getDesiredItems(): Item[];
-    getItemDistribution(): number[];
+    getDesiredItems(): DesiredItem[];
 }
 
 export class Recipe {

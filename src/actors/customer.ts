@@ -4,6 +4,7 @@ import {Item} from './items/items';
 import { Resources } from "@/resources";
 import { clamp, CollisionType, Engine, vec } from 'excalibur';
 import { Coffee, Tea } from "@/actors/items/items";
+import { DesiredItem } from '@/levels/level';
 
 export class Customer extends ex.Actor {
     private static readonly MAX_VELOCITY = 300;
@@ -44,7 +45,7 @@ export class Customer extends ex.Actor {
     };
 
     private bubble: ex.Actor; // New bubble actor
-    public readonly desiredItem: Item;
+    public readonly desiredItem: DesiredItem;
     public satisfied: boolean = false;
     private assignedItem: ItemActor | null = null;
     private runningDirection: number | null = null;
@@ -52,7 +53,7 @@ export class Customer extends ex.Actor {
 
     private carryingItem: ItemActor | null = null;
 
-    constructor(waitingX: number, desiredProductType: Item) {
+    constructor(waitingX: number, desiredProduct: DesiredItem) {
         super({
             pos: ex.vec(waitingX, 0),
             width: 32,
@@ -61,7 +62,7 @@ export class Customer extends ex.Actor {
             collisionType: ex.CollisionType.Passive,
             z: 5
         });
-        this.desiredItem = desiredProductType;
+        this.desiredItem = desiredProduct;
 
         // Initialize the bubble actor
         this.bubble = new ex.Actor({
@@ -76,7 +77,7 @@ export class Customer extends ex.Actor {
         this.bubble.graphics.use(Resources.Load.Bubble.toSprite());
         this.bubble.scale = vec(1, 1)
 
-        let itemActor = new ItemActor(desiredProductType);
+        let itemActor = new ItemActor(desiredProduct.item);
         itemActor.pos = vec(0, -18)
         itemActor.body.collisionType = CollisionType.PreventCollision;
         itemActor.z = 10
