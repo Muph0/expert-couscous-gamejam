@@ -27,6 +27,7 @@ var chirp2 = require('./music/chirp2.mp3')
 var mainMusic = require('./music/main.mp3')
 var grinderSound = require('./music/grinder.mp3')
 var brewerSound = require('./music/brewing.mp3')
+var leverSound = require('./music/lever.mp3')
 
 import resourceStation from './images/resource-station.png';
 
@@ -65,6 +66,7 @@ const Resources = new class Resources {
         MainMusic: new Sound(mainMusic),
         GrinderSound: new Sound(grinderSound),
         BrewerSound: new Sound(brewerSound),
+        LeverSound: new Sound(leverSound),
     }
 
     readonly Items = lazy(() =>

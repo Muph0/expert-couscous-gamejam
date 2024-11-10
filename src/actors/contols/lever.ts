@@ -35,10 +35,12 @@ export class Lever extends ex.Actor {
 
             if (direction) {
                 this.actions.clearActions()
-                this.actions.rotateTo(direction / 2, 5);
+                this.actions.rotateTo(direction / 2, 1);
 
-                this.linkedPlatform?.actions.rotateTo(direction / 2, 5);
+                this.linkedPlatform?.actions.rotateTo(direction / 2, 1);
 
+                if (this.rotation != direction / 2)
+                    Resources.Load.LeverSound.play(0.5)
             }
         }
     }
