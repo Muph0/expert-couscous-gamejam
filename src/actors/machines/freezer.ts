@@ -8,7 +8,7 @@ import {Paddle} from "@/actors/paddle";
 export class Freezer extends Machine {
 
     constructor(x: number, y: number) {
-        super({pos: vec(x, y), z: 1});
+        super({pos: vec(x, y), z: 1}, false, Resources.Load.IceMachineSound);
 
         const cover = new Actor();
         cover.graphics.use(Resources.Machines().getSprite(3,1));
