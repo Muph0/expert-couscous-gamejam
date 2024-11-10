@@ -1,19 +1,10 @@
 import * as ex from 'excalibur';
-import {CollisionType, ExcaliburGraphicsContext, Label, vec} from 'excalibur';
-import {Player} from "@/actors/player";
-import {AutomaticSquirrel} from '@/actors/automatic-squirrel';
-import {Platform, SolidPlatform} from '@/actors/platform';
-import {HamsterWheel} from "@/actors/contols/hamster-wheel";
-import {Lever} from "@/actors/contols/lever";
-import {Grinder} from '@/actors/machines/grinder';
-import {Brewer} from '@/actors/machines/brewer';
-import {ItemActor} from '@/actors/items/itemActor';
-import {Acorn, Coffee, Leaf} from '@/actors/items/items';
-import ResourceStation from '@/actors/stations/resource-station';
-import {CustomerControl} from "@/actors/customers-control";
-import {SceneScaler} from "@/scenes/scene-scaler";
-import {Level} from './level-intro';
-import {Game} from '@/game';
+import { ExcaliburGraphicsContext, Label, vec } from 'excalibur';
+import { ItemActor } from '@/actors/items/itemActor';
+import { Coffee } from '@/actors/items/items';
+import { SceneScaler } from "@/scenes/scene-scaler";
+import { Level } from './level-intro';
+import { Game } from '@/game';
 
 const LEVEL_TIME: number = 5 * 60 * 1000;
 
@@ -27,7 +18,7 @@ export interface GameStatistics {
 
 export class MainScene extends ex.Scene {
     entityCounter = new Label({ text: '' });
-    timeLabel = new Label({text: '', pos: vec(10, 10)})
+    timeLabel = new Label({ text: '', pos: vec(10, 10) })
     timePlayed: number
 
     private statistics: GameStatistics
@@ -61,9 +52,9 @@ export class MainScene extends ex.Scene {
             acorn.pos = mouse.lastWorldPos.clone();
             this.add(acorn);
         });
-        this.physics.config.gravity = vec(0,250);
+        this.physics.config.gravity = vec(0, 250);
 
-        new SceneScaler(vec(480,480), this)
+        new SceneScaler(this.level.size, this)
     }
 
     onPreDraw(ctx: ExcaliburGraphicsContext, delta: number): void {
