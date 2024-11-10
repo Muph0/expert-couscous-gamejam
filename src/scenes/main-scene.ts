@@ -8,7 +8,7 @@ import {Lever} from "@/actors/contols/lever";
 import {Grinder} from '@/actors/machines/grinder';
 import {Brewer} from '@/actors/machines/brewer';
 import {ItemActor} from '@/actors/items/itemActor';
-import {Acorn, Leaf} from '@/actors/items/items';
+import {Acorn, Coffee, Leaf} from '@/actors/items/items';
 import ResourceStation from '@/actors/stations/resource-station';
 import {CustomerControl} from "@/actors/customers-control";
 import {SceneScaler} from "@/scenes/scene-scaler";
@@ -68,7 +68,10 @@ export class MainScene extends ex.Scene {
             new Platform(480 / 2, 370, 30, 10, -Math.PI / 5, CollisionType.Fixed),
 
             // the main solid platform
-            new SolidPlatform(480 / 2, 200, 600, 20),
+            new SolidPlatform(480 / 2, 200, 480, 20),
+
+            // the bottom solid platform
+            new SolidPlatform(480 / 2, 480, 480, 20, 0, CollisionType.Fixed),
         ].forEach(platform => this.add(platform));}
 
         {[
@@ -96,59 +99,13 @@ export class MainScene extends ex.Scene {
 
         // TODO: Position the machines properly
 
-        const customerControl = new CustomerControl();
+        const customerControl = new CustomerControl(480 / 2, 480 + 10);
         this.add(customerControl);
-
-        // Add walls beyond the screen to prevent actors from moving outside
-        const screenWidth = engine.drawWidth;
-        const screenHeight = engine.drawHeight;
-
-        // Left wall
-        const leftWall = new ex.Actor({
-            pos: ex.vec(-10, screenHeight / 2),
-            width: 20,
-            height: screenHeight,
-            collisionType: ex.CollisionType.Fixed,
-            color: ex.Color.Transparent,
-        });
-
-        // Right wall
-        const rightWall = new ex.Actor({
-            pos: ex.vec(screenWidth + 10, screenHeight / 2),
-            width: 20,
-            height: screenHeight,
-            collisionType: ex.CollisionType.Fixed,
-            color: ex.Color.Transparent,
-        });
-
-        // Top wall
-        const topWall = new ex.Actor({
-            pos: ex.vec(screenWidth / 2, -10),
-            width: screenWidth,
-            height: 20,
-            collisionType: ex.CollisionType.Fixed,
-            color: ex.Color.Transparent,
-        });
-
-        // Bottom wall
-        const bottomWall = new ex.Actor({
-            pos: ex.vec(screenWidth / 2, screenHeight + 10),
-            width: screenWidth,
-            height: 20,
-            collisionType: ex.CollisionType.Fixed,
-            color: ex.Color.Transparent,
-        });
-
-        // Add walls to the scene
-        this.add(leftWall);
-        this.add(rightWall);
-        this.add(topWall);
-        this.add(bottomWall);
 
         let mouse = engine.input.pointers.primary;
         mouse.on('down', e => {
             console.log('spawn');
-            let acorn = new ItemActor(new Acorn());
+            let acorn = new ItemActor(new Coffee());
             acorn.pos = mouse.lastWorldPos.clone();
             this.add(acorn);
         });
