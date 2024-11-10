@@ -28,7 +28,7 @@ class ResourceStation extends Actor {
     playerReference?: Player;
     item: Item;
 
-    COOLDOWN = 5;
+    COOLDOWN = 3;
 
     constructor(x: number, y: number, size: number, item: Item) {
         super({
