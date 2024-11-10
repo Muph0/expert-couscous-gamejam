@@ -1,10 +1,13 @@
 import { Item } from '@/actors/items/items';
 import { Machine } from './machine';
-import { CompositeCollider, Rectangle, Resource, Shape, vec, Vector } from 'excalibur';
+import { CompositeCollider, Rectangle, Resource, Shape, Sprite, vec, Vector } from 'excalibur';
 import { Resources } from '@/resources';
 import { Paddle } from '../paddle';
 
 export class Brewer extends Machine {
+    getSprite(): Sprite {
+        return Resources.Machines().getSprite(2, 0)
+    }
     constructor(x: number, y: number) {
         super({
             pos: vec(x, y),

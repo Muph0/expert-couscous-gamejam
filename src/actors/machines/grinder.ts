@@ -1,12 +1,15 @@
 import { Machine } from './machine';
 import { ItemActor } from '../items/itemActor';
 import { Item } from '@/actors/items/items';
-import { Actor, CircleCollider, Color, CompositeCollider, EdgeCollider, Engine, vec, Vector } from 'excalibur';
+import { Actor, CircleCollider, Color, CompositeCollider, EdgeCollider, Engine, Sprite, vec, Vector } from 'excalibur';
 import { Resources } from '@/resources';
 import { Paddle } from '../paddle';
 
 
 export class Grinder extends Machine {
+    getSprite(): Sprite {
+        return Resources.Machines().getSprite(0, 0)
+    }
 
     crank: Actor;
 
