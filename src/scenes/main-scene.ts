@@ -130,7 +130,7 @@ export class MainScene extends ex.Scene {
 
     onPreUpdate(engine: ex.Engine, delta: number): void {
         this.timePlayed += delta;
-        if (this.timePlayed >= this.level.timeLimitMs || engine.input.keyboard.wasPressed(ex.Keys.N)) {
+        if (this.timePlayed >= this.level.timeLimitMs) {
             // this.statistics.pointsMax = 200;
             // this.statistics.pointsGained = 130;
             this.game.showLevelOutro(this.statistics);
