@@ -10,6 +10,7 @@ export interface Item extends Drawable {
     grind?(): Item;
     brew?(): Item;
     roast?(): Item;
+    freeze?(): Item;
 
     getSprite(): Sprite;
 }
@@ -69,5 +70,9 @@ export class GroundLeaf implements Item {
 }
 
 export class Tea implements Item {
+    getSprite(): Sprite { return Resources.Items().getSprite(5, 0); }
+}
+
+export class IceTea implements Item {
     getSprite(): Sprite { return Resources.Items().getSprite(5, 0); }
 }
