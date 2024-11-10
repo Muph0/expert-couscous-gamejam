@@ -55,6 +55,7 @@ export class LevelIntro extends Scene {
         private game: Game,
         private level: Level,
         private levelId: number,
+        private paused: boolean = false,
     ) {
         super();
         this.height = 180;
@@ -76,7 +77,13 @@ export class LevelIntro extends Scene {
         this.add(this.hintText);
         this.showHint();
 
-        this.add(new TextLabel(this.width / 2, this.height / 2 + 60, 40, "Press [SPACE] to play", TextLabel.GREY).actor);
+        if (this.paused) {
+            this.add(new TextLabel(this.width / 2, this.height / 2 + 50, 70, "PAUSED", TextLabel.GREY).actor);
+            this.add(new TextLabel(this.width / 2, this.height / 2 + 60, 40, "Press [SPACE] to continue", TextLabel.GREY).actor);
+
+        } else {
+            this.add(new TextLabel(this.width / 2, this.height / 2 + 60, 40, "Press [SPACE] to play", TextLabel.GREY).actor);
+        }
     }
 
     showHint() {
@@ -89,8 +96,11 @@ export class LevelIntro extends Scene {
 
     onPreUpdate(engine: Engine, delta: number): void {
         if (engine.input.keyboard.wasPressed(Keys.Space)) {
-            this.game.showCurrentLevel();
-            return;
+            if (this.paused) {
+                this.game.exitPause();
+            } else {
+                this.game.showCurrentLevel();
+            }
         }
     }
 

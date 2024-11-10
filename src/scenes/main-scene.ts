@@ -73,5 +73,9 @@ export class MainScene extends ex.Scene {
             this.statistics.pointsGained = 130;
             this.game.showLevelOutro(this.statistics);
         }
+
+        if (engine.input.keyboard.wasPressed(ex.Keys.P)) {
+            this.game.showPause();
+        }
     }
 }

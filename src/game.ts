@@ -12,6 +12,7 @@ const enum Scenes {
     Intro = 'intro',
     Outro = 'outro',
     Main = 'main',
+    Pause = 'pause',
 }
 
 /**
@@ -71,8 +72,18 @@ export class Game extends Engine {
             this.showCurrentLevel();
         }
     }
+
     public showCurrentLevel(): void {
         this.addScene(Scenes.Main, new MainScene(this, LEVELS[this.curLevelId]));
+        this.goToScene(Scenes.Main);
+    }
+
+    public showPause(): void {
+        this.addScene(Scenes.Pause, new LevelIntro(this, LEVELS[this.curLevelId], this.curLevelId, true))
+        this.goToScene(Scenes.Pause);
+    }
+
+    public exitPause(): void {
         this.goToScene(Scenes.Main);
     }
 
