@@ -268,7 +268,7 @@ export class Player extends Actor {
     }
 
     isCarryingItem() {
-        return (this.carryingItem != null);
+        return !!this.carryingItem;
     }
 
     pickUpItem(item: ItemActor) {
