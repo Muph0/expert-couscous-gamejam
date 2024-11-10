@@ -27,6 +27,7 @@ export class Brewer extends Machine {
 
         const funnelSprite = new Actor();
         funnelSprite.graphics.use(Resources.Machines().getSprite(3,0))        ;
+        funnelSprite.z = 20;
         this.addChild(funnelSprite);
     }
 
