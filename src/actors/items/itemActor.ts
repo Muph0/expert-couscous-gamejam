@@ -9,6 +9,7 @@ export class ItemActor extends Actor {
         super({
             radius: 6,
             collisionType: CollisionType.Active,
+            z: 10,
         });
         if (spawnPos) {
             this.pos = spawnPos.clone();

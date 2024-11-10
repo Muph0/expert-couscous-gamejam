@@ -59,6 +59,7 @@ export class Customer extends ex.Actor {
             height: 32,
             color: ex.Color.Yellow,
             collisionType: ex.CollisionType.Passive,
+            z: 5
         });
         this.desiredItem = desiredProductType;
 
@@ -69,6 +70,7 @@ export class Customer extends ex.Actor {
             width: 32,
             height: 32,
             collisionType: ex.CollisionType.PreventCollision,
+            z: 5,
         });
 
         this.bubble.graphics.use(Resources.Load.Bubble.toSprite());
@@ -77,6 +79,7 @@ export class Customer extends ex.Actor {
         let itemActor = new ItemActor(desiredProductType);
         itemActor.pos = vec(0, -18)
         itemActor.body.collisionType = CollisionType.PreventCollision;
+        itemActor.z = 10
         this.bubble.addChild(itemActor)
 
         // Attach the bubble to the customer as a child actor
