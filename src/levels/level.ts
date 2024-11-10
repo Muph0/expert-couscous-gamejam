@@ -21,19 +21,16 @@ export interface DesiredItem {
 }
 
 export class Level1 implements Level {
-    readonly timeLimitMs: number = 5 * 60 * 1000;
+    readonly timeLimitMs: number = 0.5 * 60 * 1000;
     readonly maxPoints: number = 100 // determined by playing
     readonly size = Object.freeze(vec(400, 400)) as Vector;
 
     getDesiredItems = (): DesiredItem[] => [
-        {item: new Tea(),       distribution: 0.6, price: 10},
-        {item: new Coffee(),    distribution: 0.4, price: 15},
+        {item: new Coffee(),    distribution: 0.6, price: 10},
+        {item: new Tea(),       distribution: 0.4, price: 15},
     ];
-    // getItemDistribution = (): number[] => [0.6, 0.4];
-    // getItemPrice = (): number[] => [10, 15];
 
     getNewRecipes(): Recipe[] {
-        // throw new Error("Method not implemented.");
         return [
             new Recipe(new Acorn(), new Grinder(0, 0), new GroundAcorn()),
             new Recipe(new GroundAcorn(), new Brewer(0, 0), new Coffee()),
