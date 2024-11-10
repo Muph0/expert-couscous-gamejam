@@ -14,6 +14,10 @@ export interface Item extends Drawable {
     getSprite(): Sprite;
 }
 
+export class Garbage implements Item {
+    getSprite(): Sprite { return Resources.Items().getSprite(3, 1); }
+}
+
 export class Leaf implements Item {
     getSprite(): Sprite { return Resources.Items().getSprite(3, 0); }
 
