@@ -21,7 +21,7 @@ export class Grinder extends Machine {
     constructor(x: number, y: number) {
         super({
             pos: vec(x, y),
-            z: 1,
+            z: 11,
         }, true);
 
         this.graphics.add(Resources.Machines().getSprite(0, 0));

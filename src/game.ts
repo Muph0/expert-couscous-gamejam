@@ -49,16 +49,19 @@ export class Game extends Engine {
     }
 
     onStart(): void {
+        this.removeScene(Scenes.Start);
         this.addScene(Scenes.Start, new GameStart(this));
         this.goToScene(Scenes.Start);
     }
 
     public showLevelIntro(): void {
+        this.removeScene(Scenes.Intro);
         this.addScene(Scenes.Intro, new LevelIntro(this, LEVELS[this.curLevelId], this.curLevelId));
         this.goToScene(Scenes.Intro);
     }
 
     public showLevelOutro(statics: GameStatistics) {
+        this.removeScene(Scenes.Outro);
         this.addScene(Scenes.Outro, new LevelOutro(this, this.curLevelId, statics));
         this.goToScene(Scenes.Outro);
     }
@@ -66,14 +69,15 @@ export class Game extends Engine {
     public showNextLevel(): void {
         this.curLevelId++;
         if (this.curLevelId >= LEVELS.length) {
-            this.restart()
-            // TODO: add and screen or restart
+            this.curLevelId = 0;
+            this.restart();
         } else {
             this.showCurrentLevel();
         }
     }
 
     public showCurrentLevel(): void {
+        this.removeScene(Scenes.Main);
         this.addScene(Scenes.Main, new MainScene(this, LEVELS[this.curLevelId]));
 
         Resources.Load.MainMusic.loop = true;
@@ -100,9 +104,6 @@ export class Game extends Engine {
     }
 
     onPreUpdate(engine: Engine, delta: number): void {
-        if (engine.input.keyboard.wasPressed(Keys.R)) {
-            this.restart();
-        }
         if (engine.input.keyboard.wasPressed(Keys.F4)) {
             this.isShowDebug = !this.isShowDebug;
             this.showDebug(this.isShowDebug);
