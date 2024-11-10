@@ -50,10 +50,10 @@ export class LevelOutro extends Scene {
 
     onPreUpdate(engine: Engine, delta: number): void {
         if (engine.input.keyboard.wasPressed(Keys.T)) {
-            this.game.newLevel(false);
+            this.game.showCurrentLevel();
         }
         if(engine.input.keyboard.wasPressed(Keys.N)) {
-            this.game.newLevel(true);
+            this.game.showNextLevel();
         }
     }
 

@@ -7,14 +7,15 @@ import { SceneScaler } from './scene-scaler';
 
 export interface Level {
     maxPoints: number;
+    spawnItems(scene: Scene): void;
+    getNewRecipes(): Recipe[];
 }
 
 export class Recipe {
-
     constructor(
         private ingredients: Item[],
         private result: Item,
-    ) {}
+    ) { }
 }
 
 export class LevelIntro extends Scene {
@@ -46,7 +47,7 @@ export class LevelIntro extends Scene {
 
     onPreUpdate(engine: Engine, delta: number): void {
         if (engine.input.keyboard.wasPressed(Keys.Space)) {
-            this.game.play();
+            this.game.showCurrentLevel();
         }
     }
 

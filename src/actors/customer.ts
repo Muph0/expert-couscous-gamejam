@@ -1,8 +1,8 @@
 import * as ex from 'excalibur';
 import { ItemActor } from './items/itemActor';
-import {ProductType} from "@/levels/level";
-import {Resources} from "@/resources";
-import {clamp, Engine, Keys} from "excalibur";
+import { ProductType } from './items/items';
+import { Resources } from "@/resources";
+import { clamp, Engine, Keys } from "excalibur";
 
 export class Customer extends ex.Actor {
     private static readonly MAX_VELOCITY = 300;

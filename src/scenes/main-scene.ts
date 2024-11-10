@@ -148,7 +148,7 @@ export class MainScene extends ex.Scene {
     onPreUpdate(engine: ex.Engine, delta: number): void {
         this.timePlayed += delta;
         if (this.timePlayed >= LEVEL_TIME) {
-            this.game.endLevel(0, 0);
+            this.game.showLevelOutro(0, 0);
         }
     }
 }

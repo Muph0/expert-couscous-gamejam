@@ -30,7 +30,7 @@ export class GameStart extends Scene {
 
     onPreUpdate(engine: Engine, delta: number): void {
         if (engine.input.keyboard.wasPressed(Keys.Space)) {
-            this.game.firstLevel();
+            this.game.showLevelIntro();
         }
     }
 

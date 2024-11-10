@@ -1,6 +1,9 @@
 import {Resources} from "@/resources";
 import {Sprite} from "excalibur";
-import {ProductType} from "@/levels/level";
+
+export enum ProductType {
+    COFFEE,
+}
 
 export interface Item {
     grind?(): Item;

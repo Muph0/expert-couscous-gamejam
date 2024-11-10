@@ -1,7 +1,7 @@
-import {Engine, Shape, vec, Actor, Color, CollisionType, Collider, Side, CollisionContact} from "excalibur";
-import {Customer} from "@/actors/customer";
-import {ItemActor} from "@/actors/items/itemActor";
-import {ProductType} from "@/levels/level";
+import { Engine, Shape, vec, Actor, Color, CollisionType, Collider, Side, CollisionContact } from "excalibur";
+import { Customer } from "@/actors/customer";
+import { ItemActor } from "@/actors/items/itemActor";
+import { ProductType } from "./items/items";
 
 export class CustomerControl extends Actor {
     private static readonly HEIGHT = 100;
