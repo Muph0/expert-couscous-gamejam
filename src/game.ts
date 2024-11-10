@@ -70,9 +70,9 @@ export class Game extends Engine {
         this.curLevelId++;
         if (this.curLevelId >= LEVELS.length) {
             this.curLevelId = 0;
-            this.restart();
+            this.onStart();
         } else {
-            this.showCurrentLevel();
+            this.showLevelIntro();
         }
     }
 
