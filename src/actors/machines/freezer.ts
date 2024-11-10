@@ -2,6 +2,7 @@ import { Actor, Color, Sprite, vec, Vector } from "excalibur";
 import { Item } from "../items/items";
 import { Machine } from "./machine";
 import { Resources } from "@/resources";
+import {Paddle} from "@/actors/paddle";
 
 
 export class Freezer extends Machine {
@@ -15,6 +16,9 @@ export class Freezer extends Machine {
         this.addChild(cover);
 
         this.graphics.use(Resources.Machines().getSprite(2, 1));
+
+        this.addChild(new Paddle(vec(-11, -18), vec(27, 2), 75));
+        this.addChild(new Paddle(vec(12, -18), vec(27, 2), -75));
     }
 
     getSprite(): Sprite {
@@ -25,7 +29,7 @@ export class Freezer extends Machine {
 
     protected getIntake(): [Vector, Vector] {
         return [
-            vec(-5, -10),
+            vec(-5, -18),
             vec(5, -5),
         ]
     }
