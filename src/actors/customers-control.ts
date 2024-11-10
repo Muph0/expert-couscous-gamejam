@@ -79,10 +79,6 @@ export class CustomerControl extends Actor {
                 }
 
                 scene.add(customer);
-
-                if (this.pendingProducts.length > 0) {
-                    customer.goFetchItem(this.pendingProducts.pop()!);
-                }
             }
 
             this.scheduleCustomersRefresh(engine);
