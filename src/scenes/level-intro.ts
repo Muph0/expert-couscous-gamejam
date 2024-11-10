@@ -72,8 +72,9 @@ export class LevelIntro extends Scene {
         this.add(levelTable);
         this.add(new TextLabel(this.width / 2 + 2, 58, 56, `Level  ${this.levelId + 1}`, TextLabel.WHITE).actor);
 
-        this.hintText = new TextLabel(this.width / 2, 70, 40, "Want a little hint?\nPress [H] to show hints.", TextLabel.WHITE).actor
+        this.hintText = new TextLabel(this.width / 2, 75, 40, "Want a little hint?", TextLabel.WHITE).actor
         this.add(this.hintText);
+        this.showHint();
 
         this.add(new TextLabel(this.width / 2, this.height / 2 + 60, 40, "Press [SPACE] to play", TextLabel.GREY).actor);
     }
@@ -82,7 +83,7 @@ export class LevelIntro extends Scene {
         const recipes = this.level.getNewRecipes();
         for (let i = 0; i < recipes.length; i++) {
             const recipe = recipes[i];
-            recipe.show(this, this.width / 2 - (5 * 16) / 2, this.height / 2 + i * 16 + 5);
+            recipe.show(this, this.width / 2 - (4 * 16) / 2,(this.height / 2 - 10) + i * 16 + 5);
         }
     }
 
@@ -90,11 +91,6 @@ export class LevelIntro extends Scene {
         if (engine.input.keyboard.wasPressed(Keys.Space)) {
             this.game.showCurrentLevel();
             return;
-        }
-
-        if (engine.input.keyboard.wasPressed(Keys.H)) {
-            this.remove(this.hintText);
-            this.showHint();
         }
     }
 

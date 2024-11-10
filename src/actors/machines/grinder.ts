@@ -8,7 +8,9 @@ import { Paddle } from '../paddle';
 
 export class Grinder extends Machine {
     getSprite(): Sprite {
-        return Resources.Machines().getSprite(0, 0)
+        const sprite = Resources.Machines().getSprite(0, 0)
+        sprite.scale = vec(0.22, 0.22);
+        return sprite;
     }
 
     crank: Actor;
