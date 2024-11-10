@@ -85,7 +85,7 @@ export class Game extends Engine {
         if (engine.input.keyboard.wasPressed(Keys.R)) {
             this.restart();
         }
-        if (engine.input.keyboard.wasPressed(Keys.F3)) {
+        if (engine.input.keyboard.wasPressed(Keys.F4)) {
             this.isShowDebug = !this.isShowDebug;
             this.showDebug(this.isShowDebug);
         }
