@@ -76,6 +76,8 @@ export class Game extends Engine {
     public showCurrentLevel(): void {
         this.addScene(Scenes.Main, new MainScene(this, LEVELS[this.curLevelId]));
 
+        Resources.Load.MainMusic.loop = true;
+
         if (!Resources.Load.MainMusic.isPlaying())
             Resources.Load.MainMusic.play(0.15)
 
