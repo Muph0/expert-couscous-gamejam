@@ -57,6 +57,7 @@ export class MainScene extends ex.Scene {
     }
 
     onInitialize(engine: ex.Engine) {
+        this.backgroundColor = new Color(216, 185, 157);
         this.add(this.entityCounter);
 
         this.level.spawnItems(this);

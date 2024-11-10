@@ -22,9 +22,11 @@ export interface DesiredItem {
     price: number;
 }
 
+let FUCK_OFFSET = -40
+
 export class Level1 implements Level {
     readonly timeLimitMs: number = 1 * 60 * 1000;
-    readonly maxPoints: number = 100 // determined by playing
+    readonly maxPoints: number = 100; // determined by playing
     readonly size = Object.freeze(vec(400, 400)) as Vector;
 
     getDesiredItems = (): DesiredItem[] => [
@@ -50,7 +52,7 @@ export class Level1 implements Level {
             new Platform(320, 150, 60, 10),
 
             // brewer platform
-            new Platform(this.size.x / 2, 310, 30, 10, -1/2, CollisionType.Fixed),
+            new Platform(this.size.x / 2 + FUCK_OFFSET, 310, 30, 10, -1/2, CollisionType.Fixed),
 
 
         ]).forEach(platform => scene.add(platform));
@@ -65,10 +67,10 @@ export class Level1 implements Level {
         scene.add(player);
 
         // // Create machines
-        const grinder = new Grinder(this.size.x / 2, 260);
+        const grinder = new Grinder(this.size.x / 2 + FUCK_OFFSET, 260);
         scene.add(grinder);
 
-        const brewer = new Brewer(this.size.x / 2 - 30, 360);
+        const brewer = new Brewer(this.size.x / 2 - 30 + FUCK_OFFSET, 360);
         scene.add(brewer);
 
         const wheel = new HamsterWheel(90, 110, 50, grinder);
@@ -101,7 +103,7 @@ export class Level2 implements Level {
             { item: new Coffee(), distribution: 0.4, price: 15 },
         ];
     }
-    readonly maxPoints: number = 100 // determined by playing
+    readonly maxPoints: number = 300; // determined by playing
     readonly size = Object.freeze(vec(400, 400)) as Vector;
 
     getNewRecipes(): Recipe[] {
@@ -123,7 +125,7 @@ export class Level2 implements Level {
             new Platform(320, 150, 60, 10),
 
             // brewer platform
-            new Platform(this.size.x / 2, 310, 30, 10, -1/2, CollisionType.Fixed),
+            new Platform(this.size.x / 2 + FUCK_OFFSET, 310, 30, 10, -1/2, CollisionType.Fixed),
 
 
         ]).forEach(platform => scene.add(platform));
@@ -138,10 +140,10 @@ export class Level2 implements Level {
         scene.add(player);
 
         // // Create machines
-        const grinder = new Grinder(this.size.x / 2, 260);
+        const grinder = new Grinder(this.size.x / 2 + FUCK_OFFSET, 260);
         scene.add(grinder);
 
-        const brewer = new Brewer(this.size.x / 2 - 30, 360);
+        const brewer = new Brewer(this.size.x / 2 - 30 + FUCK_OFFSET, 360);
         scene.add(brewer);
 
         const wheel = new HamsterWheel(90, 110, 50, grinder);
@@ -175,7 +177,7 @@ export class Level3 implements Level {
             { item: new IceCream(), distribution: 0.2, price: 30 },
         ];
     }
-    readonly maxPoints: number = 100 // determined by playing
+    readonly maxPoints: number = 400; // determined by playing
     readonly size = Object.freeze(vec(400, 400)) as Vector;
 
     getNewRecipes(): Recipe[] {
@@ -188,7 +190,7 @@ export class Level3 implements Level {
     spawnItems(scene: MainScene): void {
         let { x: W, y: H } = this.size;
 
-        let brewerPlatform = new Platform(this.size.x / 2, 310, 30, 10, -1/2, CollisionType.Fixed);
+        let brewerPlatform = new Platform(this.size.x / 2 + FUCK_OFFSET, 310, 30, 10, -1/2, CollisionType.Fixed);
 
         ([
             new SolidPlatform(W / 2, 200, W, 20), // the main solid platform
@@ -213,13 +215,13 @@ export class Level3 implements Level {
         scene.add(player);
 
         // // Create machines
-        const grinder = new Grinder(this.size.x / 2, 260);
+        const grinder = new Grinder(this.size.x / 2 + FUCK_OFFSET, 260);
         scene.add(grinder);
 
-        const brewer = new Brewer(this.size.x / 2 - 30, 360);
+        const brewer = new Brewer(this.size.x / 2 - 30 + FUCK_OFFSET, 360);
         scene.add(brewer);
 
-        const freezer = new Freezer(this.size.x / 2 + 30, 360);
+        const freezer = new Freezer(this.size.x / 2 + 30 + FUCK_OFFSET, 360);
         scene.add(freezer);
 
         const wheel = new HamsterWheel(90, 110, 50, grinder);
