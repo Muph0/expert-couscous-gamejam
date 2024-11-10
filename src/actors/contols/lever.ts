@@ -3,13 +3,14 @@ import { Machine } from '../machines/machine';
 import {BodyComponent, Collider, CollisionContact, Engine, Shape, Side, vec} from "excalibur";
 import {Player} from "@/actors/player";
 import {Resources} from "@/resources";
+import {Platform} from "@/actors/platform";
 
 export class Lever extends ex.Actor {
-    public linkedMachine!: Machine;
+    public linkedPlatform!: Platform;
 
     playerReference!: Player | null
 
-    constructor(x: number, y: number, linkedMachine?: Machine) {
+    constructor(x: number, y: number, linkedPlatform?: Platform) {
         super({
             pos: ex.vec(x, y),
             width: 8,
@@ -19,10 +20,12 @@ export class Lever extends ex.Actor {
             collider: Shape.Circle(4)
         });
 
+        this.rotation = -1/2;
+
         this.graphics.use(Resources.Load.Lever.toSprite())
 
-        if (linkedMachine) {
-            this.linkedMachine = linkedMachine;
+        if (linkedPlatform) {
+            this.linkedPlatform = linkedPlatform;
         }
     }
 
@@ -33,6 +36,9 @@ export class Lever extends ex.Actor {
             if (direction) {
                 this.actions.clearActions()
                 this.actions.rotateTo(direction / 2, 5);
+
+                this.linkedPlatform?.actions.rotateTo(direction / 2, 5);
+
             }
         }
     }
@@ -58,7 +64,4 @@ export class Lever extends ex.Actor {
         }
     }
 
-    onInitialize(engine: ex.Engine) {
-        // TODO: Implement lever interaction
-    }
 }
