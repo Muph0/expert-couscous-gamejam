@@ -242,4 +242,6 @@ export class Level3 implements Level {
 
 export const LEVELS: Level[] = [
     new Level1(),
+    new Level2(),
+    new Level3(),
 ];
