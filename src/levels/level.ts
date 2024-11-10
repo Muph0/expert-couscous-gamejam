@@ -3,7 +3,7 @@ import { HamsterWheel } from "@/actors/contols/hamster-wheel";
 import { Lever } from "@/actors/contols/lever";
 import { CustomerControl } from "@/actors/customers-control";
 import { ItemActor } from "@/actors/items/itemActor";
-import { Acorn, Coffee, GroundAcorn, Leaf } from "@/actors/items/items";
+import {Acorn, Coffee, GroundAcorn, Item, Leaf, Tea} from "@/actors/items/items";
 import { Brewer } from "@/actors/machines/brewer";
 import { Grinder } from "@/actors/machines/grinder";
 import { Platform, SolidPlatform } from "@/actors/platform";
@@ -17,6 +17,9 @@ import { CollisionType, Scene, vec, Vector } from "excalibur";
 export class Level1 implements Level {
     readonly maxPoints: number = 100 // determined by playing
     readonly size = Object.freeze(vec(400, 400)) as Vector;
+
+    getDesiredItems = (): Item[] => [new Tea(), new Coffee()];
+    getItemDistribution = (): number[] => [0.5, 0.5];
 
     getNewRecipes(): Recipe[] {
         // throw new Error("Method not implemented.");
@@ -64,7 +67,7 @@ export class Level1 implements Level {
 
         // TODO: Position the machines properly
 
-        const customerControl = new CustomerControl(this.size.x / 2, this.size.y, this.size.x);
+        const customerControl = new CustomerControl(this.size.x / 2, this.size.y, this.size.x, this.getDesiredItems(), this.getItemDistribution());
         scene.add(customerControl);
     }
 }

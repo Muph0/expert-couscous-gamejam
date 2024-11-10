@@ -36,7 +36,7 @@ export class HamsterWheel extends ex.Actor {
     }
 
     onPostUpdate(engine: Engine, delta: number): void {
-        if (this.platform.direction != 0) {
+        if (this.platform.direction != 0 && this.platform.isOnPlayform) {
             this.wheel.actions.rotateBy(this.platform.direction / 20, 100);
 
             if (this.linkedMachine != undefined) {

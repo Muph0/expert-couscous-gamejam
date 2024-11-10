@@ -13,9 +13,9 @@ export class Brewer extends Machine {
     constructor(x: number, y: number) {
         super({
             pos: vec(x, y),
+            z: 1,
         });
         this.graphics.use(Resources.Machines().getSprite(2, 0));
-
 
         this.collider.set(new CompositeCollider([
             Shape.Box(45, 16, undefined, vec(0, -6)),

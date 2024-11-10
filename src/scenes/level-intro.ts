@@ -4,19 +4,23 @@ import { Game } from '@/game';
 import { Resources } from '@/resources';
 import { TextLabel } from '@/ui/text-label';
 import { SceneScaler } from './scene-scaler';
+import {ItemActor} from "@/actors/items/itemActor";
 
 export interface Level {
     maxPoints: number;
     size: Vector;
     spawnItems(scene: Scene): void;
     getNewRecipes(): Recipe[];
+
+    getDesiredItems(): Item[];
+    getItemDistribution(): number[];
 }
 
 export class Recipe {
     constructor(
-        private ingredient1: Drawable,
-        private ingredient2: Drawable,
-        private result: Drawable,
+        public ingredient1: Drawable,
+        public ingredient2: Drawable,
+        public result: Item,
     ) { }
 
     public show(scene: Scene, x: number, y: number) {
@@ -39,7 +43,7 @@ export class Recipe {
         eqAct.graphics.add(equals);
         scene.add(eqAct);
 
-        const resultAct = new Actor({pos: vec(x + 4 * 16, y)});
+        const resultAct = new ItemActor(this.result, vec(x + 4 * 16, y));
         resultAct.graphics.add(this.result.getSprite());
         scene.add(resultAct);
     }

@@ -1,7 +1,8 @@
-import { Engine, Shape, vec, Actor, Color, CollisionType, Collider, Side, CollisionContact } from "excalibur";
-import { Customer } from "@/actors/customer";
-import { ItemActor } from "@/actors/items/itemActor";
-import { ProductType } from "./items/items";
+import {Engine, Shape, vec, Actor, Color, CollisionType, Collider, Side, CollisionContact} from "excalibur";
+import {Customer} from "@/actors/customer";
+import {ItemActor} from "@/actors/items/itemActor";
+import {Recipe} from "@/scenes/level-intro";
+import {Item} from "@/actors/items/items";
 
 export class CustomerControl extends Actor {
     private static readonly HEIGHT = 100;
@@ -14,7 +15,10 @@ export class CustomerControl extends Actor {
     private customers: Customer[] = [];
     private pendingProducts: ItemActor[] = [];
 
-    constructor(x: number, y: number, width: number, height: number = 50) {
+    private desiredItems: Item[];
+    private itemDistribution: number[];
+
+    constructor(x: number, y: number, width: number, desiredItems: Item[], itemDistribution: number[], height: number = 80) {
         super({
             pos: vec(x, y),
             height: height,
@@ -22,6 +26,21 @@ export class CustomerControl extends Actor {
             color: Color.Transparent,
             collisionType: CollisionType.Passive,
         });
+
+        this.desiredItems = desiredItems;
+        this.itemDistribution = itemDistribution;
+    }
+
+    sampleItem() {
+        const cumulativeWeights: number[] = [];
+        this.itemDistribution.reduce((acc, weight, i) => {
+            cumulativeWeights[i] = acc + weight;
+            return cumulativeWeights[i];
+        }, 0);
+
+        const random = Math.random() * cumulativeWeights[cumulativeWeights.length - 1];
+
+        return this.desiredItems[cumulativeWeights.findIndex(cumulativeWeight => random < cumulativeWeight)];
     }
 
     onInitialize(engine: Engine) {
@@ -38,7 +57,8 @@ export class CustomerControl extends Actor {
             let waitingCustomers = this.customers.filter(c => !c.productAssigned());
             if (waitingCustomers.length < CustomerControl.MAX_WAITING_CUSTOMERS) {
                 console.log("Adding customer.")
-                const product = ProductType.COFFEE; // TODO: choose at random
+
+                const product = this.sampleItem()
                 const waitingX = this.width + CustomerControl.CUSTOMER_OFFSET;
                 const customer = new Customer(waitingX, product);
 
@@ -61,37 +81,33 @@ export class CustomerControl extends Actor {
     }
 
     onCollisionStart(self: Collider, other: Collider, side: Side, contact: CollisionContact) {
-        const item = other.owner;
-        if (!(item instanceof ItemActor)) return;
-        if (item.allocatedToCustomer) return;
+        const itemActor = other.owner;
+        if (!(itemActor instanceof ItemActor)) return;
+        if (itemActor.allocatedToCustomer) return;
 
-        let productType: ProductType | undefined;
-        if (item.item.getProductType) {
-            productType = item.item.getProductType();
-        } else {
-            productType = undefined
-        }
+        let item = itemActor.item;
 
         const customer = this.customers.find(c =>
-            !c.satisfied && !c.productAssigned() && c.desiredProductType == productType
+            !c.satisfied && !c.productAssigned() && Object.getPrototypeOf(c.desiredItem) == Object.getPrototypeOf(item)
         );
 
         if (customer) {
-            customer.goFetchItem(item);
+            customer.goFetchItem(itemActor);
         } else {
             // Add item to pendingProducts
-            this.pendingProducts.push(item);
+            this.pendingProducts.push(itemActor);
 
-            console.log(item)
+            console.log(itemActor)
 
             // Set a timeout to remove the item if it’s not assigned to a customer
             setTimeout(() => {
                 // Check if item is still in pendingProducts and not assigned
-                if (this.pendingProducts.includes(item) && !item.allocatedToCustomer) {
+                if (this.pendingProducts.includes(itemActor) && !itemActor.allocatedToCustomer) {
                     // Remove from pendingProducts
-                    this.pendingProducts = this.pendingProducts.filter(p => p !== item);
+                    this.pendingProducts = this.pendingProducts.filter(p => p !== itemActor);
 
-                    item.actions.fade(0, 1000).callMethod(() => {});
+                    itemActor.actions.fade(0, 1000).callMethod(() => {
+                    });
                 }
             }, CustomerControl.ITEM_TIMEOUT);
         }

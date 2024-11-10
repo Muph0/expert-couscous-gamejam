@@ -19,5 +19,7 @@ export class ItemActor extends Actor {
 
     onPostUpdate(engine: Engine, delta: number): void {
         this.angularVelocity = this.vel.x / 10;
+
+        this.vel.x *= 0.99;
     }
 }

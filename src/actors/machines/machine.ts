@@ -41,7 +41,7 @@ export abstract class Machine extends Actor implements Drawable {
         // Create tooltip (initially hidden)
         this.tooltip = new Label({
             text: '',
-            pos: vec(0, 0), // Position the label above the station
+            pos: vec(0, -20), // Position the label above the station
             font: new Font({
                 textAlign: TextAlign.Center,
                 baseAlign: BaseAlign.Middle,
@@ -57,7 +57,7 @@ export abstract class Machine extends Actor implements Drawable {
             })
         });
 
-        this.tooltip.z = 10;
+        this.tooltip.z = 1000;
 
         let [intakeStart, intakeEnd] = this.getIntake();
         this.intakeActor = new Actor({
@@ -65,7 +65,7 @@ export abstract class Machine extends Actor implements Drawable {
             width: intakeEnd.x - intakeStart.x,
             height: intakeEnd.y - intakeStart.y,
             collisionType: CollisionType.Fixed,
-            color: Color.Green,
+            color: Color.Transparent,
         });
         this.intakeActor.on('collisionstart', e => {
             if (this.isOn && e.other instanceof ItemActor) {
