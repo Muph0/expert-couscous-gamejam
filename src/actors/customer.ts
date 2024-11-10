@@ -2,12 +2,13 @@ import * as ex from 'excalibur';
 import { ItemActor } from './items/itemActor';
 import { ProductType } from './items/items';
 import { Resources } from "@/resources";
-import { clamp, Engine, Keys } from "excalibur";
+import { clamp, CollisionType, Engine, vec } from 'excalibur';
+import { Coffee, Tea } from "@/actors/items/items";
 
 export class Customer extends ex.Actor {
     private static readonly MAX_VELOCITY = 300;
     private static readonly ACCELERATION = 700;
-    private static readonly PICK_UP_THRESHOLD = 50;
+    private static readonly PICK_UP_THRESHOLD = 25;
 
     private animations = {
         run: ex.Animation.fromSpriteSheet(
@@ -41,11 +42,15 @@ export class Customer extends ex.Actor {
                 },
             }), [0, 1, 2], 200),
     };
+
+    private bubble: ex.Actor; // New bubble actor
     public readonly desiredProductType: ProductType;
     public satisfied: boolean = false;
     private assignedItem: ItemActor | null = null;
     private runningDirection: number | null = null;
     private runningTarget: number | null = null;
+
+    private carryingItem: ItemActor | null = null;
 
     constructor(waitingX: number, desiredProductType: ProductType) {
         super({
@@ -56,6 +61,63 @@ export class Customer extends ex.Actor {
             collisionType: ex.CollisionType.Passive,
         });
         this.desiredProductType = desiredProductType;
+
+        // Initialize the bubble actor
+        this.bubble = new ex.Actor({
+            pos: ex.vec(0, -16), // Position above the customer
+            offset: ex.vec(0, -16), // Position above the customer
+            width: 32,
+            height: 32,
+            collisionType: ex.CollisionType.PreventCollision,
+        });
+
+        this.bubble.graphics.use(Resources.Load.Bubble.toSprite());
+        this.bubble.scale = vec(1, 1)
+
+        let itemActor;
+        if (desiredProductType == ProductType.COFFEE) {
+            itemActor = new ItemActor(new Coffee());
+        }
+        else {
+            itemActor = new ItemActor(new Tea());
+        }
+
+        itemActor.pos = vec(0, -18)
+        itemActor.body.collisionType = CollisionType.PreventCollision;
+        this.bubble.addChild(itemActor)
+
+        // Attach the bubble to the customer as a child actor
+        this.addChild(this.bubble);
+    }
+
+    pickUpItem(item: ItemActor) {
+        this.carryingItem = item;
+        item.body.collisionType = ex.CollisionType.Passive;
+        item.pos = vec(0, 0);
+        this.addChild(this.carryingItem);
+
+        this.bubble.actions.scaleTo(vec(0, 0), vec(5, 10));
+    }
+
+    private updateItemPosition(position: string) {
+        let facing = this.graphics.flipHorizontal;
+
+        let frame = (this.graphics.current as any)._currentFrame;
+        let uglyOffset = Math.sin(frame);
+
+        let handOffset = vec(facing ? -10 : 10, 3 + uglyOffset);
+        let backOffset = vec(facing ? -20 : 20, 2 + uglyOffset);
+
+        if (this.carryingItem != undefined) {
+            this.carryingItem.graphics.flipHorizontal = facing;
+
+            if (position == 'hand') {
+                this.carryingItem.offset = handOffset;
+            }
+            else {
+                this.carryingItem.offset = backOffset;
+            }
+        }
     }
 
     onInitialize(engine: ex.Engine) {
@@ -71,8 +133,8 @@ export class Customer extends ex.Actor {
 
                 if (this.assignedItem) {
                     this.satisfied = true;
-                    this.runningDirection = 1;
-                    this.assignedItem.kill();
+                    this.pickUpItem(this.assignedItem)
+                    this.goTo(10000)
                 }
             }
         } else {
@@ -95,14 +157,20 @@ export class Customer extends ex.Actor {
 
         if (this.runningDirection == -1) {
             this.graphics.flipHorizontal = true;
+            this.graphics.use(this.animations.run);
+            this.updateItemPosition('back');
         } else if (this.runningDirection == 1) {
             this.graphics.flipHorizontal = false;
+            this.graphics.use(this.animations.run);
+            this.updateItemPosition('back');
+        } else {
+            this.graphics.use(this.animations.idle);
+            this.updateItemPosition('hand');
         }
         this.vel.x = clamp(this.vel.x, -Customer.MAX_VELOCITY, Customer.MAX_VELOCITY)
     }
 
     goFetchItem(item: ItemActor) {
-        console.log("Fetching item");
         this.runningTarget = item.pos.x;
         this.assignedItem = item;
         item.allocatedToCustomer = true;

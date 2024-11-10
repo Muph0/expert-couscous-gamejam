@@ -14,8 +14,6 @@ export class Level1 implements Level {
     }
 }
 
-
-
 export const LEVELS: Level[] = [
     new Level1(),
 ];

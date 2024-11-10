@@ -249,10 +249,11 @@ export class Player extends Actor {
         if (this.carryingItem) {
             this.removeChild(this.carryingItem)
 
-            this.carryingItem.pos = this.pos.clone();
+            this.carryingItem.pos = this.pos.clone().add(this.carryingItem.offset);
             this.carryingItem.vel = ex.vec(this.vel.x, this.vel.y / 10);
 
             this.carryingItem.body.collisionType = ex.CollisionType.Active;
+
             this.carryingItem.offset = vec(0, 0);
 
             this.scene?.add(this.carryingItem);
