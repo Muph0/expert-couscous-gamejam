@@ -50,7 +50,7 @@ export class Level1 implements Level {
             new Platform(320, 150, 60, 10),
 
             // brewer platform
-            new Platform(this.size.x / 2 + 5, 310, 30, 10, -Math.PI / 5, CollisionType.Fixed),
+            new Platform(this.size.x / 2, 310, 30, 10, -1/2, CollisionType.Fixed),
 
 
         ]).forEach(platform => scene.add(platform));
@@ -115,7 +115,7 @@ export class Level2 implements Level {
             new Platform(320, 150, 60, 10),
 
             // brewer platform
-            new Platform(this.size.x / 2 + 5, 310, 30, 10, -Math.PI / 5, CollisionType.Fixed),
+            new Platform(this.size.x / 2, 310, 30, 10, -1/2, CollisionType.Fixed),
 
 
         ]).forEach(platform => scene.add(platform));
@@ -170,6 +170,8 @@ export class Level3 implements Level {
     spawnItems(scene: MainScene): void {
         let { x: W, y: H } = this.size;
 
+        let brewerPlatform = new Platform(this.size.x / 2, 310, 30, 10, -1/2, CollisionType.Fixed);
+
         ([
             new SolidPlatform(W / 2, 200, W, 20), // the main solid platform
             new SolidPlatform(W / 2, H, W, 20, 0, CollisionType.Fixed), // the bottom
@@ -179,8 +181,7 @@ export class Level3 implements Level {
             new Platform(320, 150, 60, 10),
 
             // brewer platform
-            new Platform(this.size.x / 2 + 5, 310, 30, 10, -Math.PI / 5, CollisionType.Fixed),
-
+            brewerPlatform,
 
         ]).forEach(platform => scene.add(platform));
 
@@ -203,6 +204,9 @@ export class Level3 implements Level {
         const wheel = new HamsterWheel(90, 110, 50, grinder);
         scene.add(wheel)
 
+        const lever = new Lever(240, 190, brewerPlatform);
+        scene.add(lever);
+
         const background = new Actor({ z: -10 });
         background.graphics.use(Resources.Load.Background.toSprite(), { anchor: vec(0, 0), offset: vec(-50, 0) });
         scene.add(background);
@@ -213,7 +217,5 @@ export class Level3 implements Level {
 }
 
 export const LEVELS: Level[] = [
-    new Level1(),
-    new Level2(),
     new Level3(),
 ];
