@@ -46,13 +46,6 @@ export class Game extends Engine {
         this.goToScene('start');
     }
 
-    onPostUpdate(engine: Engine, delta: number): void {
-        if (engine.input.keyboard.wasPressed(Keys.F3)) {
-            this.isShowDebug = !this.isShowDebug;
-            this.showDebug(this.isShowDebug);
-        }
-    }
-
     public firstLevel(): void {
         this.curLevelId = 0;
         this.addScene('intro', new LevelIntro(this, this.levels[this.curLevelId], this.curLevelId));
@@ -91,6 +84,10 @@ export class Game extends Engine {
     onPreUpdate(engine: Engine, delta: number): void {
         if (engine.input.keyboard.wasPressed(Keys.R)) {
             this.restart();
+        }
+        if (engine.input.keyboard.wasPressed(Keys.F3)) {
+            this.isShowDebug = !this.isShowDebug;
+            this.showDebug(this.isShowDebug);
         }
     }
 }
