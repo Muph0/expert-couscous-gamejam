@@ -12,6 +12,7 @@ export class Game extends Engine {
     private mainScene!: MainScene;
     private levels: Level[]
     private curLevelId: number
+    private isShowDebug = false;
 
     constructor() {
         super({
@@ -20,6 +21,9 @@ export class Game extends Engine {
         });
         this.levels = []
         this.curLevelId = 0
+
+        this.debug.collider.boundsColor = Color.Red;
+        this.debug.collider.showAll = true;
     }
 
     public start() {
@@ -80,6 +84,10 @@ export class Game extends Engine {
     onPreUpdate(engine: Engine, delta: number): void {
         if (engine.input.keyboard.wasPressed(Keys.R)) {
             this.restart();
+        }
+        if (engine.input.keyboard.wasPressed(Keys.F4)) {
+            this.isShowDebug = !this.isShowDebug;
+            this.showDebug(this.isShowDebug);
         }
     }
 }
