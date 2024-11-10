@@ -1,5 +1,5 @@
 import { ItemActor } from '../items/itemActor';
-import { Item } from '@/actors/items/items';
+import { Drawable, Item } from '@/actors/items/items';
 import {
     Actor,
     ActorArgs, BaseAlign,
@@ -9,11 +9,11 @@ import {
     Color,
     Engine, Font, FontUnit,
     Label,
-    Side, TextAlign, vec,
+    Side, Sprite, TextAlign, vec,
     Vector
 } from 'excalibur';
 
-export abstract class Machine extends Actor {
+export abstract class Machine extends Actor implements Drawable {
     public isOn: boolean = true;
 
     intakeActor: Actor;
@@ -80,6 +80,8 @@ export abstract class Machine extends Actor {
         this.addChild(this.intakeActor);
         this.addChild(this.tooltip);
     }
+
+    abstract getSprite(): Sprite;
 
 
     onPostUpdate(engine: Engine, delta: number): void {

@@ -3,7 +3,7 @@ import { HamsterWheel } from "@/actors/contols/hamster-wheel";
 import { Lever } from "@/actors/contols/lever";
 import { CustomerControl } from "@/actors/customers-control";
 import { ItemActor } from "@/actors/items/itemActor";
-import { Acorn, Leaf } from "@/actors/items/items";
+import { Acorn, Coffee, GroundAcorn, Leaf } from "@/actors/items/items";
 import { Brewer } from "@/actors/machines/brewer";
 import { Grinder } from "@/actors/machines/grinder";
 import { Platform, SolidPlatform } from "@/actors/platform";
@@ -19,7 +19,11 @@ export class Level1 implements Level {
     size: Vector = vec(0, 0);
 
     getNewRecipes(): Recipe[] {
-        throw new Error("Method not implemented.");
+        // throw new Error("Method not implemented.");
+        return [
+            new Recipe(new Acorn(), new Grinder(0, 0), new GroundAcorn()),
+            new Recipe(new GroundAcorn(), new Brewer(0, 0), new Coffee()),
+        ];
     }
 
     spawnItems(scene: Scene): void {

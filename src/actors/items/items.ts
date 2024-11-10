@@ -12,7 +12,11 @@ export enum MachineType {
     GRINDER,
 }
 
-export interface Item {
+export interface Drawable {
+    getSprite(): Sprite;
+}
+
+export interface Item extends Drawable {
     grind?(): Item;
     brew?(): Item;
     roast?(): Item;
@@ -21,7 +25,7 @@ export interface Item {
     getProductType?(): ProductType;
 }
 
-export class Leaf<T> implements Item {
+export class Leaf implements Item {
     getSprite(): Sprite { return Resources.Items().getSprite(3, 0); }
 
     grind(): Item {
@@ -29,7 +33,7 @@ export class Leaf<T> implements Item {
     }
 }
 
-export class Acorn<T> implements Item {
+export class Acorn implements Item{
     getSprite(): Sprite { return Resources.Items().getSprite(0, 0); }
 
     grind(): Item {
