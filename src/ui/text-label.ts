@@ -3,6 +3,8 @@ import { Actor, Vector, Text, Font, BaseAlign, Color, FontUnit, TextAlign, vec }
 export class TextLabel {
     static WHITE = new Color(255, 255, 255);
     static GREY = new Color(46, 46, 46);
+    static ORANGE = new Color(242, 157, 79);
+
     private _actor: Actor;
     constructor(
         x: number,
@@ -10,17 +12,13 @@ export class TextLabel {
         size: number,
         message: string,
         color: Color = TextLabel.GREY,
+        align: TextAlign = TextAlign.Center,
     ) {
         const text = new Text({ 
             text: message,
             font: new Font({
-                textAlign: TextAlign.Center,
+                textAlign: align,
                 baseAlign: BaseAlign.Bottom,
-                // shadow: {
-                //     blur: 5,
-                //     offset: vec(0, 0),
-                //     color: Color.Black,
-                // },
                 family: 'Pixelify Sans',
                 size,
                 unit: FontUnit.Px,

@@ -17,10 +17,20 @@ import {Game} from '@/game';
 
 const LEVEL_TIME: number = 5 * 60 * 1000;
 
+export interface GameStatistics {
+    customersServed: number
+    customerLongestWait: number
+    pointsMax: number
+    pointsGained: number
+    recipesMade: number
+}
+
 export class MainScene extends ex.Scene {
     entityCounter = new Label({ text: '' });
     timeLabel = new Label({text: '', pos: vec(10, 10)})
     timePlayed: number
+
+    private statistics: GameStatistics
 
     constructor(
         private game: Game,
@@ -28,6 +38,13 @@ export class MainScene extends ex.Scene {
     ) {
         super();
         this.timePlayed = 0;
+        this.statistics = {
+            customersServed: 0,
+            customerLongestWait: 0,
+            pointsMax: 0,
+            pointsGained: 0,
+            recipesMade: 0,
+        }
     }
 
 
@@ -148,7 +165,9 @@ export class MainScene extends ex.Scene {
     onPreUpdate(engine: ex.Engine, delta: number): void {
         this.timePlayed += delta;
         if (this.timePlayed >= LEVEL_TIME) {
-            this.game.showLevelOutro(0, 0);
+            this.statistics.pointsMax = 200;
+            this.statistics.pointsGained = 130;
+            this.game.showLevelOutro(this.statistics);
         }
     }
 }

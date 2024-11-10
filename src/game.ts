@@ -1,5 +1,5 @@
-import { MainScene } from './scenes/main-scene';
 import { Engine, Loader, DisplayMode, Keys, Scene, CollisionType, Color, Actor } from 'excalibur';
+import { GameStatistics, MainScene } from './scenes/main-scene';
 import { Resources } from './resources';
 import { Level, LevelIntro } from './scenes/level-intro';
 import { GameStart } from './scenes/game-start';
@@ -57,8 +57,8 @@ export class Game extends Engine {
         this.goToScene(Scenes.Intro);
     }
 
-    public showLevelOutro(points: number, maxPoints: number) {
-        this.addScene(Scenes.Outro, new LevelOutro(this, this.curLevelId, points, maxPoints));
+    public showLevelOutro(statics: GameStatistics) {
+        this.addScene(Scenes.Outro, new LevelOutro(this, this.curLevelId, statics));
         this.goToScene(Scenes.Outro);
     }
 
