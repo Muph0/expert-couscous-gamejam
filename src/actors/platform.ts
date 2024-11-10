@@ -9,7 +9,7 @@ export class Platform extends ex.Actor {
             pos: ex.vec(x, y),
             width: width,
             height: height,
-            color: Color.DarkGray,
+            color: Color.Transparent,
             collisionType: collisionType,
         });
 

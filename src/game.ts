@@ -76,7 +76,8 @@ export class Game extends Engine {
     public showCurrentLevel(): void {
         this.addScene(Scenes.Main, new MainScene(this, LEVELS[this.curLevelId]));
 
-        Resources.Load.MainMusic.play(0.15)
+        if (!Resources.Load.MainMusic.isPlaying())
+            Resources.Load.MainMusic.play(0.15)
 
         this.goToScene(Scenes.Main);
     }
@@ -90,7 +91,8 @@ export class Game extends Engine {
     }
 
     public exitPause(): void {
-        Resources.Load.MainMusic.play();
+        if (!Resources.Load.MainMusic.isPlaying())
+            Resources.Load.MainMusic.play(0.15)
 
         this.goToScene(Scenes.Main);
     }

@@ -1,5 +1,5 @@
 import * as ex from 'excalibur';
-import { ExcaliburGraphicsContext, Label, vec } from 'excalibur';
+import {Color, ExcaliburGraphicsContext, Label, vec} from 'excalibur';
 import { ItemActor } from '@/actors/items/itemActor';
 import { Coffee } from '@/actors/items/items';
 import { SceneScaler } from "@/scenes/scene-scaler";
@@ -63,7 +63,7 @@ export class MainScene extends ex.Scene {
     initializeClock() {
         this.timeLabel = new Label({
             text: '',
-            pos: vec(this.level.size.x, 20),
+            pos: vec(this.level.size.x - 50, 20),
             font: new ex.Font({
                 textAlign: ex.TextAlign.Left,
                 baseAlign: ex.BaseAlign.Bottom,
@@ -72,13 +72,18 @@ export class MainScene extends ex.Scene {
                 unit: ex.FontUnit.Px,
                 color: ex.Color.Black,
                 smoothing: false,
+                shadow: {
+                    blur: 5,
+                    offset: vec(0, 0),
+                    color: Color.White,
+                },
             }),
             scale: vec(1, 1).scale(0.2),
         })
         this.add(this.timeLabel);
         this.add(new Label({
             text: '[P] to PAUSE',
-            pos: vec(this.level.size.x, 30),
+            pos: vec(this.level.size.x - 50, 30),
             font: new ex.Font({
                 textAlign: ex.TextAlign.Left,
                 baseAlign: ex.BaseAlign.Bottom,
@@ -87,13 +92,17 @@ export class MainScene extends ex.Scene {
                 unit: ex.FontUnit.Px,
                 color: ex.Color.Black,
                 smoothing: false,
+                shadow: {
+                    blur: 5,
+                    offset: vec(0, 0),
+                    color: Color.White,
+                },
             }),
             scale: vec(1, 1).scale(0.2),
         }))
     }
 
     onPreDraw(ctx: ExcaliburGraphicsContext, delta: number): void {
-        this.entityCounter.text = `Entities: ${this.entities.length}`;
         const timeLeft = this.level.timeLimitMs - this.timePlayed;
         const minutes = Math.floor(timeLeft / (1000 * 60));
         const seconds = Math.floor((timeLeft - minutes * 60 * 1000) / 1000)
