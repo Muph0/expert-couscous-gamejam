@@ -22,16 +22,20 @@ export abstract class Machine extends Actor {
     private blacklistedItemQueue: Array<ItemActor> = [];
 
     private isProcessing: boolean = false;
-    private remainingProcessingTime = 0;
+    private manual: boolean;
+
+    public remainingProcessingTime = 0;
 
     private tooltip: Label;
 
-    constructor(config?: ActorArgs) {
+    constructor(config?: ActorArgs, manual: boolean = false) {
         super({
             color: Color.Gray,
             collisionType: CollisionType.Fixed,
             ...config,
         });
+
+        this.manual = manual;
 
         // Create tooltip (initially hidden)
         this.tooltip = new Label({
@@ -86,7 +90,7 @@ export abstract class Machine extends Actor {
         if (!this.isProcessing) {
             if (this.itemQueue.length != 0) {
                 this.isProcessing = true;
-                this.remainingProcessingTime = 1;
+                this.remainingProcessingTime = 1.5;
                 this.tooltip.text = `${this.remainingProcessingTime.toFixed(1)}`;
 
             }
@@ -109,7 +113,9 @@ export abstract class Machine extends Actor {
                     this.scene?.add(newActor);
                 }
             } else {
-                this.remainingProcessingTime = Math.max(this.remainingProcessingTime - delta / 1000, 0);
+                if (!this.manual) {
+                    this.remainingProcessingTime = Math.max(this.remainingProcessingTime - delta / 1000, 0);
+                }
 
                 this.tooltip.text = `${this.remainingProcessingTime.toFixed(1)}`;
             }
