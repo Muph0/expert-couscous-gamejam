@@ -1,8 +1,15 @@
 import {Resources} from "@/resources";
 import {Sprite} from "excalibur";
 
+
 export enum ProductType {
     COFFEE,
+    TEA,
+}
+
+export enum MachineType {
+    BREWER,
+    GRINDER,
 }
 
 export interface Item {
