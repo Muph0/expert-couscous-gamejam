@@ -35,7 +35,7 @@ export class Grinder extends Machine {
         super.onPostUpdate(engine, delta);
 
         if (this.isOn) {
-            this.crank.rotation = -this.remainingProcessingTime * Math.PI * 2;
+            this.crank.rotation = -(this.remainingProcessingTime / this.maxProcessingTime)  * Math.PI * 2;
         }
     }
 

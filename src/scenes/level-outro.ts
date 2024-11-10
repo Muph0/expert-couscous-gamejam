@@ -30,13 +30,20 @@ export class LevelOutro extends Scene {
 
     onInitialize(engine: ex.Engine): void {
         this.backgroundColor = new Color(216, 185, 157);
-        const logo = new Actor({
+        const levelTable = new Actor({
             x: this.width / 2, y: this.height / 4,
         })
-        logo.graphics.add(Resources.Load.LevelTable.toSprite());
-        this.add(logo);
-
+        levelTable.graphics.add(Resources.Load.LevelTable.toSprite());
+        this.add(levelTable);
         this.add(new TextLabel(this.width / 2 + 2, 58, 56, `Level  ${this.levelId + 1}`, TextLabel.WHITE).actor);
+
+        for (let i = 1; i <= 3; i++) {
+            const image = i <= this.starsGained ? Resources.Load.StarGold : Resources.Load.StarGrey;
+            const star = new Actor({x: this.width / 2 + (i - 2) * 25, y: this.height / 2});
+            star.graphics.add(image.toSprite());
+            this.add(star);
+        }
+
         this.add(new TextLabel(this.width / 2, this.height / 2 + 60, 40, "Press [T] to TRY AGAIN", TextLabel.GREY).actor);
         this.add(new TextLabel(this.width / 2, this.height / 2 + 70, 40, "Press [N] to play NEXT LEVEL", TextLabel.GREY).actor);
     }

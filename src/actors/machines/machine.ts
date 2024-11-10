@@ -25,6 +25,7 @@ export abstract class Machine extends Actor {
     private manual: boolean;
 
     public remainingProcessingTime = 0;
+    public maxProcessingTime = 1.5;
 
     private tooltip: Label;
 
@@ -85,7 +86,7 @@ export abstract class Machine extends Actor {
         if (!this.isProcessing) {
             if (this.itemQueue.length != 0) {
                 this.isProcessing = true;
-                this.remainingProcessingTime = 1.5;
+                this.remainingProcessingTime = this.maxProcessingTime;
                 this.tooltip.text = `${this.remainingProcessingTime.toFixed(1)}`;
 
             }
