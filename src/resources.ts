@@ -13,6 +13,8 @@ import wheel from './images/wheel.png';
 import items from './images/items.png';
 import machines from './images/machines.png';
 import levelTable from './images/level_table.png';
+import starGold from './images/star_gold.png';
+import starGrey from './images/star_grey.png';
 
 import resourceStation from './images/resource-station.png';
 
@@ -37,6 +39,8 @@ const Resources = new class Resources {
         Button: new ImageSource(button),
         Machines: new ImageSource(machines),
         LevelTable: new ImageSource(levelTable),
+        StarGold: new ImageSource(starGold),
+        StarGrey: new ImageSource(starGrey),
     }
 
     readonly Items = lazy(() =>
