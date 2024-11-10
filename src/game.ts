@@ -72,7 +72,7 @@ export class Game extends Engine {
             this.curLevelId = 0;
             this.restart();
         } else {
-            this.showCurrentLevel();
+            this.showLevelIntro();
         }
     }
 
