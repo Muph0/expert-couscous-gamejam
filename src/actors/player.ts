@@ -211,8 +211,11 @@ export class Player extends Actor {
 
             Resources.Load.RunSound.volume = loudness * 0.25;
         } else {
-            if (this.runningDirection)
+            if (this.runningDirection == 0)
+                Resources.Load.RunSound.volume = 0.0;
+            else {
                 Resources.Load.RunSound.volume = 0.25;
+            }
         }
     }
 

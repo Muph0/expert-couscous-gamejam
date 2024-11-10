@@ -75,15 +75,23 @@ export class Game extends Engine {
 
     public showCurrentLevel(): void {
         this.addScene(Scenes.Main, new MainScene(this, LEVELS[this.curLevelId]));
+
+        Resources.Load.MainMusic.play(0.15)
+
         this.goToScene(Scenes.Main);
     }
 
     public showPause(): void {
         this.addScene(Scenes.Pause, new LevelIntro(this, LEVELS[this.curLevelId], this.curLevelId, true))
+
+        Resources.Load.MainMusic.pause();
+
         this.goToScene(Scenes.Pause);
     }
 
     public exitPause(): void {
+        Resources.Load.MainMusic.play();
+
         this.goToScene(Scenes.Main);
     }
 
