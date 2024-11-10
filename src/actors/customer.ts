@@ -103,6 +103,15 @@ export class Customer extends ex.Actor {
         this.bubble.actions.scaleTo(vec(0, 0), vec(5, 10));
     }
 
+    private updateBubblePosition() {
+        let frame = (this.graphics.current as any)._currentFrame;
+        let uglyOffset  = Math.sin(frame);
+
+        console.log(uglyOffset)
+
+        this.bubble.pos = ex.vec(0, -16 + uglyOffset);
+    }
+
     private updateItemPosition(position: string) {
         let facing = this.graphics.flipHorizontal;
 
@@ -172,6 +181,8 @@ export class Customer extends ex.Actor {
             this.updateItemPosition('hand');
         }
         this.vel.x = clamp(this.vel.x, -Customer.MAX_VELOCITY, Customer.MAX_VELOCITY)
+
+        this.updateBubblePosition()
     }
 
     goFetchItem(item: ItemActor) {
