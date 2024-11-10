@@ -1,9 +1,9 @@
-import { Drawable, Item } from '@/actors/items/items';
-import { Actor, Color, Engine, Keys, Scene, SceneActivationContext, vec, Vector } from 'excalibur';
-import { Game } from '@/game';
-import { Resources } from '@/resources';
-import { TextLabel } from '@/ui/text-label';
-import { SceneScaler } from './scene-scaler';
+import {Drawable, Item} from '@/actors/items/items';
+import {Actor, CollisionType, Color, Engine, Keys, Scene, SceneActivationContext, vec, Vector} from 'excalibur';
+import {Game} from '@/game';
+import {Resources} from '@/resources';
+import {TextLabel} from '@/ui/text-label';
+import {SceneScaler} from './scene-scaler';
 import {ItemActor} from "@/actors/items/itemActor";
 import { DesiredItem } from '@/levels/level';
 
@@ -45,6 +45,7 @@ export class Recipe {
         scene.add(eqAct);
 
         const resultAct = new ItemActor(this.result, vec(x + 4 * 16, y));
+        resultAct.body.collisionType = CollisionType.PreventCollision;
         resultAct.graphics.add(this.result.getSprite());
         scene.add(resultAct);
     }

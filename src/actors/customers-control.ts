@@ -5,6 +5,7 @@ import {Recipe} from "@/scenes/level-intro";
 import {Item} from "@/actors/items/items";
 import { MainScene } from "@/scenes/main-scene";
 import { DesiredItem } from "@/levels/level";
+import {Resources} from "@/resources";
 
 export class CustomerControl extends Actor {
     private static readonly HEIGHT = 100;
@@ -63,6 +64,12 @@ export class CustomerControl extends Actor {
                 const product = this.sampleItem()
                 const waitingX = this.width + CustomerControl.CUSTOMER_OFFSET;
                 const customer = new Customer(waitingX, product);
+
+                if (Math.random() < 0.5) {
+                    Resources.Load.Chirp1Sound.play(0.5)
+                } else {
+                    Resources.Load.Chirp2Sound.play(0.5)
+                }
 
                 this.customers.push(customer);
                 waitingCustomers = this.customers.filter(c => !c.productAssigned());

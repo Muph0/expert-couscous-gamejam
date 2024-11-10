@@ -41,13 +41,13 @@ export abstract class Machine extends Actor implements Drawable {
         // Create tooltip (initially hidden)
         this.tooltip = new Label({
             text: '',
-            pos: vec(0, -5), // Position the label above the station
+            pos: vec(0, 5), // Position the label above the station
             font: new Font({
                 textAlign: TextAlign.Center,
                 baseAlign: BaseAlign.Middle,
                 shadow: {
                     blur: 5,
-                    offset: vec(0, 10),
+                    offset: vec(0, 0),
                     color: Color.Black,
                 },
                 family: 'Silkscreen',
