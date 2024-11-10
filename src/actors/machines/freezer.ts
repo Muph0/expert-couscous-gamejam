@@ -18,7 +18,9 @@ export class Freezer extends Machine {
     }
 
     getSprite(): Sprite {
-        return Resources.Machines().getSprite(2, 1);
+        const sprite = Resources.Machines().getSprite(2, 1)
+        sprite.scale = vec(0.22, 0.22);
+        return sprite;
     }
 
     protected getIntake(): [Vector, Vector] {
